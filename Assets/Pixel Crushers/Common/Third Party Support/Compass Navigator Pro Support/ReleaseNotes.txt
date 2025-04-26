@@ -1,0 +1,19 @@
+Save System for Compass Navigator Pro
+Copyright © Pixel Crushers. All rights reserved.
+Compass Navigator Pro © Kronnect.
+
+
+INSTRUCTIONS:
+- Add a POI Saver to any POIs whose state you want to save. This will save 
+  the POI's visibility, canBeVisited, and isVisited properties.
+- Add a Compass Pro Event component to the scene if you want to connect
+  events to POI activity.
+
+
+RELEASE NOTES:
+
+[2024-04-06]
+- Updated for Compass Navigator Pro 2.
+
+[Version 1.0.0]
+- Initial release.
