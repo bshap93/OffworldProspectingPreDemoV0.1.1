@@ -35,8 +35,6 @@ namespace Domains.Gameplay.Mining.Scripts
         [SerializeField] private MMFeedbacks defaultFootstepFeedbacks;
 
         [SerializeField] private float baseStepInterval = 0.5f;
-        // [SerializeField] private float maxSpeed = 5f; // used for scaling
-
 
         [Space(10)] public PlanarMovementParameters planarMovementParameters = new();
 
@@ -46,10 +44,10 @@ namespace Domains.Gameplay.Mining.Scripts
 
         public LookingDirectionParameters lookingDirectionParameters = new();
 
-
         public PlayerInteraction playerInteraction;
 
         // public TextureDetector textureDetector;
+
         [FormerlySerializedAs("ForwardTextureDetector")]
         public TerrainLayerDetector forwardTerrainLayerDetector;
 
@@ -85,6 +83,9 @@ namespace Domains.Gameplay.Mining.Scripts
         [SerializeField] protected float fallDamageMultiplier = 1f;
 
 
+        [SerializeField]
+        private float jetPackActivationDelay = 0.3f; // Time in seconds to hold before jetpack activates
+
         private PointedObjectInfo _currentPointedObjectInfo;
         private float _footstepInterval;
 
@@ -99,7 +100,12 @@ namespace Domains.Gameplay.Mining.Scripts
         protected bool groundedJumpAvailable;
         protected bool isAllowedToCancelJump;
         protected bool isCrouched;
+
         protected bool isFalling;
+        // [SerializeField] private float maxSpeed = 5f; // used for scaling
+
+        private JetPackBehavior jetPackBehavior;
+        private float jetPackButtonHoldTime;
         protected Vector3 jumpDirection;
 
 
@@ -144,6 +150,8 @@ namespace Domains.Gameplay.Mining.Scripts
 
             if (playerInteraction == null)
                 playerInteraction = FindFirstObjectByType<PlayerInteraction>();
+
+            jetPackBehavior = GetComponent<JetPackBehavior>();
         }
 
         protected override void Start()
@@ -491,23 +499,35 @@ namespace Domains.Gameplay.Mining.Scripts
 
         protected virtual void ProcessJetPack(float dt)
         {
+            // Track how long the jetpack button has been held
             if (CharacterActions.jetPack.value)
             {
-                if (PlayerFuelManager.IsPlayerOutOfFuel())
+                jetPackButtonHoldTime += dt;
+
+                // Only activate jetpack if button has been held long enough
+                if (jetPackButtonHoldTime >= jetPackActivationDelay)
                 {
-                    PlayerStatusEvent.Trigger(PlayerStatusEventType.OutOfFuel);
+                    if (PlayerFuelManager.IsPlayerOutOfFuel())
+                    {
+                        PlayerStatusEvent.Trigger(PlayerStatusEventType.OutOfFuel);
+                        return;
+                    }
 
+                    CharacterActor.VerticalVelocity = Vector3.SmoothDamp(
+                        CharacterActor.VerticalVelocity,
+                        targetHeight * CharacterActor.Up,
+                        ref smoothDampVelocity,
+                        jetPackDuration
+                    ) * jetPackSpeedMultiplier;
 
-                    return;
+                    // jetPackBehavior.JetPackBehaviorMethod();
+                    jetPackFeedbacks?.PlayFeedbacks();
                 }
-
-                CharacterActor.VerticalVelocity = Vector3.SmoothDamp(
-                    CharacterActor.VerticalVelocity,
-                    targetHeight * CharacterActor.Up,
-                    ref smoothDampVelocity,
-                    jetPackDuration
-                ) * jetPackSpeedMultiplier;
-                jetPackFeedbacks?.PlayFeedbacks();
+            }
+            else
+            {
+                // Reset the hold timer when button is released
+                jetPackButtonHoldTime = 0f;
             }
 
             CharacterActor.SetYaw(CharacterActor.PlanarVelocity);

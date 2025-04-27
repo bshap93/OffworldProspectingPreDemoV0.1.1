@@ -1,28 +1,30 @@
-using System;
 using Domains.Gameplay.Mining.Scripts;
 using MoreMountains.Feedbacks;
 using UnityEngine;
 
-public class JumpBehavior : MonoBehaviour
+namespace Domains.Scripts_that_Need_Sorting
 {
-    public MyNormalMovement myNormalMovement;
-
-
-    private MMFeedbacks jumpFeedbacks;
-
-    private void Awake()
+    public class JumpBehavior : MonoBehaviour
     {
-        if (myNormalMovement == null) myNormalMovement = GetComponentInParent<MyNormalMovement>();
+        public MyNormalMovement myNormalMovement;
 
-        if (myNormalMovement == null) Debug.LogError("MyNormalMovement not found in parent");
 
-        myNormalMovement.OnJumpPerformed += OnJump;
+        private MMFeedbacks jumpFeedbacks;
 
-        jumpFeedbacks = GetComponent<MMF_Player>();
-    }
+        private void Awake()
+        {
+            if (myNormalMovement == null) myNormalMovement = GetComponentInParent<MyNormalMovement>();
 
-    public void OnJump()
-    {
-        jumpFeedbacks?.PlayFeedbacks();
+            if (myNormalMovement == null) UnityEngine.Debug.LogError("MyNormalMovement not found in parent");
+
+            myNormalMovement.OnJumpPerformed += OnJump;
+
+            jumpFeedbacks = GetComponent<MMF_Player>();
+        }
+
+        public void OnJump()
+        {
+            jumpFeedbacks?.PlayFeedbacks();
+        }
     }
 }
