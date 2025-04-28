@@ -769,7 +769,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3682673757431954790}
-  m_Mesh: {fileID: 2550507602029428093, guid: 9218ca9910389cd42b5869d355ee0779, type: 3}
+  m_Mesh: {fileID: 2550507602029428093, guid: 952ef6a1761f8d24eb61d1e686d87511, type: 3}
 --- !u!23 &4783793899337751918
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -834,7 +834,7 @@ MeshCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 2550507602029428093, guid: 9218ca9910389cd42b5869d355ee0779, type: 3}
 --- !u!114 &1989880791653112441
@@ -891,8 +891,11 @@ MonoBehaviour:
   knockDuration: 0.25
   oreHitFeedback: {fileID: 2390133131216529343}
   oreDestroyFeedback: {fileID: 2007819807374824732}
+  OnOreDestroyed:
+    m_PersistentCalls:
+      m_Calls: []
   OreHardness: 0
-  UniqueID: e9c970ff-f593-4dd3-877e-891ddba2d7a9
+  UniqueID: 2f70a833-595a-468c-865f-014df3be3cfc
   failHitFeedbacks: {fileID: 5939243206290031498}
   failHitParticles: {fileID: 6835221663383594993, guid: b4fdebf16c953b245b30edeebb4ed72c, type: 3}
   oreHitParticles: {fileID: 6835221663383594993, guid: b4fdebf16c953b245b30edeebb4ed72c, type: 3}
