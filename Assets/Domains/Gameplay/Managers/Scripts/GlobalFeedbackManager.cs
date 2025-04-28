@@ -38,7 +38,7 @@ namespace Domains.Gameplay.Managers.Scripts
         {
             if (eventType.EventType == CurrencyEventType.AddCurrency)
                 currencyAddedFeedbacks.PlayFeedbacks();
-            else if (eventType.EventType == CurrencyEventType.LoseCurrency)
+            else if (eventType.EventType == CurrencyEventType.RemoveCurrency)
                 upgradeFailedFeedbacks.PlayFeedbacks();
         }
 

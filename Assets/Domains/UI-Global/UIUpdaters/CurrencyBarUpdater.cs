@@ -13,7 +13,7 @@ namespace Domains.UI_Global.UIUpdaters
         public string currencySymbol = "$"; // Currency symbol, could be $, €, ¥, etc.
 
         private MMProgressBar _bar;
-        private int _currentCurrency;
+        private float _currentCurrency;
 
         private void Awake()
         {

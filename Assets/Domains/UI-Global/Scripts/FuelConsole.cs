@@ -13,7 +13,7 @@ namespace Domains.UI_Global.Scripts
         [SerializeField] private MMFeedbacks buyFuelFeedbacks;
         private FuelUIController fuelUIController;
 
-        private int playerCurrencyAmount;
+        private float playerCurrencyAmount;
         private float playerFuelRemaining;
 
         private void Start()

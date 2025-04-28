@@ -23,10 +23,10 @@ public class SimpleSettingsUI : MonoBehaviour
     {
         // Find managers if not assigned
         if (qualityManager == null)
-            qualityManager = FindObjectOfType<QualityManager>();
+            qualityManager = FindFirstObjectByType<QualityManager>();
 
         if (soundManager == null)
-            soundManager = FindObjectOfType<MMSoundManager>();
+            soundManager = FindFirstObjectByType<MMSoundManager>();
 
         if (settingsManager == null)
             settingsManager = SettingsManager.Instance;

@@ -23,8 +23,8 @@ namespace Domains.Player.Scripts
 
     public class PlayerCurrencyManager : MonoBehaviour, MMEventListener<CurrencyEvent>
     {
-        public static int CompanyCredits;
-        public static int InitialCurrencyAmount;
+        public static float CompanyCredits;
+        public static float InitialCurrencyAmount;
 
         public CurrencyBarUpdater currencyBarUpdater;
 
@@ -90,9 +90,7 @@ namespace Domains.Player.Scripts
                 case CurrencyEventType.RemoveCurrency:
                     RemoveCurrency(eventType.Amount);
                     break;
-                case CurrencyEventType.LoseCurrency:
-                    LoseCurrency(eventType.Amount);
-                    break;
+
                 case CurrencyEventType.SetCurrency:
                     SetCurrency(eventType.Amount);
                     break;
@@ -108,13 +106,13 @@ namespace Domains.Player.Scripts
             currencyBarUpdater.Initialize();
         }
 
-        public static void AddCurrency(int amount)
+        public static void AddCurrency(float amount)
         {
             CompanyCredits += amount;
             // Add an event trigger to notify UI and other systems
         }
 
-        public static void LoseCurrency(int amount)
+        public static void LoseCurrency(float amount)
         {
             if (CompanyCredits - amount < 0)
                 CompanyCredits = 0;
@@ -124,7 +122,7 @@ namespace Domains.Player.Scripts
             SavePlayerCurrency();
         }
 
-        public static void RemoveCurrency(int amount)
+        public static void RemoveCurrency(float amount)
         {
             if (CompanyCredits - amount < 0)
             {
@@ -139,7 +137,7 @@ namespace Domains.Player.Scripts
             }
         }
 
-        public static void SetCurrency(int amount)
+        public static void SetCurrency(float amount)
         {
             CompanyCredits = amount;
         }
@@ -155,7 +153,7 @@ namespace Domains.Player.Scripts
 
             if (ES3.FileExists(saveFilePath) && ES3.KeyExists("CompanyCredits", saveFilePath))
             {
-                CompanyCredits = ES3.Load<int>("CompanyCredits", saveFilePath);
+                CompanyCredits = ES3.Load<float>("CompanyCredits", saveFilePath);
                 currencyBarUpdater.Initialize();
                 UnityEngine.Debug.Log($"✅ Loaded currency data from {saveFilePath}");
             }

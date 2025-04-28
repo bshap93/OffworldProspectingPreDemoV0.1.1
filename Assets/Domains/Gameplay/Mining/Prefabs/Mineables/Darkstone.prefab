@@ -714,7 +714,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OreHardness: 0
-  UniqueID: 4cfd0144-878e-4f18-a0b6-a87b7a5ae371
+  UniqueID: a9696784-4db9-404e-9464-4b0ab603997b
   failHitFeedbacks: {fileID: 2879248722755317898}
   failHitParticles: {fileID: 6835221663383594993, guid: 4dcc88f5d0e581d488cb4d6cf6aa94ac, type: 3}
   oreHitParticles: {fileID: 6835221663383594993, guid: 4dcc88f5d0e581d488cb4d6cf6aa94ac, type: 3}
@@ -951,8 +951,8 @@ MonoBehaviour:
   raycastLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  minDistance: 0
-  maxDistance: 0
+  minDistance: 2
+  maxDistance: 10
   respectUI: 1
   volumeLayerMask:
     serializedVersion: 2

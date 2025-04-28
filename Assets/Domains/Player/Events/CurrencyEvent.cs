@@ -6,16 +6,15 @@ namespace Domains.Player.Events
     {
         AddCurrency,
         RemoveCurrency,
-        SetCurrency,
-        LoseCurrency
+        SetCurrency
     }
 
     public struct CurrencyEvent
     {
         public CurrencyEventType EventType;
-        public int Amount;
+        public float Amount;
 
-        public static void Trigger(CurrencyEventType eventType, int amount)
+        public static void Trigger(CurrencyEventType eventType, float amount)
         {
             var currencyEvent = new CurrencyEvent
             {

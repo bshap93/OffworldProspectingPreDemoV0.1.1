@@ -82,7 +82,7 @@ namespace Domains.Player.Scripts
         }
 
 
-        public void UpdateFuelUI(float fuelRemaining, float maxFuelAmount, int fuelPrice, int playerCredits,
+        public void UpdateFuelUI(float fuelRemaining, float maxFuelAmount, int fuelPrice, float playerCredits,
             float fuelToBuy, int costOfFuelToBuy)
         {
             fuelRemainingRadial.isOn = false;

@@ -798,7 +798,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OreHardness: 0
-  UniqueID: e1e34e30-73f2-463b-ae5b-01fb1fc0bb57
+  UniqueID: 
   failHitFeedbacks: {fileID: 7234271836214855775}
   failHitParticles: {fileID: 6835221663383594993, guid: c14ae236c4c9aed41ba307d978ef96ee, type: 3}
   oreHitParticles: {fileID: 6835221663383594993, guid: c14ae236c4c9aed41ba307d978ef96ee, type: 3}

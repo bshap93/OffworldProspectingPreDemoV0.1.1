@@ -1,5 +1,4 @@
-﻿using Domains.Input.Scripts;
-using Domains.Player.Events;
+﻿using Domains.Player.Events;
 using Domains.Scene.Scripts;
 using Domains.UI_Global.Events;
 using MoreMountains.Feedbacks;
@@ -17,7 +16,7 @@ namespace Domains.Player.Scripts
         [FormerlySerializedAs("teleportWhenOutOfFuel")] [Header("Game Mechanics")]
         public bool autoResetWhenOutOfFuel = true; // Toggle in inspector
 
-        public int monetaryPenalty = 400;
+        public float monetaryPenalty = 400f;
 
         [FormerlySerializedAs("staminaPenaltyMultiplier")]
         public float fuelPenaltyMultiplier = 0.2f;
@@ -95,9 +94,14 @@ namespace Domains.Player.Scripts
             // Ensure a minimum amount (e.g., 10) if the penalty calculation is too low
             recoveryAmount = Mathf.Max(recoveryAmount, 10f);
 
+            var maximumHealth = PlayerHealthManager.MaxHealthPoints;
+            var recoveryHealth = healthPenaltyMultiplier * maximumHealth;
+
+            var recoveryHealthAmount = Mathf.Max(recoveryHealth, 2f);
+
             // Use SetCurrentFuel to set the fuel amount
             FuelEvent.Trigger(FuelEventType.SetCurrentFuel, recoveryAmount, maximumFuel);
-            CurrencyEvent.Trigger(CurrencyEventType.LoseCurrency, GetRescueExpense());
+            CurrencyEvent.Trigger(CurrencyEventType.RemoveCurrency, GetRescueExpense());
 
             // Ensure the UI is updated
             FuelEvent.Trigger(FuelEventType.NotifyListeners, recoveryAmount, maximumFuel);
@@ -108,15 +112,10 @@ namespace Domains.Player.Scripts
             UnityEngine.Debug.Log($"Set fuel to {recoveryAmount} after running out of fuel");
         }
 
-        public int GetRescueExpense()
+        public float GetRescueExpense()
         {
-            var playerDepth = -playerCamera.transform.position.y;
-
-            if (playerDepth < 0) playerDepth = 0;
-
-            var rescueExpense = Mathf.FloorToInt(playerDepth / 10) * monetaryPenalty;
-
-            return rescueExpense;
+            if (PlayerCurrencyManager.CompanyCredits < monetaryPenalty) return PlayerCurrencyManager.CompanyCredits;
+            return monetaryPenalty;
         }
 
 
@@ -127,7 +126,7 @@ namespace Domains.Player.Scripts
             var currentCurrency = PlayerCurrencyManager.CompanyCredits;
             FuelEvent.Trigger(FuelEventType.SetCurrentFuel, fuelPenaltyMultiplier * maxFuel, maxFuel);
             HealthEvent.Trigger(HealthEventType.SetCurrentHealth, healthPenaltyMultiplier * maximumHealth);
-            CurrencyEvent.Trigger(CurrencyEventType.LoseCurrency, GetRescueExpense());
+            CurrencyEvent.Trigger(CurrencyEventType.RemoveCurrency, GetRescueExpense());
 
             SaveManager.Instance.SaveAll();
         }
