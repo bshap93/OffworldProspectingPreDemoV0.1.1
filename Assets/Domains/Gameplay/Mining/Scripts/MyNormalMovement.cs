@@ -14,7 +14,6 @@ using MoreMountains.Tools;
 using ThirdParty.Character_Controller_Pro.Implementation.Scripts.Character.States;
 using UnityEngine;
 using UnityEngine.Serialization;
-using PointedObjectInfo = Domains.Player.Events.PointedObjectInfo;
 
 namespace Domains.Gameplay.Mining.Scripts
 {
@@ -29,12 +28,6 @@ namespace Domains.Gameplay.Mining.Scripts
             NotGrounded
         }
 
-        [Header("Footsteps")] [SerializeField] private MMFeedbacks terrainFootstepFeedbacks;
-
-        [SerializeField] private MMFeedbacks chunkFootstepFeedbacks;
-        [SerializeField] private MMFeedbacks defaultFootstepFeedbacks;
-
-        [SerializeField] private float baseStepInterval = 0.5f;
 
         [Space(10)] public PlanarMovementParameters planarMovementParameters = new();
 
@@ -50,10 +43,6 @@ namespace Domains.Gameplay.Mining.Scripts
 
         [FormerlySerializedAs("ForwardTextureDetector")]
         public TerrainLayerDetector forwardTerrainLayerDetector;
-
-        [FormerlySerializedAs("DownTextureDetector")]
-        public TerrainLayerDetector downTerrainLayerDetector;
-
 
         [Header("Animation")] [SerializeField] protected string groundedParameter = "Grounded";
 
@@ -85,14 +74,6 @@ namespace Domains.Gameplay.Mining.Scripts
 
         [SerializeField]
         private float jetPackActivationDelay = 0.3f; // Time in seconds to hold before jetpack activates
-
-        private PointedObjectInfo _currentPointedObjectInfo;
-        private float _footstepInterval;
-
-        private float _footstepTimer;
-
-        private bool _wasMovingLastFrame;
-
 
         protected PlanarMovementParameters.PlanarMovementProperties currentMotion;
         protected float currentPlanarSpeedLimit;
@@ -184,7 +165,8 @@ namespace Domains.Gameplay.Mining.Scripts
         public void OnMMEvent(PointedObjectEvent eventType)
         {
             if (eventType.EventType == PointedObjectEventType.PointedObjectChanged)
-                _currentPointedObjectInfo = eventType.PointedObjectInfo;
+            {
+            }
         }
 
         public override string GetInfo()
@@ -701,56 +683,6 @@ namespace Domains.Gameplay.Mining.Scripts
             HandleSize(dt);
             HandleVelocity(dt);
             HandleRotation(dt);
-
-            var isMoving = CharacterActor.IsGrounded && CharacterActor.PlanarVelocity.magnitude > 0.01f;
-
-            if (isMoving)
-            {
-                // Dynamically scale interval
-                var speed = CharacterActor.PlanarVelocity.magnitude;
-                _footstepInterval = baseStepInterval / Mathf.Max(speed, 0.1f);
-                _footstepInterval = Mathf.Clamp(_footstepInterval, baseStepInterval * 0.7f, baseStepInterval * 1.3f);
-
-                // Trigger first footstep as soon as movement begins
-                if (!_wasMovingLastFrame)
-                    _footstepTimer = _footstepInterval;
-
-                // Run step timer
-                if (_footstepTimer >= _footstepInterval)
-                {
-                    PlayFootstepFeedback();
-                    _footstepTimer = 0f;
-                }
-                else
-                {
-                    _footstepTimer += dt;
-                }
-            }
-            else
-            {
-                _footstepTimer = 0f;
-            }
-
-            _wasMovingLastFrame = isMoving;
-        }
-
-        private void PlayFootstepFeedback()
-        {
-            switch (downTerrainLayerDetector.textureIndex)
-            {
-                case 1: // Chunk terrain from Digger
-                    chunkFootstepFeedbacks?.PlayFeedbacks();
-                    break;
-
-                case >= 0: // Terrain (index 0, 2, 3, etc.)
-                    terrainFootstepFeedbacks?.PlayFeedbacks();
-                    break;
-
-                case -1: // Meshes, non-terrain
-                default:
-                    defaultFootstepFeedbacks?.PlayFeedbacks();
-                    break;
-            }
         }
 
 

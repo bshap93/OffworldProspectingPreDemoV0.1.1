@@ -25,11 +25,11 @@ public class SettingsManager : MonoBehaviour
 
         // Find QualityManager if not assigned
         if (qualityManager == null)
-            qualityManager = FindObjectOfType<QualityManager>();
+            qualityManager = FindFirstObjectByType<QualityManager>();
 
         // Find MMSoundManager if not assigned
         if (soundManager == null)
-            soundManager = FindObjectOfType<MMSoundManager>();
+            soundManager = FindFirstObjectByType<MMSoundManager>();
     }
 
     private void Start()
