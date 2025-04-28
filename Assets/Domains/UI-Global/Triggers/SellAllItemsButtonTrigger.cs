@@ -4,25 +4,26 @@ using Domains.Player.Progression;
 using Domains.UI_Global.Events;
 using MoreMountains.Feedbacks;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Serialization;
 
 namespace Domains.UI_Global.Triggers
 {
     public class SellAllItemsButtonTrigger : MonoBehaviour
     {
+        [FormerlySerializedAs("action")] [SerializeField]
+        private UnityEvent sellAllAction;
+
         [FormerlySerializedAs("SellAllFeedbacks")]
         public MMFeedbacks sellAllFeedbacks;
 
         public MMFeedbacks cannotSellAllFeedbacks;
 
         private Inventory _inventory;
-        private bool firstTimeSellingAll = true;
 
         private void Start()
         {
             _inventory = FindFirstObjectByType<Inventory>();
-
-            firstTimeSellingAll = !ProgressionManager.TutorialFinished;
         }
 
 
@@ -34,13 +35,10 @@ namespace Domains.UI_Global.Triggers
                 return;
             }
 
-            if (firstTimeSellingAll)
-            {
-                firstTimeSellingAll = false;
-                TutorialEvent.Trigger(TutorialEventType.PlayerSoldInitialItems);
-            }
+            if (!ProgressionManager.TutorialFinished) TutorialEvent.Trigger(TutorialEventType.PlayerSoldInitialItems);
 
             sellAllFeedbacks?.PlayFeedbacks();
+            sellAllAction?.Invoke();
             InventoryEvent.Trigger(InventoryEventType.SellAllItems, _inventory, 0);
         }
 
