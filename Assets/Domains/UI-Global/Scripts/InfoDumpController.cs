@@ -87,10 +87,6 @@ namespace Domains.UI_Global.Scripts
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
             }
-            else
-            {
-                UnityEngine.Debug.LogError("InfoDumpController: No CanvasGroup found on this GameObject.");
-            }
         }
     }
 }

@@ -15,6 +15,7 @@ TagManager:
   - JumpDown
   - OreNode
   - DiggerChunk
+  - NPC
   layers:
   - Default
   - TransparentFX

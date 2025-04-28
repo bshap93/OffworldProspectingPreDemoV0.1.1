@@ -61,7 +61,7 @@ MonoBehaviour:
   m_cooldownSecondsRemaining: 0
   m_noRepeatIfSuccessful: 0
   m_saveAllIfWaitingToStart: 0
-  m_state: 0
+  m_state: 5
   m_stateInfoList:
   - m_actionList: []
     m_categorizedContentList:
