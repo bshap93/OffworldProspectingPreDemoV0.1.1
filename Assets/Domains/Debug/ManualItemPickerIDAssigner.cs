@@ -38,6 +38,31 @@ namespace Domains.Debug
             UnityEngine.Debug.Log($"Assigned unique IDs to {allOreNodes.Length} ManualItemPicker components.");
         }
 
+        [MenuItem("Debug/Assign Unique IDs to HighlightableItems")]
+        private static void AssignUniqueHighlightTargetIDs()
+        {
+            var allHighlightableItems = FindObjectsByType<HighlightEffectController>(FindObjectsSortMode.None);
+
+            if (allHighlightableItems.Length == 0)
+            {
+                UnityEngine.Debug.LogWarning("No HighlightableItems found in the scene.");
+                return;
+            }
+
+            foreach (var highlightableItem in allHighlightableItems)
+                if (highlightableItem != null)
+                {
+                    // Generate a unique ID using GUID
+                    highlightableItem.targetID = Guid.NewGuid().ToString();
+                    EditorUtility.SetDirty(highlightableItem); // Mark the object as dirty for saving
+                }
+
+            // Save the scene to persist changes
+            AssetDatabase.SaveAssets();
+
+            UnityEngine.Debug.Log($"Assigned unique IDs to {allHighlightableItems.Length} HighlightableItems.");
+        }
+
         [MenuItem("Debug/Assign Unique IDs to ItemPickers")]
         private static void AssignUniqueIDs()
         {

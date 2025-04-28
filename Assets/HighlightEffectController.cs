@@ -1,8 +1,11 @@
+using Domains.Effects.Highlighting;
 using HighlightPlus;
+using MoreMountains.Tools;
 using UnityEngine;
 
-public class HighlightEffectController : MonoBehaviour
+public class HighlightEffectController : MonoBehaviour, MMEventListener<HighlightEvent>
 {
+    [SerializeField] public string targetID;
     private HighlightEffect highlightEffect;
     private HighlightTrigger highlightTrigger;
 
@@ -19,6 +22,22 @@ public class HighlightEffectController : MonoBehaviour
 
         if (highlightTrigger == null) Debug.LogError("HighlightTrigger component not found on this GameObject.");
     }
+
+    private void OnEnable()
+    {
+        this.MMEventStartListening();
+    }
+
+    private void OnDisable()
+    {
+        this.MMEventStopListening();
+    }
+
+    public void OnMMEvent(HighlightEvent eventType)
+    {
+        if (eventType.EventType == HighlightEventType.ActivateTarget) ActivateTarget();
+    }
+
 
     public void ActivateTarget()
     {
