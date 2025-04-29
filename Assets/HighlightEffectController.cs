@@ -47,19 +47,7 @@ public class HighlightEffectController : MonoBehaviour, MMEventListener<Equipmen
             if (highlightEffect != null) SetSeeThroughMode(SeeThroughMode.Never);
         }
     }
-    //
-    // public void OnMMEvent(HighlightEvent eventType)
-    // {
-    //     // Early exit if event type is not what we're looking for
-    //     if (eventType.EventType != HighlightEventType.ActivateTarget )
-    //         return;
-    //         
-    //     // Early exit if this event is not targeted at this controller
-    //     if (string.IsNullOrEmpty(targetID) || eventType.TargetID != targetID)
-    //         return;
-    //         
-    //     ActivateTarget();
-    // }
+
 
     // Simplified to not need a parameter since we already checked the targetID
     public void ActivateTarget()
@@ -76,12 +64,20 @@ public class HighlightEffectController : MonoBehaviour, MMEventListener<Equipmen
     {
         if (mode == SeeThroughMode.Never)
             if (highlightEffect != null)
+            {
                 highlightEffect.seeThrough = SeeThroughMode.Never;
+                highlightEffect.Refresh();
+            }
+
         var distance = GetDistanceFromPlayer();
         // Set at 5 for now
         if (distance < PlayerEquipment.Instance.scannerMaxRange)
             if (highlightEffect != null)
-                highlightEffect.seeThrough = mode;
+                if (highlightEffect.seeThrough != mode)
+                {
+                    highlightEffect.seeThrough = mode;
+                    highlightEffect.Refresh();
+                }
         // var normalizedDist = distance / PlayerEquipment.Instance.scannerMaxRange;
     }
 
@@ -91,5 +87,21 @@ public class HighlightEffectController : MonoBehaviour, MMEventListener<Equipmen
             if (Camera.main != null)
                 return Vector3.Distance(highlightEffect.transform.position, Camera.main.transform.position);
         return 0f;
+    }
+
+    public void ConfigureForTerrainObjects()
+    {
+        if (highlightEffect != null)
+        {
+            // Enable ordered see-through for better terrain handling
+            highlightEffect.seeThroughOrdered = true;
+
+            // Set accurate rendering for terrains
+            highlightEffect.seeThroughOccluderMaskAccurate = true;
+
+            // Assign terrain to a specific layer if not already done
+            if (GetComponent<Terrain>() != null)
+                gameObject.layer = LayerMask.NameToLayer("Terrain"); // Create this layer in your project
+        }
     }
 }

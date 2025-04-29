@@ -1,5 +1,7 @@
-﻿using Domains.Gameplay.Equipment.Scripts;
+﻿using Domains.Gameplay.Equipment.Events;
+using Domains.Gameplay.Equipment.Scripts;
 using Domains.Scripts_that_Need_Sorting;
+using HighlightPlus;
 using MoreMountains.Feedbacks;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -11,7 +13,12 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
         [SerializeField] private ToolType toolType;
         [SerializeField] private ToolIteration toolIteration;
         [SerializeField] private MMFeedbacks equipFeedbacks;
-        [FormerlySerializedAs("textureDetector")] [SerializeField] private TerrainLayerDetector terrainLayerDetector;
+        [SerializeField] private MMFeedbacks useFeedbacks;
+        [SerializeField] private HighlightEffect highlightEffect;
+
+        [FormerlySerializedAs("textureDetector")] [SerializeField]
+        private TerrainLayerDetector terrainLayerDetector;
+
         [SerializeField] private LayerMask playerMask;
         [SerializeField] private float maxToolRange = 5f;
         [SerializeField] private Camera mainCamera;
@@ -24,10 +31,14 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
 
         public void UseTool(RaycastHit hit)
         {
+            PerformToolAction();
         }
 
         public void PerformToolAction()
         {
+            EquipmentEvent.Trigger(ToolType.Scanner);
+            useFeedbacks?.PlayFeedbacks();
+            highlightEffect.highlighted = true;
         }
 
         public bool CanInteractWithTextureIndex(int index)

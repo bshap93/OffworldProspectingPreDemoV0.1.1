@@ -9,6 +9,7 @@ namespace Domains.Gameplay.Equipment.Events
 
         public ToolType ToolType;
 
+
         public static void Trigger(ToolType toolType
         )
         {
