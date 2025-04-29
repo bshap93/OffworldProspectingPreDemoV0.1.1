@@ -18,6 +18,9 @@ namespace Domains.Gameplay.Equipment.Scripts
         [SerializeField] private MMFeedbacks equipMinerFeedbacks;
         [SerializeField] private MMFeedbacks equipScannerFeedbacks;
 
+        [FormerlySerializedAs("ScannerMaxRange")] [SerializeField]
+        public float scannerMaxRange = 5f;
+
         public ToolType currentToolType;
         public ToolIteration currentToolIteration;
 

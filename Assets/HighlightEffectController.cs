@@ -1,11 +1,16 @@
+using Domains.Gameplay.Equipment.Events;
+using Domains.Gameplay.Equipment.Scripts;
+using Domains.Scripts_that_Need_Sorting;
 using HighlightPlus;
+using MoreMountains.Tools;
 using UnityEngine;
 
-public class HighlightEffectController : MonoBehaviour
+public class HighlightEffectController : MonoBehaviour, MMEventListener<EquipmentEvent>
 {
     [SerializeField] public string targetID;
     private HighlightEffect highlightEffect;
     private HighlightTrigger highlightTrigger;
+
 
     private void Awake()
     {
@@ -21,15 +26,27 @@ public class HighlightEffectController : MonoBehaviour
         if (highlightTrigger == null) Debug.LogError("HighlightTrigger component not found on this GameObject.");
     }
 
-    // private void OnEnable()
-    // {
-    //     this.MMEventStartListening();
-    // }
-    //
-    // private void OnDisable()
-    // {
-    //     this.MMEventStopListening();
-    // }
+    private void OnEnable()
+    {
+        this.MMEventStartListening();
+    }
+
+    private void OnDisable()
+    {
+        this.MMEventStopListening();
+    }
+
+    public void OnMMEvent(EquipmentEvent eventType)
+    {
+        if (eventType.ToolType == ToolType.Scanner)
+        {
+            if (highlightEffect != null) SetSeeThroughMode(SeeThroughMode.AlwaysWhenOccluded);
+        }
+        else if (eventType.ToolType == ToolType.Pickaxe || eventType.ToolType == ToolType.Shovel)
+        {
+            if (highlightEffect != null) SetSeeThroughMode(SeeThroughMode.Never);
+        }
+    }
     //
     // public void OnMMEvent(HighlightEvent eventType)
     // {
@@ -53,5 +70,26 @@ public class HighlightEffectController : MonoBehaviour
     public void DeactivateTarget()
     {
         if (highlightEffect != null) highlightEffect.targetFX = false;
+    }
+
+    public void SetSeeThroughMode(SeeThroughMode mode)
+    {
+        if (mode == SeeThroughMode.Never)
+            if (highlightEffect != null)
+                highlightEffect.seeThrough = SeeThroughMode.Never;
+        var distance = GetDistanceFromPlayer();
+        // Set at 5 for now
+        if (distance < PlayerEquipment.Instance.scannerMaxRange)
+            if (highlightEffect != null)
+                highlightEffect.seeThrough = mode;
+        // var normalizedDist = distance / PlayerEquipment.Instance.scannerMaxRange;
+    }
+
+    public float GetDistanceFromPlayer()
+    {
+        if (highlightEffect != null)
+            if (Camera.main != null)
+                return Vector3.Distance(highlightEffect.transform.position, Camera.main.transform.position);
+        return 0f;
     }
 }
