@@ -24,6 +24,8 @@ public class HighlightEffectController : MonoBehaviour, MMEventListener<Equipmen
         }
 
         if (highlightTrigger == null) Debug.LogError("HighlightTrigger component not found on this GameObject.");
+
+        ConfigureForTerrainObjects();
     }
 
     private void OnEnable()
