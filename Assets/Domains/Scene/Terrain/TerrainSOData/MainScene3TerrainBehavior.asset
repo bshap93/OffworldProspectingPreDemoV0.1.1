@@ -24,20 +24,29 @@ MonoBehaviour:
   - playerDepth: -1
     defaultLayerIndex: 13
     alternateAcceptableLayerIndices: 
-  - playerDepth: -9
+  - playerDepth: -5
     defaultLayerIndex: 1
     alternateAcceptableLayerIndices: 0b00000003000000
-  - playerDepth: -18
+  - playerDepth: -9
+    defaultLayerIndex: 11
+    alternateAcceptableLayerIndices: 03000000
+  - playerDepth: -13.5
     defaultLayerIndex: 2
     alternateAcceptableLayerIndices: 060000000900000004000000
+  - playerDepth: -18
+    defaultLayerIndex: 6
+    alternateAcceptableLayerIndices: 0900000004000000
+  - playerDepth: -22.5
+    defaultLayerIndex: 7
+    alternateAcceptableLayerIndices: 080000000f000000090000000500000004000000
   - playerDepth: -27
     defaultLayerIndex: 9
-    alternateAcceptableLayerIndices: 040000000700000005000000
+    alternateAcceptableLayerIndices: 0400000005000000
   - playerDepth: -36
-    defaultLayerIndex: 7
-    alternateAcceptableLayerIndices: 080000000f00000006000000090000000500000004000000
-  - playerDepth: -45
     defaultLayerIndex: 15
+    alternateAcceptableLayerIndices: 0800000007000000060000000500000004000000
+  - playerDepth: -45
+    defaultLayerIndex: 5
     alternateAcceptableLayerIndices: 070000000800000004000000
   - playerDepth: -54
     defaultLayerIndex: 5

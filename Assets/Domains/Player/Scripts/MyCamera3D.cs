@@ -217,9 +217,11 @@ namespace Domains
         {
             if (eventType.EventType == UIEventType.OpenVendorConsole ||
                 eventType.EventType == UIEventType.OpenFuelConsole ||
+                eventType.EventType == UIEventType.OpenInfoDump ||
                 eventType.EventType == UIEventType.OpenQuestDialogue) EnableCameraControl(false);
             else if (eventType.EventType == UIEventType.CloseVendorConsole ||
                      eventType.EventType == UIEventType.CloseFuelConsole ||
+                     eventType.EventType == UIEventType.CloseInfoDump ||
                      eventType.EventType == UIEventType.CloseQuestDialogue) EnableCameraControl(true);
         }
 

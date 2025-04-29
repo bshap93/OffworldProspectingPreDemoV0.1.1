@@ -21,7 +21,7 @@ MonoBehaviour:
   InitialWeightLimit: 5
   InitialCurrency: 0
   InitialUpgradeState: 0
-  initialShovelToolEffectRadius: 0.4
+  initialShovelToolEffectRadius: 0.5
   initialPickaxeToolEffectRadius: 0.5
   SkipTutorial: 0
   shovelMiningToolWidth: 0.64

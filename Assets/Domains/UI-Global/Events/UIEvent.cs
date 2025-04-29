@@ -11,7 +11,9 @@ namespace Domains.UI_Global.Events
         UpdateFuelConsole,
         CloseUI,
         OpenQuestDialogue,
-        CloseQuestDialogue
+        CloseQuestDialogue,
+        OpenInfoDump,
+        CloseInfoDump
     }
 
     public struct UIEvent

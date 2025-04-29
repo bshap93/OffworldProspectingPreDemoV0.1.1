@@ -2,7 +2,6 @@ using Domains.Player.Events;
 using Domains.Player.Progression;
 using Domains.Player.Scripts;
 using Domains.Scene.Scripts;
-using PixelCrushers;
 using UnityEngine;
 
 namespace Domains.Debug
@@ -26,7 +25,6 @@ namespace Domains.Debug
             PlayerFuelManager.ResetPlayerFuel();
             PlayerFuelManager.SavePlayerFuel();
 
-            SaveSystem.DeleteSavedGameInSlot(0);
 
             // Reset health
             PlayerHealthManager.ResetPlayerHealth();
