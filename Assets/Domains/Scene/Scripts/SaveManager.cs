@@ -161,7 +161,6 @@ namespace Domains.Scene.Scripts
             hasGameSavedSinceNewGameBool = true;
             ES3.Save(HasGameSavedSinceNewGame, hasGameSavedSinceNewGameBool, GetSaveFileName());
 
-
             AlertEvent.Trigger(AlertReason.SavingGame, "Saving game...");
         }
 
@@ -176,7 +175,6 @@ namespace Domains.Scene.Scripts
             var destructablesLoaded = destructableManager != null && destructableManager.HasSavedData();
             var progressionLoaded = progressionManager != null && progressionManager.HasProgressionData();
             var hasGameSaved = ES3.Load<bool>(HasGameSavedSinceNewGame, GetSaveFileName());
-            // No Pixel Crushers method for HasSavedXXData
 
 
             // Digger has no Load method
@@ -189,6 +187,7 @@ namespace Domains.Scene.Scripts
             if (pickablesLoaded) pickableManager.LoadPickedItems();
             if (destructablesLoaded) destructableManager.LoadDestructables();
             if (progressionLoaded) progressionManager.LoadProgressionObjectivesState();
+
             if (hasGameSaved) hasGameSavedSinceNewGameBool = true;
             else hasGameSavedSinceNewGameBool = false;
 

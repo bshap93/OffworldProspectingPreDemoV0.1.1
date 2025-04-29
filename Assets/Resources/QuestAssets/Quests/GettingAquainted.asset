@@ -125,6 +125,19 @@ MonoBehaviour:
     m_textTableFieldID: 0
   m_state: 0
   m_setQuestNodesToSame: 0
+--- !u!114 &-6848237044276254802
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c94e8fb3b9b54114cbe8185003729c1b, type: 3}
+  m_Name: SceneEventQuestAction
+  m_EditorClassIdentifier: 
+  m_guid: dd3f951e-098f-4897-8b68-45bfeb987049
 --- !u!114 &-6462653501547779779
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -677,6 +690,7 @@ MonoBehaviour:
       - m_contentList: []
     - m_actionList:
       - {fileID: 1494616614770763445}
+      - {fileID: 665980742995000629}
       m_categorizedContentList:
       - m_contentList:
         - {fileID: -24061059996484402}
@@ -948,8 +962,8 @@ MonoBehaviour:
     m_childIndexList: 03000000
     m_canvasRect:
       serializedVersion: 2
-      x: 202.66669
-      y: 176.66669
+      x: 205.33334
+      y: 173.33336
       width: 120
       height: 48
   - m_id:
@@ -976,14 +990,16 @@ MonoBehaviour:
       - m_contentList: []
       - m_contentList: []
       - m_contentList: []
-    - m_actionList: []
+    - m_actionList:
+      - {fileID: 8709772029432170235}
       m_categorizedContentList:
       - m_contentList: []
       - m_contentList: []
       - m_contentList:
         - {fileID: -8892181922449047386}
         - {fileID: -4608309934261155131}
-    - m_actionList: []
+    - m_actionList:
+      - {fileID: -6848237044276254802}
       m_categorizedContentList:
       - m_contentList: []
       - m_contentList: []
@@ -1026,6 +1042,19 @@ MonoBehaviour:
     m_textTableFieldID: 0
   m_count: 0
   m_imageNameProxy: 
+--- !u!114 &665980742995000629
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c94e8fb3b9b54114cbe8185003729c1b, type: 3}
+  m_Name: SceneEventQuestAction
+  m_EditorClassIdentifier: 
+  m_guid: f5246b4d-95de-4f51-a724-52193704988c
 --- !u!114 &1494616614770763445
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1434,6 +1463,19 @@ MonoBehaviour:
     m_textTable: {fileID: 0}
     m_textTableFieldID: 0
   m_headingLevel: 1
+--- !u!114 &8709772029432170235
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c94e8fb3b9b54114cbe8185003729c1b, type: 3}
+  m_Name: SceneEventQuestAction
+  m_EditorClassIdentifier: 
+  m_guid: 56035afc-40d3-41ca-98be-5461d70e89b2
 --- !u!114 &8747769863955983518
 MonoBehaviour:
   m_ObjectHideFlags: 1
