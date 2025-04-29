@@ -1,9 +1,23 @@
 using Domains.UI_Global.Briefings;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class ObjectiveBriefingController : MonoBehaviour
 {
     [SerializeField] private BriefingData[] objectiveBriefing;
+
+    [Header("Header")] [SerializeField] private TMP_Text headerText;
+
+    [SerializeField] private TMP_Text descriptionText;
+
+    [Header("Objective Tiles")] [SerializeField]
+    private ObjectiveTile objectiveTile01;
+
+    [SerializeField] private ObjectiveTile objectiveTile02;
+    [SerializeField] private ObjectiveTile objectiveTile03;
+    [SerializeField] private ObjectiveTile objectiveTile04;
+    [SerializeField] private Image headerImage;
 
 
     public void ShowObjectiveBriefing(int briefingIndex)
