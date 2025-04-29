@@ -238,6 +238,19 @@ MonoBehaviour:
     m_textTableFieldID: 0
   m_isNot: 0
   m_requiredState: 2
+--- !u!114 &-3735002682087087837
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c94e8fb3b9b54114cbe8185003729c1b, type: 3}
+  m_Name: SceneEventQuestAction
+  m_EditorClassIdentifier: 
+  m_guid: 4be51819-c075-4a0c-9d33-0a965b90a317
 --- !u!114 &-3691287340650131027
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -376,6 +389,19 @@ MonoBehaviour:
     m_textTable: {fileID: 0}
     m_textTableFieldID: 0
   m_operation: 0
+--- !u!114 &-1031759108305900443
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c94e8fb3b9b54114cbe8185003729c1b, type: 3}
+  m_Name: SceneEventQuestAction
+  m_EditorClassIdentifier: 
+  m_guid: cbcf076e-6e8e-4a3a-a7eb-bb0042a3455a
 --- !u!114 &-1011811009987485974
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -646,8 +672,8 @@ MonoBehaviour:
     m_childIndexList: 
     m_canvasRect:
       serializedVersion: 2
-      x: 200.00003
-      y: 493.33334
+      x: 194.66669
+      y: 539.3334
       width: 120
       height: 35
   - m_id:
@@ -696,7 +722,7 @@ MonoBehaviour:
     m_childIndexList: 07000000
     m_canvasRect:
       serializedVersion: 2
-      x: 91.33334
+      x: 90.66667
       y: 328.99997
       width: 120
       height: 48
@@ -896,8 +922,8 @@ MonoBehaviour:
     m_childIndexList: 08000000
     m_canvasRect:
       serializedVersion: 2
-      x: 205.33334
-      y: 173.33336
+      x: 206.66667
+      y: 176.00003
       width: 120
       height: 48
   - m_id:
@@ -944,11 +970,11 @@ MonoBehaviour:
       m_conditionCountMode: 1
       m_minConditionCount: 0
       m_numTrueConditions: 0
-    m_childIndexList: 
+    m_childIndexList: 09000000
     m_canvasRect:
       serializedVersion: 2
-      x: 297.33334
-      y: 308.00003
+      x: 298
+      y: 308.6667
       width: 120
       height: 48
   - m_id:
@@ -1025,7 +1051,8 @@ MonoBehaviour:
       - m_contentList: []
       - m_contentList: []
       - m_contentList: []
-    - m_actionList: []
+    - m_actionList:
+      - {fileID: -3735002682087087837}
       m_categorizedContentList:
       - m_contentList: []
       - m_contentList: []
@@ -1040,11 +1067,11 @@ MonoBehaviour:
       m_conditionCountMode: 1
       m_minConditionCount: 0
       m_numTrueConditions: 0
-    m_childIndexList: 
+    m_childIndexList: 0a000000
     m_canvasRect:
       serializedVersion: 2
-      x: 248.66669
-      y: 368.6667
+      x: 245.33337
+      y: 378
       width: 120
       height: 48
   - m_id:
@@ -1076,7 +1103,8 @@ MonoBehaviour:
       - m_contentList: []
       - m_contentList: []
       - m_contentList: []
-    - m_actionList: []
+    - m_actionList:
+      - {fileID: -1031759108305900443}
       m_categorizedContentList:
       - m_contentList: []
       - m_contentList: []
@@ -1086,11 +1114,11 @@ MonoBehaviour:
       m_conditionCountMode: 1
       m_minConditionCount: 0
       m_numTrueConditions: 0
-    m_childIndexList: 
+    m_childIndexList: 01000000
     m_canvasRect:
       serializedVersion: 2
-      x: 188
-      y: 432.00003
+      x: 52.000008
+      y: 444.66672
       width: 120
       height: 48
   m_textTable: {fileID: 0}
