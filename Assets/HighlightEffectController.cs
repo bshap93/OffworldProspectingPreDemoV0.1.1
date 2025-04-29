@@ -4,10 +4,13 @@ using Domains.Scripts_that_Need_Sorting;
 using HighlightPlus;
 using MoreMountains.Tools;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class HighlightEffectController : MonoBehaviour, MMEventListener<EquipmentEvent>
 {
     [SerializeField] public string targetID;
+
+    public UnityEvent onScanned;
     private HighlightEffect highlightEffect;
     private HighlightTrigger highlightTrigger;
 
@@ -75,11 +78,14 @@ public class HighlightEffectController : MonoBehaviour, MMEventListener<Equipmen
         // Set at 5 for now
         if (distance < PlayerEquipment.Instance.scannerMaxRange)
             if (highlightEffect != null)
+            {
+                onScanned?.Invoke();
                 if (highlightEffect.seeThrough != mode)
                 {
                     highlightEffect.seeThrough = mode;
                     highlightEffect.Refresh();
                 }
+            }
         // var normalizedDist = distance / PlayerEquipment.Instance.scannerMaxRange;
     }
 
