@@ -1,3 +1,4 @@
+using Domains.Input.Scripts;
 using Domains.UI_Global.Briefings;
 using Domains.UI_Global.Events;
 using PixelCrushers;
@@ -27,24 +28,25 @@ public class ObjectiveBriefingController : MonoBehaviour
     public Image HeaderImage;
     [SerializeField] private UnityEvent onCloseButtonClicked;
 
-    [SerializeField] private Button closeButton;
 
     private BriefingData currentBriefing;
 
     private void Start()
     {
-        if (closeButton != null)
-            closeButton.onClick.AddListener(() =>
-            {
-                onCloseButtonClicked?.Invoke();
-                HideObjectiveBriefing();
-            });
-        else
-            Debug.LogError("Close button is not assigned in the inspector.");
-
         canvasGroup = GetComponent<CanvasGroup>();
         if (canvasGroup == null)
             Debug.LogError("ObjectiveBriefingController: No CanvasGroup found on this GameObject.");
+    }
+
+    private void Update()
+    {
+        if (CustomInputBindings.IsPausePressed())
+        {
+            HideObjectiveBriefing();
+            onCloseButtonClicked?.Invoke();
+            // Close the UI
+            UIEvent.Trigger(UIEventType.CloseBriefing);
+        }
     }
 
     public void ShowObjectiveBriefing(int briefingIndex)
@@ -111,7 +113,7 @@ public class ObjectiveBriefingController : MonoBehaviour
             canvasGroup.blocksRaycasts = true;
 
             // Time.timeScale = 0;
-            UIEvent.Trigger(UIEventType.OpenInfoDump);
+            UIEvent.Trigger(UIEventType.OpenBriefing);
 
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
@@ -131,7 +133,8 @@ public class ObjectiveBriefingController : MonoBehaviour
             canvasGroup.blocksRaycasts = false;
 
             // Time.timeScale = 1;
-            UIEvent.Trigger(UIEventType.CloseInfoDump);
+            UIEvent.Trigger(UIEventType.CloseBriefing);
+
 
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;

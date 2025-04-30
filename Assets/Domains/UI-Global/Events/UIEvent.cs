@@ -13,7 +13,9 @@ namespace Domains.UI_Global.Events
         OpenQuestDialogue,
         CloseQuestDialogue,
         OpenInfoDump,
-        CloseInfoDump
+        CloseInfoDump,
+        OpenBriefing,
+        CloseBriefing
     }
 
     public struct UIEvent

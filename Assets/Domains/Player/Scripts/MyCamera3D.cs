@@ -218,11 +218,15 @@ namespace Domains
             if (eventType.EventType == UIEventType.OpenVendorConsole ||
                 eventType.EventType == UIEventType.OpenFuelConsole ||
                 eventType.EventType == UIEventType.OpenInfoDump ||
-                eventType.EventType == UIEventType.OpenQuestDialogue) EnableCameraControl(false);
+                eventType.EventType == UIEventType.OpenQuestDialogue ||
+                eventType.EventType == UIEventType.OpenBriefing
+               ) EnableCameraControl(false);
             else if (eventType.EventType == UIEventType.CloseVendorConsole ||
                      eventType.EventType == UIEventType.CloseFuelConsole ||
                      eventType.EventType == UIEventType.CloseInfoDump ||
-                     eventType.EventType == UIEventType.CloseQuestDialogue) EnableCameraControl(true);
+                     eventType.EventType == UIEventType.CloseQuestDialogue
+                     || eventType.EventType == UIEventType.CloseBriefing
+                    ) EnableCameraControl(true);
         }
 
         // Add this method to trigger shake

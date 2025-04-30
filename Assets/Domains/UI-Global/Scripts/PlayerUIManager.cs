@@ -67,6 +67,12 @@ namespace Domains.UI_Global.Scripts
                 case UIEventType.CloseVendorConsole:
                     uiIsOpen = false;
                     break;
+                case UIEventType.OpenBriefing:
+                    uiIsOpen = true;
+                    break;
+                case UIEventType.CloseBriefing:
+                    uiIsOpen = false;
+                    break;
             }
         }
     }
