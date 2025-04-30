@@ -143,7 +143,7 @@ Material:
     - _DstBlend: 0
     - _EdgeWidth: 0.005
     - _Emission_Intensity: 3
-    - _GlossMapScale: 0.544
+    - _GlossMapScale: 0.369
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _GuideTilling: 1
