@@ -16,6 +16,7 @@ namespace Domains.UI_Global.Briefings
 
         public Quest quest;
 
-        public QuestNode[] questNodesToDisplay;
+
+        public Sprite objectiveSprite;
     }
 }

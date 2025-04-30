@@ -1,25 +1,65 @@
+using Domains.Gameplay.Objectives.Scripts;
 using PixelCrushers.QuestMachine;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ObjectiveTile : MonoBehaviour
 {
     [Header("UI Elements")] [SerializeField]
-    private string headerText;
+    private TMP_Text headerText;
 
-    [SerializeField] private string headerImage;
+    [SerializeField] private TMP_Text descriptionText;
 
+    [SerializeField] private Image headerImage;
 
-    [SerializeField] private string descriptionText;
-
-    [Header("Quest Data")] [SerializeField]
-    private QuestNode questNode;
 
     public void SetObjectiveTile(QuestNode questNode)
     {
-        this.questNode = questNode;
         if (!string.IsNullOrEmpty(questNode.internalName.text))
-            headerText = questNode.internalName.text;
+            headerText.text = questNode.internalName.text;
         else
-            headerText = questNode.id.text;
+            headerText.text = questNode.id.text;
+
+        var content = questNode.GetStateInfo(QuestNodeState.Active);
+
+
+        if (content != null)
+        {
+            var activeDialogueText = content.categorizedContentList[(int)QuestContentCategory.Dialogue].ToString();
+            if (!string.IsNullOrEmpty(activeDialogueText))
+                descriptionText.text = activeDialogueText;
+            else
+                descriptionText.text = "No content available.";
+        }
+        else
+        {
+            descriptionText.text = "No content available.";
+        }
+
+        if (ObjectiveManager.Instance.nullObjectiveImage != null)
+        {
+            headerImage.sprite = ObjectiveManager.Instance.nullObjectiveImage;
+        }
+        else
+        {
+            headerImage.sprite = null;
+            Debug.LogError("Null Objective Image not set in ObjectiveManager.");
+        }
+    }
+
+    public void EmptyObjectiveTile()
+    {
+        headerText.text = string.Empty;
+        descriptionText.text = string.Empty;
+        if (ObjectiveManager.Instance.nullObjectiveImage != null)
+        {
+            headerImage.sprite = ObjectiveManager.Instance.nullObjectiveImage;
+        }
+        else
+        {
+            headerImage.sprite = null;
+            Debug.LogError("Null Objective Image not set in ObjectiveManager.");
+        }
     }
 }

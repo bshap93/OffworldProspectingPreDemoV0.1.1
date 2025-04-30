@@ -20,35 +20,4 @@ MonoBehaviour:
     priority. They haven't told you much else. Use the tools available to you to
     find these beacons and recover any data they store.
   quest: {fileID: 11400000, guid: 9e3ad339ebb52f14f8ac19f824450d97, type: 2}
-  questNodesToDisplay:
-  - m_id:
-      m_text: 
-      m_stringAsset: {fileID: 0}
-      m_textTable: {fileID: 0}
-      m_textTableFieldID: 0
-    m_internalName:
-      m_text: 
-      m_stringAsset: {fileID: 0}
-      m_textTable: {fileID: 0}
-      m_textTableFieldID: 0
-    m_nodeType: 0
-    m_isOptional: 0
-    m_state: 0
-    m_speaker:
-      m_text: 
-      m_stringAsset: {fileID: 0}
-      m_textTable: {fileID: 0}
-      m_textTableFieldID: 0
-    m_stateInfoList: []
-    m_conditionSet:
-      m_conditionList: []
-      m_conditionCountMode: 0
-      m_minConditionCount: 0
-      m_numTrueConditions: 0
-    m_childIndexList: 
-    m_canvasRect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
+  objectiveSprite: {fileID: 21300000, guid: 2175e7b567174444cb43d771ef12f410, type: 3}
