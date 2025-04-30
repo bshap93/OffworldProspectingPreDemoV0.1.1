@@ -503,6 +503,9 @@ namespace Domains.Gameplay.Mining.Scripts
                         jetPackSpeedMultiplier
                     );
 
+                    jetPackBehavior.TryTriggerJetPackEffect();
+                    jetPackFeedbacks?.PlayFeedbacks();
+
                     // jetPackBehavior.JetPackBehaviorMethod();
                     jetPackFeedbacks?.PlayFeedbacks();
                 }
