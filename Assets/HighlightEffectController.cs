@@ -65,6 +65,24 @@ public class HighlightEffectController : MonoBehaviour, MMEventListener<Equipmen
         if (highlightEffect != null) highlightEffect.targetFX = false;
     }
 
+    public void TriggerHighlightEffect()
+    {
+        if (highlightEffect != null)
+        {
+            highlightEffect.highlighted = true;
+            highlightEffect.Refresh();
+        }
+    }
+
+    public void StopHighlightEffect()
+    {
+        if (highlightEffect != null)
+        {
+            highlightEffect.highlighted = false;
+            highlightEffect.Refresh();
+        }
+    }
+
     public void SetSeeThroughMode(SeeThroughMode mode)
     {
         if (mode == SeeThroughMode.Never)

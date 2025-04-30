@@ -24,9 +24,12 @@ namespace Domains.UI_Global.Events
 
         public UIEventType EventType;
 
-        public static void Trigger(UIEventType eventType)
+        public int Index;
+
+        public static void Trigger(UIEventType eventType, int index = 0)
         {
             _e.EventType = eventType;
+            _e.Index = index;
 
             MMEventManager.TriggerEvent(_e);
         }

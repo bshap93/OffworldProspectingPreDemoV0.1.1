@@ -1,6 +1,7 @@
 using Domains.Input.Scripts;
 using Domains.UI_Global.Briefings;
 using Domains.UI_Global.Events;
+using MoreMountains.Tools;
 using PixelCrushers;
 using TMPro;
 using UnityEngine;
@@ -8,7 +9,7 @@ using UnityEngine.Events;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class ObjectiveBriefingController : MonoBehaviour
+public class ObjectiveBriefingController : MonoBehaviour, MMEventListener<UIEvent>
 {
     [FormerlySerializedAs("objectiveBriefing")] [SerializeField]
     private BriefingData[] objectiveBriefings;
@@ -49,6 +50,23 @@ public class ObjectiveBriefingController : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        this.MMEventStartListening();
+    }
+
+    private void OnDisable()
+    {
+        this.MMEventStopListening();
+    }
+
+    public void OnMMEvent(UIEvent eventType)
+    {
+        if (eventType.EventType == UIEventType.OpenBriefing)
+            ShowObjectiveBriefing(eventType.Index);
+        else if (eventType.EventType == UIEventType.CloseBriefing) HideObjectiveBriefing();
+    }
+
     public void ShowObjectiveBriefing(int briefingIndex)
     {
         if (briefingIndex < 0 || briefingIndex >= objectiveBriefings.Length)
@@ -82,7 +100,7 @@ public class ObjectiveBriefingController : MonoBehaviour
             objectiveTile04.EmptyObjectiveTile();
 
         // Make the briefing UI visible
-        MakeBriefingVisible();
+        MakeBriefingVisible(briefingIndex);
     }
 
     public void HideObjectiveBriefing()
@@ -104,7 +122,7 @@ public class ObjectiveBriefingController : MonoBehaviour
     }
 
 
-    private void MakeBriefingVisible()
+    private void MakeBriefingVisible(int index)
     {
         if (canvasGroup != null)
         {
@@ -113,7 +131,7 @@ public class ObjectiveBriefingController : MonoBehaviour
             canvasGroup.blocksRaycasts = true;
 
             // Time.timeScale = 0;
-            UIEvent.Trigger(UIEventType.OpenBriefing);
+            UIEvent.Trigger(UIEventType.OpenBriefing, index);
 
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;

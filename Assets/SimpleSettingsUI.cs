@@ -120,11 +120,8 @@ public class SimpleSettingsUI : MonoBehaviour
         windowModeSelector.CreateNewItem("Fullscreen");
         windowModeSelector.itemList[0].onValueChanged.AddListener(() => { settingsManager.SetWindowFullscreen(); });
 
-        windowModeSelector.CreateNewItem("Borderless");
-        windowModeSelector.itemList[1].onValueChanged.AddListener(() => { settingsManager.SetWindowBorderless(); });
-
         windowModeSelector.CreateNewItem("Windowed");
-        windowModeSelector.itemList[2].onValueChanged.AddListener(() => { settingsManager.SetWindowWindowed(); });
+        windowModeSelector.itemList[1].onValueChanged.AddListener(() => { settingsManager.SetWindowWindowed(); });
 
         // Set current value
         windowModeSelector.index = PlayerPrefs.GetInt("WindowMode", 0);
