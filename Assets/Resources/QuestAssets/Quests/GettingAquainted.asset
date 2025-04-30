@@ -295,19 +295,6 @@ MonoBehaviour:
     m_textTableFieldID: 0
   m_isNot: 0
   m_requiredState: 2
---- !u!114 &-3735002682087087837
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c94e8fb3b9b54114cbe8185003729c1b, type: 3}
-  m_Name: SceneEventQuestAction
-  m_EditorClassIdentifier: 
-  m_guid: 4be51819-c075-4a0c-9d33-0a965b90a317
 --- !u!114 &-3691287340650131027
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -477,45 +464,6 @@ MonoBehaviour:
     m_stringAsset: {fileID: 0}
     m_textTable: {fileID: 0}
     m_textTableFieldID: 0
---- !u!114 &-1003446324161857980
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5682394e55a192147a020b9edf624e51, type: 3}
-  m_Name: MessageQuestCondition
-  m_EditorClassIdentifier: 
-  m_alreadyTrue: 0
-  m_senderSpecifier: 0
-  m_senderID:
-    m_text: 
-    m_stringAsset: {fileID: 0}
-    m_textTable: {fileID: 0}
-    m_textTableFieldID: 0
-  m_targetSpecifier: 0
-  m_targetID:
-    m_text: 
-    m_stringAsset: {fileID: 0}
-    m_textTable: {fileID: 0}
-    m_textTableFieldID: 0
-  m_message:
-    m_text: Briefed
-    m_stringAsset: {fileID: 0}
-    m_textTable: {fileID: 0}
-    m_textTableFieldID: 0
-  m_parameter:
-    m_text: BeaconsObjectives
-    m_stringAsset: {fileID: 0}
-    m_textTable: {fileID: 0}
-    m_textTableFieldID: 0
-  m_value:
-    m_valueType: 0
-    m_intValue: 0
-    m_stringValue: 
 --- !u!114 &-852040504525565896
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -833,7 +781,7 @@ MonoBehaviour:
       m_conditionCountMode: 1
       m_minConditionCount: 0
       m_numTrueConditions: 0
-    m_childIndexList: 070000000a000000
+    m_childIndexList: 07000000
     m_canvasRect:
       serializedVersion: 2
       x: 314
@@ -1143,55 +1091,6 @@ MonoBehaviour:
       width: 120
       height: 48
   - m_id:
-      m_text: IntroduceBeacons
-      m_stringAsset: {fileID: 0}
-      m_textTable: {fileID: 0}
-      m_textTableFieldID: 0
-    m_internalName:
-      m_text: 
-      m_stringAsset: {fileID: 0}
-      m_textTable: {fileID: 0}
-      m_textTableFieldID: 0
-    m_nodeType: 4
-    m_isOptional: 0
-    m_state: 0
-    m_speaker:
-      m_text: 
-      m_stringAsset: {fileID: 0}
-      m_textTable: {fileID: 0}
-      m_textTableFieldID: 0
-    m_stateInfoList:
-    - m_actionList: []
-      m_categorizedContentList:
-      - m_contentList: []
-      - m_contentList: []
-      - m_contentList: []
-    - m_actionList:
-      - {fileID: -3735002682087087837}
-      m_categorizedContentList:
-      - m_contentList: []
-      - m_contentList: []
-      - m_contentList:
-        - {fileID: 6932733253482851250}
-    - m_actionList: []
-      m_categorizedContentList:
-      - m_contentList: []
-      - m_contentList: []
-      - m_contentList: []
-    m_conditionSet:
-      m_conditionList:
-      - {fileID: -1003446324161857980}
-      m_conditionCountMode: 1
-      m_minConditionCount: 0
-      m_numTrueConditions: 0
-    m_childIndexList: 01000000
-    m_canvasRect:
-      serializedVersion: 2
-      x: 146.6667
-      y: 440
-      width: 120
-      height: 48
-  - m_id:
       m_text: GoToDigSite
       m_stringAsset: {fileID: 0}
       m_textTable: {fileID: 0}
@@ -1202,7 +1101,7 @@ MonoBehaviour:
       m_textTable: {fileID: 0}
       m_textTableFieldID: 0
     m_nodeType: 4
-    m_isOptional: 1
+    m_isOptional: 0
     m_state: 0
     m_speaker:
       m_text: 
@@ -1235,11 +1134,11 @@ MonoBehaviour:
       m_conditionCountMode: 1
       m_minConditionCount: 0
       m_numTrueConditions: 0
-    m_childIndexList: 0700000009000000
+    m_childIndexList: 01000000
     m_canvasRect:
       serializedVersion: 2
-      x: 137.33333
-      y: 331.33334
+      x: 198.00002
+      y: 472.00006
       width: 120
       height: 48
   m_textTable: {fileID: 0}
@@ -1629,24 +1528,6 @@ MonoBehaviour:
     m_valueType: 0
     m_intValue: 0
     m_stringValue: 
---- !u!114 &6932733253482851250
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0ed0c4e68ee98946bb5016adda42373, type: 3}
-  m_Name: BodyTextQuestContent
-  m_EditorClassIdentifier: 
-  m_contentID: -1
-  m_bodyText:
-    m_text: Learn about Beacons
-    m_stringAsset: {fileID: 0}
-    m_textTable: {fileID: 0}
-    m_textTableFieldID: 0
 --- !u!114 &7168771635909283960
 MonoBehaviour:
   m_ObjectHideFlags: 1
