@@ -86,7 +86,8 @@ namespace Domains.Gameplay.Mining.Scripts
         // [SerializeField] private float maxSpeed = 5f; // used for scaling
 
         private JetPackBehavior jetPackBehavior;
-        private float jetPackButtonHoldTime;
+
+        // private float jetPackButtonHoldTime;
         protected Vector3 jumpDirection;
 
 
@@ -98,7 +99,6 @@ namespace Domains.Gameplay.Mining.Scripts
         private bool reducedAirControlFlag;
         private float reducedAirControlInitialTime;
         private float reductionDuration = 0.5f;
-        protected Vector3 smoothDampVelocity = Vector3.zero;
         protected float targetHeight = 1f;
 
         protected Vector3 targetLookingDirection;
@@ -484,10 +484,10 @@ namespace Domains.Gameplay.Mining.Scripts
             // Track how long the jetpack button has been held
             if (CharacterActions.jetPack.value)
             {
-                jetPackButtonHoldTime += dt;
+                jetPackBehavior.UpdateHoldTime(dt);
 
                 // Only activate jetpack if button has been held long enough
-                if (jetPackButtonHoldTime >= jetPackActivationDelay)
+                if (jetPackBehavior.GetHoldTime() >= jetPackActivationDelay)
                 {
                     if (PlayerFuelManager.IsPlayerOutOfFuel())
                     {
@@ -495,12 +495,13 @@ namespace Domains.Gameplay.Mining.Scripts
                         return;
                     }
 
-                    CharacterActor.VerticalVelocity = Vector3.SmoothDamp(
+                    CharacterActor.VerticalVelocity = jetPackBehavior.ApplyJetpackLift(
                         CharacterActor.VerticalVelocity,
-                        targetHeight * CharacterActor.Up,
-                        ref smoothDampVelocity,
-                        jetPackDuration
-                    ) * jetPackSpeedMultiplier;
+                        CharacterActor.Up,
+                        targetHeight,
+                        jetPackDuration,
+                        jetPackSpeedMultiplier
+                    );
 
                     // jetPackBehavior.JetPackBehaviorMethod();
                     jetPackFeedbacks?.PlayFeedbacks();
@@ -509,7 +510,7 @@ namespace Domains.Gameplay.Mining.Scripts
             else
             {
                 // Reset the hold timer when button is released
-                jetPackButtonHoldTime = 0f;
+                jetPackBehavior.ResetHoldTime();
             }
 
             CharacterActor.SetYaw(CharacterActor.PlanarVelocity);

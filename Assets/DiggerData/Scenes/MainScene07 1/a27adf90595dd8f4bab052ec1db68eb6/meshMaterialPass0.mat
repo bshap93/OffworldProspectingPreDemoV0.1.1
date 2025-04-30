@@ -68,12 +68,12 @@ Material:
     - _Metallic3: 0
     - _NormalScale0: 1.2
     - _NormalScale1: 2.03
-    - _NormalScale2: 1
+    - _NormalScale2: 2
     - _NormalScale3: 2.08
     - _Smoothness0: 0
     - _Smoothness1: 0
     - _Smoothness2: 0
-    - _Smoothness3: 0.15
+    - _Smoothness3: 0.29
     - _offset0x: 0
     - _offset0y: 0
     - _offset1x: 0

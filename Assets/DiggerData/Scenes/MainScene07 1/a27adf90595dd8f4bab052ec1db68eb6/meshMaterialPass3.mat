@@ -68,8 +68,8 @@ Material:
     - _Metallic3: 0
     - _NormalScale0: -1.83
     - _NormalScale1: 2
-    - _NormalScale2: 1
-    - _NormalScale3: 1
+    - _NormalScale2: 2.87
+    - _NormalScale3: 6
     - _Smoothness0: 0
     - _Smoothness1: 0.16
     - _Smoothness2: 0
