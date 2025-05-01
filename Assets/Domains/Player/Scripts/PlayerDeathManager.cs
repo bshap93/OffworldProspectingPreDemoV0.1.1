@@ -55,7 +55,8 @@ namespace Domains.Player.Scripts
             {
                 SetPostDeathStats();
                 deathFeedbacks?.PlayFeedbacks();
-                AlertEvent.Trigger(AlertReason.Died, "You have died!", "Game Over");
+                AlertEvent.Trigger(AlertReason.Died, "You passed out!",
+                    "You're charged 400 credits for your rescue.");
             }
 
 
@@ -101,6 +102,7 @@ namespace Domains.Player.Scripts
 
             // Use SetCurrentFuel to set the fuel amount
             FuelEvent.Trigger(FuelEventType.SetCurrentFuel, recoveryAmount, maximumFuel);
+            HealthEvent.Trigger(HealthEventType.SetCurrentHealth, recoveryHealthAmount);
             CurrencyEvent.Trigger(CurrencyEventType.RemoveCurrency, GetRescueExpense());
 
             // Ensure the UI is updated
@@ -124,11 +126,35 @@ namespace Domains.Player.Scripts
             var maximumHealth = PlayerHealthManager.MaxHealthPoints;
             var maxFuel = PlayerFuelManager.MaxFuelPoints;
             var currentCurrency = PlayerCurrencyManager.CompanyCredits;
-            FuelEvent.Trigger(FuelEventType.SetCurrentFuel, fuelPenaltyMultiplier * maxFuel, maxFuel);
-            HealthEvent.Trigger(HealthEventType.SetCurrentHealth, healthPenaltyMultiplier * maximumHealth);
+
+            var recoveryFuel = fuelPenaltyMultiplier * maxFuel;
+            recoveryFuel = Mathf.Max(recoveryFuel, 10f);
+
+            var recoveryHealth = healthPenaltyMultiplier * maximumHealth;
+            recoveryHealth = Mathf.Max(recoveryHealth, 2f);
+
+            FuelEvent.Trigger(FuelEventType.SetCurrentFuel, recoveryFuel, maxFuel);
+            HealthEvent.Trigger(HealthEventType.SetCurrentHealth, recoveryHealth);
             CurrencyEvent.Trigger(CurrencyEventType.RemoveCurrency, GetRescueExpense());
 
+            // Ensure the UI is updated
+            FuelEvent.Trigger(FuelEventType.NotifyListeners, recoveryFuel, maxFuel);
+
             SaveManager.Instance.SaveAll();
+
+            // Add debug log
+            UnityEngine.Debug.Log($"Set health to {recoveryHealth} and fuel to {recoveryFuel} after death");
         }
+        // public void SetPostDeathStats()
+        // {
+        //     var maximumHealth = PlayerHealthManager.MaxHealthPoints;
+        //     var maxFuel = PlayerFuelManager.MaxFuelPoints;
+        //     var currentCurrency = PlayerCurrencyManager.CompanyCredits;
+        //     FuelEvent.Trigger(FuelEventType.SetCurrentFuel, fuelPenaltyMultiplier * maxFuel, maxFuel);
+        //     HealthEvent.Trigger(HealthEventType.SetCurrentHealth, 10f);
+        //     CurrencyEvent.Trigger(CurrencyEventType.RemoveCurrency, GetRescueExpense());
+        //
+        //     SaveManager.Instance.SaveAll();
+        // }
     }
 }

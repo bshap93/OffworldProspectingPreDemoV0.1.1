@@ -1,5 +1,4 @@
 ﻿using System;
-using Domains.Player.Scripts;
 using Lightbug.CharacterControllerPro.Core;
 using Lightbug.CharacterControllerPro.Demo;
 using MoreMountains.Tools;
@@ -8,7 +7,7 @@ using UnityEngine.Serialization;
 
 namespace Domains.Scene.Scripts
 {
-    public class DpdSceneManager : MonoBehaviour, MMEventListener<PlayerStatusEvent>
+    public class DpdSceneManager : MonoBehaviour
     {
         [Header("Character")] [SerializeField] private CharacterActor characterActor;
 
@@ -61,28 +60,6 @@ namespace Domains.Scene.Scripts
 
             Cursor.visible = !hideAndConfineCursor;
             Cursor.lockState = hideAndConfineCursor ? CursorLockMode.Locked : CursorLockMode.None;
-        }
-
-
-        private void OnEnable()
-        {
-            this.MMEventStartListening();
-        }
-
-        private void OnDisable()
-        {
-            this.MMEventStopListening();
-        }
-
-        public void OnMMEvent(PlayerStatusEvent eventType)
-        {
-            switch (eventType.EventType)
-            {
-                case PlayerStatusEventType.Died:
-                    OnApplicationReset(ResetReason.OutOfHealth);
-
-                    break;
-            }
         }
 
 

@@ -54,6 +54,10 @@ namespace Domains.UI_Global.UIUpdaters
                     _maxHealth -= eventType.ByValue;
                     // 
                     break;
+                case HealthEventType.SetCurrentHealth:
+                    _currentHealth = eventType.ByValue;
+                    // 
+                    break;
             }
 
             UpdateBar();
