@@ -714,7 +714,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OreHardness: 0
-  UniqueID: a9696784-4db9-404e-9464-4b0ab603997b
+  UniqueID: 99cf2fad-852a-42c2-ba09-b75b08f85186
   failHitFeedbacks: {fileID: 2879248722755317898}
   failHitParticles: {fileID: 6835221663383594993, guid: 4dcc88f5d0e581d488cb4d6cf6aa94ac, type: 3}
   oreHitParticles: {fileID: 6835221663383594993, guid: 4dcc88f5d0e581d488cb4d6cf6aa94ac, type: 3}
@@ -731,6 +731,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9eb18bd15cc5eb54dbddc9772eb732ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetID: 6804c874-de10-41c6-9def-de29268472ad
+  onScanned:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &6415750033236011695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -903,7 +907,7 @@ MonoBehaviour:
   iconFXOffset: {x: 0, y: 1, z: 0}
   iconFXTransitionDuration: 0.5
   iconFXStayDuration: 1.5
-  seeThrough: 2
+  seeThrough: 1
   seeThroughOccluderMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -927,7 +931,7 @@ MonoBehaviour:
   seeThroughTextureScale: 1
   seeThroughChildrenSortingMode: 0
   rmsCount: 1
-  hitFxInitialIntensity: 0
+  hitFxInitialIntensity: 1
   hitFxMode: 0
   hitFxFadeOutDuration: 0.25
   hitFxColor: {r: 1, g: 1, b: 1, a: 1}
@@ -951,7 +955,7 @@ MonoBehaviour:
   raycastLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  minDistance: 2
+  minDistance: 0
   maxDistance: 10
   respectUI: 1
   volumeLayerMask:

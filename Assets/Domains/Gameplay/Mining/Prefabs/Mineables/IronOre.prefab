@@ -447,7 +447,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OreHardness: 0
-  UniqueID: 
+  UniqueID: df842717-3c3c-44dd-bc54-65dbc6b00022
   failHitFeedbacks: {fileID: 481408227980071728}
   failHitParticles: {fileID: 6835221663383594993, guid: 67bf2c07e69f9c14e8b49b2add42dd8f, type: 3}
   oreHitParticles: {fileID: 6835221663383594993, guid: 67bf2c07e69f9c14e8b49b2add42dd8f, type: 3}
@@ -673,7 +673,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   minDistance: 0
-  maxDistance: 0
+  maxDistance: 10
   respectUI: 1
   volumeLayerMask:
     serializedVersion: 2
@@ -696,6 +696,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9eb18bd15cc5eb54dbddc9772eb732ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetID: 6d29c2c3-c426-484f-9563-b0864db37218
+  onScanned:
+    m_PersistentCalls:
+      m_Calls: []
+  targetDuration: 3
 --- !u!1 &4601757348309822409
 GameObject:
   m_ObjectHideFlags: 0

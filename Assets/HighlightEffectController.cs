@@ -11,6 +11,7 @@ public class HighlightEffectController : MonoBehaviour, MMEventListener<Equipmen
     [SerializeField] public string targetID;
 
     public UnityEvent onScanned;
+    [SerializeField] private float targetDuration = 3f;
     private HighlightEffect highlightEffect;
     private HighlightTrigger highlightTrigger;
 
@@ -29,6 +30,8 @@ public class HighlightEffectController : MonoBehaviour, MMEventListener<Equipmen
         if (highlightTrigger == null) Debug.LogError("HighlightTrigger component not found on this GameObject.");
 
         ConfigureForTerrainObjects();
+
+        SetSeeThroughMode(SeeThroughMode.Never);
     }
 
     private void OnEnable()
@@ -58,12 +61,9 @@ public class HighlightEffectController : MonoBehaviour, MMEventListener<Equipmen
     public void ActivateTarget()
     {
         if (highlightEffect != null) highlightEffect.targetFX = true;
+        // After X seconds, set targetFX to false
     }
 
-    public void DeactivateTarget()
-    {
-        if (highlightEffect != null) highlightEffect.targetFX = false;
-    }
 
     public void TriggerHighlightEffect()
     {

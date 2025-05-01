@@ -129,7 +129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 380f9b65545dc3b488923b80b2b83bb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uniqueID: f9858ea9-a8df-4d0c-9d56-9d67e040daea
+  uniqueID: b791c48f-260a-442b-ad91-0c891c560a69
   itemType: {fileID: 11400000, guid: dad5d6fc21478914290421293e4d0469, type: 2}
   quantity: 1
   OnItemPicked:
@@ -456,8 +456,8 @@ MonoBehaviour:
   raycastLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  minDistance: 0
-  maxDistance: 0
+  minDistance: 2
+  maxDistance: 10
   respectUI: 1
   volumeLayerMask:
     serializedVersion: 2
@@ -480,6 +480,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9eb18bd15cc5eb54dbddc9772eb732ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetID: 157440a1-8f2f-4064-93cc-fd0c2876a07d
+  onScanned:
+    m_PersistentCalls:
+      m_Calls: []
+  targetDuration: 3
 --- !u!1 &6290324489845991227
 GameObject:
   m_ObjectHideFlags: 0
