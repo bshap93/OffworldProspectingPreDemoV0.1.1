@@ -39,6 +39,24 @@ MonoBehaviour:
     m_valueType: 0
     m_intValue: 0
     m_stringValue: 
+--- !u!114 &-8922173845355508837
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e4e25cd4dc7a5b4c859b087bdeb27c1, type: 3}
+  m_Name: AudioQuestAction
+  m_EditorClassIdentifier: 
+  m_audioClip: {fileID: 8300000, guid: bb6c4b4d8a5ff304cbc348145e12212e, type: 3}
+  m_useAudioSourceOn:
+    m_type: 0
+    m_id: 
+  m_interruptPreviousClip: 0
+  m_audioNameProxy: 
 --- !u!114 &-8902933803293957675
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -176,6 +194,24 @@ MonoBehaviour:
     m_textTable: {fileID: 0}
     m_textTableFieldID: 0
   m_headingLevel: 1
+--- !u!114 &-6058437944504787127
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e4e25cd4dc7a5b4c859b087bdeb27c1, type: 3}
+  m_Name: AudioQuestAction
+  m_EditorClassIdentifier: 
+  m_audioClip: {fileID: 8300000, guid: bd1539d09bfb6554ab9cae0d8a9f2e67, type: 3}
+  m_useAudioSourceOn:
+    m_type: 0
+    m_id: 
+  m_interruptPreviousClip: 0
+  m_audioNameProxy: 
 --- !u!114 &-4608309934261155131
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -373,6 +409,24 @@ MonoBehaviour:
     m_textTableFieldID: 0
   m_isNot: 0
   m_requiredState: 2
+--- !u!114 &-2938054677822398213
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e4e25cd4dc7a5b4c859b087bdeb27c1, type: 3}
+  m_Name: AudioQuestAction
+  m_EditorClassIdentifier: 
+  m_audioClip: {fileID: 8300000, guid: bb6c4b4d8a5ff304cbc348145e12212e, type: 3}
+  m_useAudioSourceOn:
+    m_type: 0
+    m_id: 
+  m_interruptPreviousClip: 0
+  m_audioNameProxy: 
 --- !u!114 &-2250394616415644415
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -722,6 +776,7 @@ MonoBehaviour:
       - {fileID: -2250394616415644415}
       - {fileID: -7034446047087156520}
       - {fileID: 5865319457871424851}
+      - {fileID: -6058437944504787127}
       m_categorizedContentList:
       - m_contentList: []
       - m_contentList: []
@@ -734,7 +789,7 @@ MonoBehaviour:
     m_childIndexList: 
     m_canvasRect:
       serializedVersion: 2
-      x: 154.00003
+      x: 153.33336
       y: 582.6667
       width: 120
       height: 35
@@ -770,7 +825,8 @@ MonoBehaviour:
       - m_contentList: []
       - m_contentList:
         - {fileID: -852040504525565896}
-    - m_actionList: []
+    - m_actionList:
+      - {fileID: 908802511082411473}
       m_categorizedContentList:
       - m_contentList: []
       - m_contentList: []
@@ -784,8 +840,8 @@ MonoBehaviour:
     m_childIndexList: 07000000
     m_canvasRect:
       serializedVersion: 2
-      x: 314
-      y: 293.66663
+      x: 245.33334
+      y: 312.33328
       width: 120
       height: 48
   - m_id:
@@ -819,7 +875,8 @@ MonoBehaviour:
       - m_contentList:
         - {fileID: 2718717824416673329}
         - {fileID: 5730008338487880000}
-    - m_actionList: []
+    - m_actionList:
+      - {fileID: 1244058638727866664}
       m_categorizedContentList:
       - m_contentList: []
       - m_contentList: []
@@ -872,6 +929,7 @@ MonoBehaviour:
         - {fileID: -1011811009987485974}
     - m_actionList:
       - {fileID: -3880980047719961281}
+      - {fileID: -8922173845355508837}
       m_categorizedContentList:
       - m_contentList: []
       - m_contentList: []
@@ -886,7 +944,7 @@ MonoBehaviour:
     m_canvasRect:
       serializedVersion: 2
       x: 171.33337
-      y: 114.66669
+      y: 115.33336
       width: 120
       height: 48
   - m_id:
@@ -921,7 +979,8 @@ MonoBehaviour:
         - {fileID: 2758243746651137331}
         - {fileID: 443983700313447017}
         - {fileID: -8190857686266862918}
-    - m_actionList: []
+    - m_actionList:
+      - {fileID: 1513033567552242087}
       m_categorizedContentList:
       - m_contentList: []
       - m_contentList: []
@@ -968,7 +1027,8 @@ MonoBehaviour:
       - m_contentList: []
       - m_contentList: []
       - m_contentList: []
-    - m_actionList: []
+    - m_actionList:
+      - {fileID: 2084843356412558232}
       m_categorizedContentList:
       - m_contentList: []
       - m_contentList: []
@@ -1022,6 +1082,7 @@ MonoBehaviour:
         - {fileID: -4608309934261155131}
     - m_actionList:
       - {fileID: -6848237044276254802}
+      - {fileID: 184299900505305305}
       m_categorizedContentList:
       - m_contentList: []
       - m_contentList: []
@@ -1073,6 +1134,7 @@ MonoBehaviour:
         - {fileID: -241947335631582532}
     - m_actionList:
       - {fileID: 5900514574287133653}
+      - {fileID: -2938054677822398213}
       m_categorizedContentList:
       - m_contentList: []
       - m_contentList: []
@@ -1123,7 +1185,8 @@ MonoBehaviour:
         - {fileID: 5048126549228003102}
       - m_contentList:
         - {fileID: 1986233856933218726}
-    - m_actionList: []
+    - m_actionList:
+      - {fileID: 5228003971729465388}
       m_categorizedContentList:
       - m_contentList: []
       - m_contentList: []
@@ -1144,6 +1207,24 @@ MonoBehaviour:
   m_textTable: {fileID: 0}
   m_goalEntityTypeName: 
   m_nextContentID: 14
+--- !u!114 &184299900505305305
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e4e25cd4dc7a5b4c859b087bdeb27c1, type: 3}
+  m_Name: AudioQuestAction
+  m_EditorClassIdentifier: 
+  m_audioClip: {fileID: 8300000, guid: bb6c4b4d8a5ff304cbc348145e12212e, type: 3}
+  m_useAudioSourceOn:
+    m_type: 0
+    m_id: 
+  m_interruptPreviousClip: 0
+  m_audioNameProxy: 
 --- !u!114 &443983700313447017
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1166,6 +1247,60 @@ MonoBehaviour:
     m_textTableFieldID: 0
   m_count: 0
   m_imageNameProxy: 
+--- !u!114 &908802511082411473
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e4e25cd4dc7a5b4c859b087bdeb27c1, type: 3}
+  m_Name: AudioQuestAction
+  m_EditorClassIdentifier: 
+  m_audioClip: {fileID: 8300000, guid: bb6c4b4d8a5ff304cbc348145e12212e, type: 3}
+  m_useAudioSourceOn:
+    m_type: 0
+    m_id: 
+  m_interruptPreviousClip: 0
+  m_audioNameProxy: 
+--- !u!114 &1244058638727866664
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e4e25cd4dc7a5b4c859b087bdeb27c1, type: 3}
+  m_Name: AudioQuestAction
+  m_EditorClassIdentifier: 
+  m_audioClip: {fileID: 8300000, guid: bb6c4b4d8a5ff304cbc348145e12212e, type: 3}
+  m_useAudioSourceOn:
+    m_type: 0
+    m_id: 
+  m_interruptPreviousClip: 0
+  m_audioNameProxy: 
+--- !u!114 &1513033567552242087
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e4e25cd4dc7a5b4c859b087bdeb27c1, type: 3}
+  m_Name: AudioQuestAction
+  m_EditorClassIdentifier: 
+  m_audioClip: {fileID: 8300000, guid: bb6c4b4d8a5ff304cbc348145e12212e, type: 3}
+  m_useAudioSourceOn:
+    m_type: 0
+    m_id: 
+  m_interruptPreviousClip: 0
+  m_audioNameProxy: 
 --- !u!114 &1524507105493935249
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1202,6 +1337,24 @@ MonoBehaviour:
     m_stringAsset: {fileID: 0}
     m_textTable: {fileID: 0}
     m_textTableFieldID: 0
+--- !u!114 &2084843356412558232
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e4e25cd4dc7a5b4c859b087bdeb27c1, type: 3}
+  m_Name: AudioQuestAction
+  m_EditorClassIdentifier: 
+  m_audioClip: {fileID: 8300000, guid: bb6c4b4d8a5ff304cbc348145e12212e, type: 3}
+  m_useAudioSourceOn:
+    m_type: 0
+    m_id: 
+  m_interruptPreviousClip: 0
+  m_audioNameProxy: 
 --- !u!114 &2194389235627582218
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1400,6 +1553,24 @@ MonoBehaviour:
     m_stringAsset: {fileID: 0}
     m_textTable: {fileID: 0}
     m_textTableFieldID: 0
+--- !u!114 &5228003971729465388
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e4e25cd4dc7a5b4c859b087bdeb27c1, type: 3}
+  m_Name: AudioQuestAction
+  m_EditorClassIdentifier: 
+  m_audioClip: {fileID: 8300000, guid: bb6c4b4d8a5ff304cbc348145e12212e, type: 3}
+  m_useAudioSourceOn:
+    m_type: 0
+    m_id: 
+  m_interruptPreviousClip: 0
+  m_audioNameProxy: 
 --- !u!114 &5730008338487880000
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1587,6 +1758,20 @@ MonoBehaviour:
     m_textTable: {fileID: 0}
     m_textTableFieldID: 0
   m_headingLevel: 1
+--- !u!114 &7657003942289343568
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b99cc2a156c22e46b4fb74b06a4d1e8, type: 3}
+  m_Name: AlertQuestAction
+  m_EditorClassIdentifier: 
+  m_contentList: []
+  m_contentListSerializationProxy: []
 --- !u!114 &8160558790772067801
 MonoBehaviour:
   m_ObjectHideFlags: 1

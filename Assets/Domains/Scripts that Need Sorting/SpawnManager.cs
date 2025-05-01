@@ -47,7 +47,8 @@ namespace Domains.Scripts_that_Need_Sorting
                 if (eKeyHoldTime >= requiredHoldDuration)
                 {
                     UnityEngine.Debug.Log("E key held long enough!");
-                    ResetManually(0f);
+                    StartCoroutine(ResetManually(0f))
+                        ;
 
                     // Optional: Reset to avoid retriggering
                     eKeyHoldTime = 0f;
