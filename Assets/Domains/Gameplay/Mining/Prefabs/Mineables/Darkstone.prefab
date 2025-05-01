@@ -670,9 +670,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pieces: {fileID: 6129471906034433602, guid: be2b4a1dc102cb745a6c5ccc747cf38c, type: 3}
   itemTypeMined: {fileID: 11400000, guid: 067dac50920fe314b8317efa0019d531, type: 2}
-  dropOnHit: 1
+  dropOnHit: 0
   hitsToDestroy: 2
-  dropOnDestroy: 1
+  dropOnDestroy: 2
   knockAngle: {x: 0, y: 0, z: 10}
   knockCurve:
     serializedVersion: 2
@@ -714,7 +714,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OreHardness: 0
-  UniqueID: 99cf2fad-852a-42c2-ba09-b75b08f85186
+  UniqueID: f7d270de-4901-4999-88ae-8095d9560ef3
   failHitFeedbacks: {fileID: 2879248722755317898}
   failHitParticles: {fileID: 6835221663383594993, guid: 4dcc88f5d0e581d488cb4d6cf6aa94ac, type: 3}
   oreHitParticles: {fileID: 6835221663383594993, guid: 4dcc88f5d0e581d488cb4d6cf6aa94ac, type: 3}
@@ -731,10 +731,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9eb18bd15cc5eb54dbddc9772eb732ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetID: 6804c874-de10-41c6-9def-de29268472ad
+  targetID: c8f689e6-cd62-4505-9fd6-834268517931
   onScanned:
     m_PersistentCalls:
       m_Calls: []
+  targetDuration: 3
 --- !u!114 &6415750033236011695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -907,7 +908,7 @@ MonoBehaviour:
   iconFXOffset: {x: 0, y: 1, z: 0}
   iconFXTransitionDuration: 0.5
   iconFXStayDuration: 1.5
-  seeThrough: 1
+  seeThrough: 2
   seeThroughOccluderMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -917,7 +918,7 @@ MonoBehaviour:
   seeThroughOccluderCheckIndividualObjects: 0
   seeThroughDepthOffset: 0
   seeThroughMaxDepth: 0
-  seeThroughIntensity: 0.8
+  seeThroughIntensity: 1.13
   seeThroughTintAlpha: 0.5
   seeThroughTintColor: {r: 1, g: 0, b: 0, a: 1}
   seeThroughNoise: 1

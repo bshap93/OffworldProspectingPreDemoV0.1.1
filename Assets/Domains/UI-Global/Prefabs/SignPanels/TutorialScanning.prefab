@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: dd8e56ea74e865649b75869335a8f5d1, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9039565ec51a4634c9555a107d8019e5, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -175,9 +175,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Look out for capsules containing biological organisms. They can be scanned
-    for a monetary reward and a inklings of their origin. We aren't sure why they
-    have been left here. You are to learn as much of their purpose as you can.
+  m_text: The scanner reveals nearby resources in the terrain. Your scanner has a
+    limited range but you can scan with the LMB once you equip it. Try it here with
+    a Stone Ore cluster just below the platform. Use the scanner when digging to
+    avoid missing valuable resources!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b04f3173f946b754db673ac13842f4c1, type: 2}
   m_sharedMaterial: {fileID: 21728410361126204, guid: b04f3173f946b754db673ac13842f4c1, type: 2}
@@ -457,7 +458,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Biocontainers
+  m_text: Scanner
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: baf5990ef136e594abc52299c06d9b48, type: 2}
   m_sharedMaterial: {fileID: 21500823079736722, guid: baf5990ef136e594abc52299c06d9b48, type: 2}
@@ -659,7 +660,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 2a19aaadcf7844142a73ce60950ec353, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3ab3b86025250bb45be6a581e4e6af58, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
