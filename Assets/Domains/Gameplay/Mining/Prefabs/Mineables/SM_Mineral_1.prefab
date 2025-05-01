@@ -800,7 +800,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OreHardness: 0
-  UniqueID: 2da60509-ea77-417d-9d24-cec2ee3e18d4
+  UniqueID: 1b9ac346-7b44-4323-a358-18cdddb12317
   failHitFeedbacks: {fileID: 7234271836214855775}
   failHitParticles: {fileID: 6835221663383594993, guid: c14ae236c4c9aed41ba307d978ef96ee, type: 3}
   oreHitParticles: {fileID: 6835221663383594993, guid: c14ae236c4c9aed41ba307d978ef96ee, type: 3}
@@ -989,7 +989,7 @@ MonoBehaviour:
   seeThroughMaxDepth: 0
   seeThroughIntensity: 0.8
   seeThroughTintAlpha: 0.5
-  seeThroughTintColor: {r: 1, g: 0, b: 0, a: 1}
+  seeThroughTintColor: {r: 1, g: 0.1903523, b: 0.12893075, a: 1}
   seeThroughNoise: 1
   seeThroughBorder: 0
   seeThroughBorderColor: {r: 0, g: 0, b: 0, a: 1}
@@ -1049,7 +1049,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9eb18bd15cc5eb54dbddc9772eb732ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetID: 7e41ef4a-6f3a-4839-b4b1-c79b38035ea0
+  targetID: fc0221a2-1d40-436c-bb2a-3bc399fceb51
   onScanned:
     m_PersistentCalls:
       m_Calls: []

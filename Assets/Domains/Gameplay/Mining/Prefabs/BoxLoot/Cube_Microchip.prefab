@@ -420,7 +420,7 @@ MonoBehaviour:
   seeThroughMaxDepth: 0
   seeThroughIntensity: 0.8
   seeThroughTintAlpha: 0.5
-  seeThroughTintColor: {r: 1, g: 0, b: 0, a: 1}
+  seeThroughTintColor: {r: 1, g: 0.22542726, b: 0.16666657, a: 1}
   seeThroughNoise: 1
   seeThroughBorder: 0
   seeThroughBorderColor: {r: 0, g: 0, b: 0, a: 1}
@@ -480,7 +480,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9eb18bd15cc5eb54dbddc9772eb732ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetID: 157440a1-8f2f-4064-93cc-fd0c2876a07d
+  targetID: f954f8f2-92fb-4c2f-820f-fedb96136fec
   onScanned:
     m_PersistentCalls:
       m_Calls: []

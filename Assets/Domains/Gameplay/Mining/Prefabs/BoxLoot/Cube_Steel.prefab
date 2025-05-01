@@ -397,7 +397,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 380f9b65545dc3b488923b80b2b83bb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uniqueID: 71d677a4-6ab1-4e9b-9b03-11d48b59a02a
+  uniqueID: ada0666f-37e8-4a7e-827c-0b4013cc14e8
   itemType: {fileID: 11400000, guid: 0586b7fb6a837854d959dc2fbfcd8ba2, type: 2}
   quantity: 1
   OnItemPicked:
@@ -688,7 +688,7 @@ MonoBehaviour:
   seeThroughMaxDepth: 0
   seeThroughIntensity: 0.8
   seeThroughTintAlpha: 0.5
-  seeThroughTintColor: {r: 1, g: 0, b: 0, a: 1}
+  seeThroughTintColor: {r: 0.9622642, g: 0.17754392, b: 0.11801341, a: 1}
   seeThroughNoise: 1
   seeThroughBorder: 0
   seeThroughBorderColor: {r: 0, g: 0, b: 0, a: 1}
@@ -748,3 +748,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9eb18bd15cc5eb54dbddc9772eb732ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetID: 4f009b80-22d0-4d28-b7d4-34d610a83d2d
+  onScanned:
+    m_PersistentCalls:
+      m_Calls: []
+  targetDuration: 3

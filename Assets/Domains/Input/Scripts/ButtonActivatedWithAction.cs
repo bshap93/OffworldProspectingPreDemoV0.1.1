@@ -13,6 +13,8 @@ namespace Domains.Input.Scripts
         public UnityEvent OnActivation;
         public ButtonPromptWithAction ButtonPromptPrefab;
 
+        public float scaleFactor = 1f;
+
         public Vector3 promptTransformOffset;
         public Vector3 promptRotationOffset;
 

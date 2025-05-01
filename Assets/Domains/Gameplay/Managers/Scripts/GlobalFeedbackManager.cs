@@ -52,6 +52,7 @@ namespace Domains.Gameplay.Managers.Scripts
         {
         }
 
+
         public void OnMMEvent(UpgradeEvent eventType)
         {
             if (eventType.EventType == UpgradeEventType.UpgradePurchased)

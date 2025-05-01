@@ -88,7 +88,7 @@ MonoBehaviour:
   m_Name: IconQuestContent
   m_EditorClassIdentifier: 
   m_contentID: -1
-  m_image: {fileID: 21300000, guid: e7f5d551fd1925040bd01a8ec66c0ae0, type: 3}
+  m_image: {fileID: 5670732621190257608, guid: 87258a2e98839004986e33d9a04e825e, type: 3}
   m_color: {r: 1, g: 1, b: 1, a: 1}
   m_caption:
     m_text: 
@@ -1758,20 +1758,6 @@ MonoBehaviour:
     m_textTable: {fileID: 0}
     m_textTableFieldID: 0
   m_headingLevel: 1
---- !u!114 &7657003942289343568
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b99cc2a156c22e46b4fb74b06a4d1e8, type: 3}
-  m_Name: AlertQuestAction
-  m_EditorClassIdentifier: 
-  m_contentList: []
-  m_contentListSerializationProxy: []
 --- !u!114 &8160558790772067801
 MonoBehaviour:
   m_ObjectHideFlags: 1

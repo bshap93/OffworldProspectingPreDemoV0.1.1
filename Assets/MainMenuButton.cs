@@ -6,6 +6,7 @@ public class MainMenuButton : MonoBehaviour
 {
     [SerializeField] private MainMenuButtonType buttonType;
 
+    public bool asksForConfirmation;
     [SerializeField] private Button button;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -22,7 +23,11 @@ public class MainMenuButton : MonoBehaviour
         {
             case MainMenuButtonType.NewGame:
                 Debug.Log("New Game Button Clicked");
-                MainMenuEvent.Trigger(MainMenuEventType.NewGameAttempted);
+                if (asksForConfirmation)
+                    // Show confirmation dialog
+                    MainMenuEvent.Trigger(MainMenuEventType.NewGameAttempted);
+                else
+                    MainMenuEvent.Trigger(MainMenuEventType.NewGameTriggered);
                 break;
             case MainMenuButtonType.ContinueGame:
                 MainMenuEvent.Trigger(MainMenuEventType.ContinueGameTriggered);

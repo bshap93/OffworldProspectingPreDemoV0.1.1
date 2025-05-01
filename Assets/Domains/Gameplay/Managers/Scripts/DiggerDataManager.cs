@@ -81,6 +81,12 @@ public class DiggerDataManager : MonoBehaviour, MMEventListener<DiggerEvent>
     public void DeleteAllDiggerData()
     {
         deleteAllDataFeedbacks?.PlayFeedbacks();
+        if (diggerMasterRuntime == null)
+        {
+            Debug.Log("DiggerDataManager: No DiggerMasterRuntime found in scene!");
+            return;
+        }
+
         diggerMasterRuntime.DeleteAllPersistedData();
         AlertEvent.Trigger(AlertReason.DeletingDiggerData, "Digger data deleted.");
 

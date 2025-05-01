@@ -1,4 +1,5 @@
 ﻿using Domains.Gameplay.Mining.Scripts;
+using MoreMountains.Feedbacks;
 using UnityEngine;
 
 namespace Domains.Input.Scripts
@@ -10,8 +11,13 @@ namespace Domains.Input.Scripts
 
         public Canvas canvas;
 
+
         [Tooltip("Optional offset from center of screen (Canvas space).")]
         public Vector2 screenOffset = Vector2.zero;
+
+        [Header("Feedbacks")] public MMFeedbacks hidePanelFeedbacks;
+
+        public MMFeedbacks showPanelFeedbacks;
 
         private GameObject _infoPanelInstance;
 
@@ -39,8 +45,7 @@ namespace Domains.Input.Scripts
 
         public void HideInteractablePrompt()
         {
-            if (_infoPanelInstance != null)
-                _infoPanelInstance.SetActive(false);
+            if (_infoPanelInstance != null) _infoPanelInstance.SetActive(false);
         }
 
         public void Interact()

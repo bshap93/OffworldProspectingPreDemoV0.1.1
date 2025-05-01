@@ -445,9 +445,21 @@ MonoBehaviour:
   oreDestroyFeedback: {fileID: 8422469489274627456}
   OnOreDestroyed:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OreHardness: 0
-  UniqueID: 2fdea580-7555-4af4-95b0-ab1c0078fb68
+  UniqueID: f9e3bf5a-8382-4caa-b002-03d22bd13f05
   failHitFeedbacks: {fileID: 481408227980071728}
   failHitParticles: {fileID: 6835221663383594993, guid: 67bf2c07e69f9c14e8b49b2add42dd8f, type: 3}
   oreHitParticles: {fileID: 6835221663383594993, guid: 67bf2c07e69f9c14e8b49b2add42dd8f, type: 3}
@@ -636,7 +648,7 @@ MonoBehaviour:
   seeThroughMaxDepth: 0
   seeThroughIntensity: 0.8
   seeThroughTintAlpha: 0.5
-  seeThroughTintColor: {r: 1, g: 0, b: 0, a: 1}
+  seeThroughTintColor: {r: 0.1882353, g: 0.8, b: 0.6784314, a: 1}
   seeThroughNoise: 1
   seeThroughBorder: 0
   seeThroughBorderColor: {r: 0, g: 0, b: 0, a: 1}
@@ -696,7 +708,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9eb18bd15cc5eb54dbddc9772eb732ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetID: 8427e648-1e65-4b91-853c-4793940151fc
+  targetID: 68a47187-9871-4568-b3d4-afd3c6960027
   onScanned:
     m_PersistentCalls:
       m_Calls: []

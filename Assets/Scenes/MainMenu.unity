@@ -1627,7 +1627,7 @@ MonoBehaviour:
   hoverSFX: {fileID: 8300000, guid: 93b7f0d54ae6f224fb46e8f154dfb083, type: 3}
   clickSFX: {fileID: 8300000, guid: b32c2faadd76e434fbf812369467dab1, type: 3}
   enableHoverSound: 1
-  enableClickSound: 1
+  enableClickSound: 0
   checkForInteraction: 1
 --- !u!114 &272835461
 MonoBehaviour:
@@ -1715,6 +1715,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonType: 0
+  asksForConfirmation: 0
 --- !u!1 &274588039
 GameObject:
   m_ObjectHideFlags: 0
@@ -2856,6 +2857,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonType: 2
+  asksForConfirmation: 0
 --- !u!1 &480899175
 GameObject:
   m_ObjectHideFlags: 0
@@ -3623,7 +3625,7 @@ MonoBehaviour:
   hoverSFX: {fileID: 8300000, guid: bf703ce8382463249a0b2693448e309d, type: 3}
   clickSFX: {fileID: 8300000, guid: a2245bc5e9aadd2488550a0e892028db, type: 3}
   enableHoverSound: 1
-  enableClickSound: 1
+  enableClickSound: 0
   checkForInteraction: 1
 --- !u!114 &585797842
 MonoBehaviour:
@@ -3711,6 +3713,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonType: 3
+  asksForConfirmation: 0
 --- !u!114 &585797845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9234,7 +9237,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a4a9b5895f870a4c8b8750949a519ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UIManagerAsset: {fileID: 11400000, guid: ed935159a86a1be4cbc1c44848b24daf, type: 2}
+  UIManagerAsset: {fileID: 11400000, guid: 76decf3fd663a8d4c995510751b430b6, type: 2}
   audioObject: {fileID: 1794171106}
 --- !u!1 &1876623269
 GameObject:
@@ -10757,7 +10760,7 @@ MonoBehaviour:
   hoverSFX: {fileID: 8300000, guid: 6fd4be40cb7b2614797273cee817d0f9, type: 3}
   clickSFX: {fileID: 8300000, guid: 657049e856951f943a83301b9588da6a, type: 3}
   enableHoverSound: 1
-  enableClickSound: 1
+  enableClickSound: 0
   checkForInteraction: 1
 --- !u!114 &2092937522
 MonoBehaviour:
@@ -10845,6 +10848,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonType: 1
+  asksForConfirmation: 0
 --- !u!1 &2121571901
 GameObject:
   m_ObjectHideFlags: 0
