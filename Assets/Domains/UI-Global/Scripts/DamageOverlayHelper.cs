@@ -1,5 +1,6 @@
 using System.Collections;
 using Domains.Player.Events;
+using Domains.Player.Scripts;
 using MoreMountains.Feedbacks;
 using MoreMountains.Tools;
 using UnityEngine;
@@ -29,6 +30,10 @@ namespace Domains.UI_Global.Scripts
 
         public void OnMMEvent(HealthEvent eventType)
         {
+            if (eventType.EventType == HealthEventType.ConsumeHealth &&
+                eventType.ByValue > PlayerHealthManager.MaxHealthPoints)
+                StartCoroutine(AnimateDeathOverlay());
+
             if (eventType.EventType == HealthEventType.ConsumeHealth)
                 StartCoroutine(AnimateDamageOverlay());
         }
@@ -37,6 +42,13 @@ namespace Domains.UI_Global.Scripts
         {
             _damageOverlay.MoveToAdditive(targetAlpha);
             yield return new WaitForSeconds(0.5f);
+            _damageOverlay.MoveToSubtractive(targetAlpha);
+        }
+
+        private IEnumerator AnimateDeathOverlay()
+        {
+            _damageOverlay.MoveToAdditive(targetAlpha);
+            yield return new WaitForSeconds(2f);
             _damageOverlay.MoveToSubtractive(targetAlpha);
         }
     }

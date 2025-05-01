@@ -1,4 +1,5 @@
-﻿using Domains.Player.Events;
+﻿using System.Collections;
+using Domains.Player.Events;
 using Domains.Scene.Scripts;
 using Domains.UI_Global.Events;
 using MoreMountains.Feedbacks;
@@ -23,14 +24,18 @@ namespace Domains.Player.Scripts
 
         public float healthPenaltyMultiplier = 0.2f;
 
-        public MMFeedbacks deathFeedbacks;
+        [Header("Feedbacks")] public MMFeedbacks deathFeedbacks;
+
         public MMFeedbacks outOfFuelFeedbacks;
+        public MMFeedbacks revivalFeedbacks;
 
         [FormerlySerializedAs("_sceneRestarter")] [SerializeField]
         private MMSceneRestarter sceneRestarter;
 
         [SerializeField] private Transform spawnPoint;
         [SerializeField] private GameObject playerCamera;
+        
+        [SerializeField] float deathEffectDelay = 2f; // Delay before applying death effects
 
 
         private void Awake()
@@ -57,6 +62,8 @@ namespace Domains.Player.Scripts
                 deathFeedbacks?.PlayFeedbacks();
                 AlertEvent.Trigger(AlertReason.Died, "You passed out!",
                     "You're charged 400 credits for your rescue.");
+
+                StartCoroutine(TriggerRevivalFeedbacks());
             }
 
 
@@ -118,6 +125,12 @@ namespace Domains.Player.Scripts
         {
             if (PlayerCurrencyManager.CompanyCredits < monetaryPenalty) return PlayerCurrencyManager.CompanyCredits;
             return monetaryPenalty;
+        }
+
+        private IEnumerator TriggerRevivalFeedbacks()
+        {
+            yield return new WaitForSeconds(2f);
+            revivalFeedbacks?.PlayFeedbacks();
         }
 
 

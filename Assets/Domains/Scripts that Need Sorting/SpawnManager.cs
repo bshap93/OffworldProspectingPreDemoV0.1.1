@@ -15,7 +15,7 @@ namespace Domains.Scripts_that_Need_Sorting
 
         // In SpawnManager.cs
         [SerializeField] private PlayerDeathManager playerDeathManager; // Reference to death manager
-        private readonly float requiredHoldDuration = 2f; // Change to desired duration in seconds
+        private readonly float requiredHoldDuration = 1f; // Change to desired duration in seconds
         private TeleportPlayer _player01TeleportPlayer;
         private CharacterActor characterActor;
 
@@ -47,7 +47,7 @@ namespace Domains.Scripts_that_Need_Sorting
                 if (eKeyHoldTime >= requiredHoldDuration)
                 {
                     UnityEngine.Debug.Log("E key held long enough!");
-                    ResetManually();
+                    ResetManually(0f);
 
                     // Optional: Reset to avoid retriggering
                     eKeyHoldTime = 0f;
@@ -61,6 +61,7 @@ namespace Domains.Scripts_that_Need_Sorting
         }
 
         private void OnEnable()
+
         {
             this.MMEventStartListening();
         }
@@ -73,16 +74,23 @@ namespace Domains.Scripts_that_Need_Sorting
 
         public void OnMMEvent(PlayerStatusEvent eventType)
         {
-            if (eventType.EventType == PlayerStatusEventType.Died) ResetManually();
+            if (eventType.EventType == PlayerStatusEventType.Died)
+                StartCoroutine(ResetManually(2f));
 
             if (eventType.EventType == PlayerStatusEventType.SoftReset
                )
-                ResetManually();
-            if (eventType.EventType == PlayerStatusEventType.ResetManaully) ResetManually();
+                StartCoroutine(ResetManually(0f));
+            if (eventType.EventType == PlayerStatusEventType.ResetManaully)
+                StartCoroutine(ResetManually(0f));
         }
 
-        private void ResetManually()
+        private IEnumerator ResetManually(float delay)
         {
+            if (delay > 0f)
+                // Optional: Play a feedback or sound here
+                playerDeathManager.deathFeedbacks?.PlayFeedbacks();
+
+            yield return new WaitForSeconds(delay);
             // Trigger your logic here
             playerDeathManager.SetPostFuelOutStats();
             TeleportPlayerToSpawn();
