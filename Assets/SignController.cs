@@ -1,4 +1,5 @@
 using Domains.UI_Global.Briefings;
+using Domains.UI_Global.Events;
 using UnityEngine;
 
 public class SignController : MonoBehaviour
@@ -12,6 +13,13 @@ public class SignController : MonoBehaviour
     {
         if (hasAssociatedBriefing)
         {
+            if (briefingData == null)
+            {
+                Debug.LogError("No briefing data associated with this sign.");
+                return;
+            }
+
+            UIEvent.Trigger(UIEventType.OpenBriefing, briefingIndex);
         }
         else
         {

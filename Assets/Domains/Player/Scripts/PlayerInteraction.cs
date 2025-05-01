@@ -21,8 +21,6 @@ namespace Domains.Player.Scripts
         public Image reticle;
         public Color defaultReticleColor = Color.white;
         public Color interactReticleColor = Color.green;
-        
-        QuestJournal questJournal;
 
         public LayerMask playerLayerMask;
 
@@ -40,6 +38,8 @@ namespace Domains.Player.Scripts
 
         private float _positionEventTimer;
 
+        private QuestJournal questJournal;
+
         private void Start()
         {
             FindFirstObjectByType<DiggerMaster>();
@@ -51,7 +51,7 @@ namespace Domains.Player.Scripts
             if (forwardTerrainLayerDetector == null)
                 UnityEngine.Debug.LogWarning(
                     "TextureDetector not found in the scene. Cannot track texture information.");
-            
+
             questJournal = GetComponent<QuestJournal>();
             if (questJournal == null)
                 UnityEngine.Debug.LogWarning("QuestJournal not found in the scene. Cannot track quest information.");
@@ -175,12 +175,15 @@ namespace Domains.Player.Scripts
         {
             foreach (var button in FindObjectsByType<ButtonActivated>(FindObjectsSortMode.None))
                 button.HideInteractablePrompt();
-            
+
             foreach (var buttonWithAction in FindObjectsByType<ButtonActivatedWithAction>(FindObjectsSortMode.None))
                 buttonWithAction.HideInteractablePrompt();
-            
+
             foreach (var healthButton in FindObjectsByType<HealthButtonActivatedWithAction>(FindObjectsSortMode.None))
                 healthButton.HideInteractablePrompt();
+
+            foreach (var infoPanel in FindObjectsByType<InfoPanelActivator>(FindObjectsSortMode.None))
+                infoPanel.HideInteractablePrompt();
         }
 
         /// <summary>

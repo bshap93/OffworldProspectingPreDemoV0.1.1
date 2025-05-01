@@ -65,6 +65,8 @@ public class ObjectiveBriefingController : MonoBehaviour, MMEventListener<UIEven
         if (eventType.EventType == UIEventType.OpenBriefing)
             ShowObjectiveBriefing(eventType.Index);
         else if (eventType.EventType == UIEventType.CloseBriefing) HideObjectiveBriefing();
+
+        HideObjectiveBriefing();
     }
 
     public void ShowObjectiveBriefing(int briefingIndex)
@@ -131,7 +133,7 @@ public class ObjectiveBriefingController : MonoBehaviour, MMEventListener<UIEven
             canvasGroup.blocksRaycasts = true;
 
             // Time.timeScale = 0;
-            UIEvent.Trigger(UIEventType.OpenBriefing, index);
+            // UIEvent.Trigger(UIEventType.OpenBriefing, index);
 
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
@@ -151,7 +153,7 @@ public class ObjectiveBriefingController : MonoBehaviour, MMEventListener<UIEven
             canvasGroup.blocksRaycasts = false;
 
             // Time.timeScale = 1;
-            UIEvent.Trigger(UIEventType.CloseBriefing);
+            // UIEvent.Trigger(UIEventType.CloseBriefing);
 
 
             Cursor.lockState = CursorLockMode.Locked;
