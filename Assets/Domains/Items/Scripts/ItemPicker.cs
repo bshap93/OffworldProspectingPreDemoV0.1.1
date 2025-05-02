@@ -20,9 +20,8 @@ namespace Domains.Items.Scripts
         [FormerlySerializedAs("UniqueID")] public string uniqueID;
         [FormerlySerializedAs("ItemType")] public BaseItem itemType;
         [FormerlySerializedAs("Quantity")] public int quantity = 1;
-        
-        [Header("Events")]
-        public UnityEvent OnItemPicked;
+
+        [Header("Events")] public UnityEvent OnItemPicked;
 
         [Header("Interaction Settings")] [Tooltip("How long the interact key must be held to pick up the item")]
         public float interactionHoldTime = 1.0f; // Time required to hold the interact key
@@ -30,11 +29,14 @@ namespace Domains.Items.Scripts
         [Header("Feedbacks")] [Tooltip("Feedbacks to play when the item is picked up")]
         public MMFeedbacks pickedMmFeedbacks; // Feedbacks to play when the item is picked up
 
-        [Tooltip("Feedbacks to play when the item is sold")]
-        public MMFeedbacks soldMmFeedbacks; // Feedbacks to play when the item is sold
 
         [FormerlySerializedAs("NotPickable")] public bool notPickable; // If true, the item cannot be picked up
         public GameObject interactablePrompt;
+
+        [FormerlySerializedAs("_dissolver")] [SerializeField]
+        private Dissolver dissolver;
+
+        public bool IsObjective;
         private bool _interactionComplete;
 #pragma warning disable CS0414 // Field is assigned but its value is never used
         private bool _isBeingDestroyed;
@@ -47,10 +49,6 @@ namespace Domains.Items.Scripts
         // Track interaction state
 
         private Inventory.Inventory _targetInventory;
-        
-        [FormerlySerializedAs("_dissolver")] [SerializeField] private Dissolver dissolver;
-
-        public bool IsObjective;
 
         private void Awake()
         {
@@ -67,7 +65,6 @@ namespace Domains.Items.Scripts
             if (_targetInventory == null) UnityEngine.Debug.LogWarning("No inventory found in scene");
 
             if (pickedMmFeedbacks != null) pickedMmFeedbacks.Initialization(gameObject);
-            
         }
 
 
@@ -109,8 +106,6 @@ namespace Domains.Items.Scripts
         {
             if (IsObjective)
             {
-                
-
             }
         }
 
@@ -144,7 +139,7 @@ namespace Domains.Items.Scripts
 
                 // Trigger item picked event
                 ItemEvent.Trigger(ItemEventType.Picked, entry, transform);
-                
+
                 OnItemPicked?.Invoke();
 
                 StartCoroutine(DissolveThenDestroy());
@@ -164,6 +159,7 @@ namespace Domains.Items.Scripts
                 Destroy(gameObject);
                 yield break;
             }
+
             // Start dissolving
             dissolver.Dissolve();
             yield return new WaitForSeconds(dissolver.duration);

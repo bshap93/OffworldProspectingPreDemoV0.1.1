@@ -15,7 +15,7 @@ namespace Domains.UI_Global.UIUpdaters
 
         private float _maxHealth;
 
-        private void Awake()
+        private void Start()
         {
             Initialize();
         }

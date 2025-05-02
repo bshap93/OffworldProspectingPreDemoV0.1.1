@@ -18,7 +18,8 @@ namespace Domains.UI_Global
 
         private float _maxFuel;
 
-        private void Awake()
+
+        private void Start()
         {
             Initialize();
         }

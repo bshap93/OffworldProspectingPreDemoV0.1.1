@@ -408,7 +408,7 @@ MonoBehaviour:
   iconFXOffset: {x: 0, y: 1, z: 0}
   iconFXTransitionDuration: 0.5
   iconFXStayDuration: 1.5
-  seeThrough: 2
+  seeThrough: 0
   seeThroughOccluderMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -420,7 +420,7 @@ MonoBehaviour:
   seeThroughMaxDepth: 0
   seeThroughIntensity: 0.8
   seeThroughTintAlpha: 0.5
-  seeThroughTintColor: {r: 1, g: 0.22542726, b: 0.16666657, a: 1}
+  seeThroughTintColor: {r: 0.1882353, g: 0.8, b: 0.6784314, a: 1}
   seeThroughNoise: 1
   seeThroughBorder: 0
   seeThroughBorderColor: {r: 0, g: 0, b: 0, a: 1}
