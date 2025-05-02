@@ -236,7 +236,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   applicationId: 3621020
   callbackTick_Milliseconds: 15
-  isDebugging: 0
+  isDebugging: 1
   server:
     autoInitialize: 1
     autoLogon: 0

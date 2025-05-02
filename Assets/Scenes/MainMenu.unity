@@ -4718,6 +4718,55 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 823104361}
   m_CullTransparentMesh: 0
+--- !u!1 &831038512
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 831038514}
+  - component: {fileID: 831038513}
+  m_Layer: 0
+  m_Name: Steamworks
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &831038513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 831038512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 872f6ae278cb0644882f90fe4993b93f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetSettings: {fileID: 11400000, guid: 926c2cfa15cd2434d9252b635dc0b91a, type: 2}
+  mainSettings: {fileID: 11400000, guid: cca48d86267ceef45a41fcb6480b4e86, type: 2}
+  demoSettings: {fileID: 11400000, guid: 926c2cfa15cd2434d9252b635dc0b91a, type: 2}
+  playtestSettings:
+  - {fileID: 11400000, guid: afc7e2c8cafa88142a67d87f70989027, type: 2}
+--- !u!4 &831038514
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 831038512}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1280, y: 720, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &841070658
 GameObject:
   m_ObjectHideFlags: 0
@@ -18346,3 +18395,4 @@ SceneRoots:
   - {fileID: 1891794564}
   - {fileID: 186445770}
   - {fileID: 2121571902}
+  - {fileID: 831038514}

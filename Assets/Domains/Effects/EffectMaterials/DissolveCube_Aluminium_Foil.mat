@@ -124,7 +124,7 @@ Material:
     - _BumpScale: 1
     - _Cutoff: 0
     - _DetailNormalMapScale: 1
-    - _DissolveAmount: 0
+    - _DissolveAmount: 1
     - _DstBlend: 0
     - _EdgeWidth: 0.005
     - _Emission_Intensity: 0
