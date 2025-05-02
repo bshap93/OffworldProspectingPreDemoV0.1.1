@@ -17,6 +17,7 @@ namespace Domains.Gameplay.Equipment.Scripts
 
         [SerializeField] private MMFeedbacks equipMinerFeedbacks;
         [SerializeField] private MMFeedbacks equipScannerFeedbacks;
+        [SerializeField] private ToolPanelController toolPanelController;
 
         [FormerlySerializedAs("ScannerMaxRange")] [SerializeField]
         public float scannerMaxRange = 5f;
@@ -50,12 +51,15 @@ namespace Domains.Gameplay.Equipment.Scripts
                 Tools[i] = toolObjects[i].GetComponent<IToolAction>();
                 if (Tools[i] == null) UnityEngine.Debug.LogError($"Tool at index {i} does not implement IToolAction.");
             }
+
+            EquipmentEvent.Trigger(currentToolType);
         }
 
         private void Start()
         {
             numTools = Tools.Length;
             CurrentToolComponent = Tools[0];
+            toolPanelController.ActivateToolPanelItem(currentToolType);
         }
 
         private void Update()
@@ -87,6 +91,8 @@ namespace Domains.Gameplay.Equipment.Scripts
             currentToolType = tool.ToolType;
             currentToolIteration = tool.ToolIteration;
             CurrentToolComponent = tool;
+
+            toolPanelController.ActivateToolPanelItem(currentToolType);
 
             // Disable all tools
             foreach (var t in Tools)
