@@ -131,6 +131,11 @@ namespace Domains.Gameplay.Mining.Scripts
             return OreHardness;
         }
 
+        public void ShowMineablePrompt()
+        {
+            UnityEngine.Debug.Log("Show mineable prompt");
+        }
+
 
         private IEnumerator InitializeAfterDestructableManager()
         {

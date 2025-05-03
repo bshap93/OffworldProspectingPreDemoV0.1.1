@@ -36,6 +36,8 @@ namespace Domains.Player.Scripts
         private DiggerMasterRuntime _diggerMasterRuntime;
         private bool _interactablePrompt;
 
+        private bool _mineablePrompt;
+
         private float _positionEventTimer;
 
         private QuestJournal questJournal;
@@ -159,6 +161,16 @@ namespace Domains.Player.Scripts
 
                     // Show button prompt if applicable
                     if (button != null) button.ShowInteractablePrompt();
+                    return;
+                }
+
+                var mineable = interactableHit.collider.GetComponent<IMinable>();
+
+                if (mineable != null)
+                {
+                    reticle.color = interactReticleColor;
+                    mineable.ShowMineablePrompt();
+                    _mineablePrompt = true;
                     return;
                 }
             }

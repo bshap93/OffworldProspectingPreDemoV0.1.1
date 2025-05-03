@@ -8,5 +8,6 @@ namespace Domains.Gameplay.Mining.Scripts
         void MinableFailHit(Vector3 hitPoint);
 
         int GetCurrentMinableHardness();
+        void ShowMineablePrompt();
     }
 }
