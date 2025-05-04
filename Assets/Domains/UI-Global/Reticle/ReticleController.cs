@@ -2,7 +2,6 @@ using Domains.Gameplay.Equipment.Scripts;
 using Domains.Gameplay.Mining.Scripts;
 using Domains.Gameplay.Tools;
 using Domains.Gameplay.Tools.ToolSpecifics;
-using Domains.Player.Scripts;
 using Domains.Scripts_that_Need_Sorting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,7 +20,6 @@ namespace Domains.UI_Global.Reticle
         public ReticleState validTerrainState;
         public ReticleState scannerState;
 
-        [Header("References")] public PlayerInteraction playerInteraction;
 
         public TerrainLayerDetector terrainLayerDetector;
 
