@@ -15,12 +15,14 @@ public class HighlightEffectController : MonoBehaviour, MMEventListener<Equipmen
     private HighlightEffect highlightEffect;
     private HighlightTrigger highlightTrigger;
 
-
     private void Awake()
     {
         highlightEffect = GetComponent<HighlightEffect>();
         highlightTrigger = GetComponent<HighlightTrigger>();
+    }
 
+    private void Start()
+    {
         if (highlightEffect == null)
         {
             Debug.LogError("HighlightEffect component not found on this GameObject.");
@@ -91,6 +93,13 @@ public class HighlightEffectController : MonoBehaviour, MMEventListener<Equipmen
                 highlightEffect.seeThrough = SeeThroughMode.Never;
                 highlightEffect.Refresh();
             }
+
+        // Add null check for PlayerEquipment.Instance
+        if (PlayerEquipment.Instance == null)
+        {
+            Debug.LogWarning("PlayerEquipment.Instance is null, cannot set see-through mode properly.");
+            return;
+        }
 
         var distance = GetDistanceFromPlayer();
         // Set at 5 for now

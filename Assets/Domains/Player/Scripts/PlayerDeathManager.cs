@@ -34,8 +34,6 @@ namespace Domains.Player.Scripts
 
         [SerializeField] private Transform spawnPoint;
         [SerializeField] private GameObject playerCamera;
-        
-        [SerializeField] float deathEffectDelay = 2f; // Delay before applying death effects
 
 
         private void Awake()

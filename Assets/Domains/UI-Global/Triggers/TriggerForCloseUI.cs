@@ -7,14 +7,12 @@ namespace Domains.UI_Global.Triggers
     {
         public void TriggerCloseVendorUI()
         {
-            UnityEngine.Debug.Log("TriggerCloseUI");
             UIEvent.Trigger(UIEventType.CloseVendorConsole);
             UIEvent.Trigger(UIEventType.CloseFuelConsole);
         }
 
         public void TriggerCloseUI()
         {
-            UnityEngine.Debug.Log("TriggerCloseUI");
             UIEvent.Trigger(UIEventType.CloseUI);
         }
     }

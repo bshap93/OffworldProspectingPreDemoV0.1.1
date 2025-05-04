@@ -18,8 +18,6 @@ namespace Domains.Items.Scripts
 
 
         private bool _interactionComplete;
-        private bool _isBeingDestroyed;
-        private bool _isInRange;
 
         private void Awake()
         {
@@ -36,9 +34,6 @@ namespace Domains.Items.Scripts
 
         private void OnDestroy()
         {
-            _isBeingDestroyed = true;
-
-            _isInRange = false;
             enabled = false;
         }
 
