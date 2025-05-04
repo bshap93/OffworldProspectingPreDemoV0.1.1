@@ -9,7 +9,6 @@ using Domains.UI_Global.Reticle;
 using PixelCrushers.QuestMachine;
 using UnityEngine;
 using UnityEngine.Serialization;
-using UnityEngine.UI;
 
 namespace Domains.Player.Scripts
 {
@@ -18,14 +17,14 @@ namespace Domains.Player.Scripts
         public float interactionDistance = 2f; // How far the player can interact
         public LayerMask interactableLayer; // Only detect objects in this layer
         public LayerMask terrainLayer; // Only detect objects in this layer
+
         public UnityEngine.Camera playerCamera; // Reference to the player’s camera
         // [Header("Reticle")]
         // public Image reticle;
         // public Color defaultReticleColor = Color.white;
         // public Color interactReticleColor = Color.green;
-        
-        [Header("Reticle")]
-        public ReticleController reticleController;
+
+        [Header("Reticle")] public ReticleController reticleController;
 
         public LayerMask playerLayerMask;
 
@@ -62,6 +61,8 @@ namespace Domains.Player.Scripts
             questJournal = GetComponent<QuestJournal>();
             if (questJournal == null)
                 UnityEngine.Debug.LogWarning("QuestJournal not found in the scene. Cannot track quest information.");
+
+            if (reticleController == null) reticleController = FindFirstObjectByType<ReticleController>();
         }
 
         private void Update()
@@ -127,18 +128,20 @@ namespace Domains.Player.Scripts
 
             var terrMask = terrainLayer & ~playerLayerMask;
             var interactMask = interactableLayer & ~playerLayerMask;
-            
+
             // Combined raycast check
             RaycastHit terrainHit;
-            var terrainBlocking = Physics.Raycast(rayOrigin, rayDirection, out terrainHit, interactionDistance, terrMask);
+            var terrainBlocking =
+                Physics.Raycast(rayOrigin, rayDirection, out terrainHit, interactionDistance, terrMask);
 
             RaycastHit interactableHit;
-            var hitInteractable = Physics.Raycast(rayOrigin, rayDirection, out interactableHit, interactionDistance, interactMask);
+            var hitInteractable = Physics.Raycast(rayOrigin, rayDirection, out interactableHit, interactionDistance,
+                interactMask);
 
             // First check if there's terrain blocking the view
             // RaycastHit terrainHit;
             // var terrainBlocking = Physics.Raycast(
-                // rayOrigin, rayDirection, out terrainHit, interactionDistance, terrMask);
+            // rayOrigin, rayDirection, out terrainHit, interactionDistance, terrMask);
 
             // var interactMask = interactableLayer & ~playerLayerMask;
 
@@ -146,30 +149,26 @@ namespace Domains.Player.Scripts
             // RaycastHit interactableHit;
             // var hitInteractable = Physics.Raycast(
             //     rayOrigin, rayDirection, out interactableHit, interactionDistance, interactMask);
-            
+
             // Determine the hit to process
             RaycastHit? actualHit = null;
-            bool isTerrainBlocking = false;
-            
+            var isTerrainBlocking = false;
+
             if (terrainBlocking && hitInteractable)
             {
                 if (terrainHit.distance < interactableHit.distance)
-                {
                     isTerrainBlocking = true;
-                }
                 else
-                {
                     actualHit = interactableHit;
-                }
             }
             else if (hitInteractable)
             {
                 actualHit = interactableHit;
             }
-            
+
             // Update reticle through controller
             reticleController.UpdateReticle(actualHit, isTerrainBlocking);
-            
+
             // Show/hide prompts as needed (existing logic)
             if (actualHit.HasValue && !isTerrainBlocking)
             {
