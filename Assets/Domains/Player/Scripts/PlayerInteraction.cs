@@ -19,10 +19,7 @@ namespace Domains.Player.Scripts
         public LayerMask terrainLayer; // Only detect objects in this layer
 
         public UnityEngine.Camera playerCamera; // Reference to the player’s camera
-        // [Header("Reticle")]
-        // public Image reticle;
-        // public Color defaultReticleColor = Color.white;
-        // public Color interactReticleColor = Color.green;
+
 
         [Header("Reticle")] public ReticleController reticleController;
 
@@ -138,18 +135,6 @@ namespace Domains.Player.Scripts
             var hitInteractable = Physics.Raycast(rayOrigin, rayDirection, out interactableHit, interactionDistance,
                 interactMask);
 
-            // First check if there's terrain blocking the view
-            // RaycastHit terrainHit;
-            // var terrainBlocking = Physics.Raycast(
-            // rayOrigin, rayDirection, out terrainHit, interactionDistance, terrMask);
-
-            // var interactMask = interactableLayer & ~playerLayerMask;
-
-            // Then check for interactables
-            // RaycastHit interactableHit;
-            // var hitInteractable = Physics.Raycast(
-            //     rayOrigin, rayDirection, out interactableHit, interactionDistance, interactMask);
-
             // Determine the hit to process
             RaycastHit? actualHit = null;
             var isTerrainBlocking = false;
@@ -170,7 +155,7 @@ namespace Domains.Player.Scripts
             reticleController.UpdateReticle(actualHit, isTerrainBlocking);
 
             // Show/hide prompts as needed (existing logic)
-            if (actualHit.HasValue && !isTerrainBlocking)
+            if (actualHit.HasValue)
             {
                 var interactable = actualHit.Value.collider.GetComponent<IInteractable>();
                 var button = actualHit.Value.collider.GetComponent<ButtonActivated>();
@@ -195,54 +180,6 @@ namespace Domains.Player.Scripts
                 HideAllPrompts();
             }
 
-
-            // If we hit both, check if the terrain is in front of the interactable
-            // if (terrainBlocking && hitInteractable)
-            //     // If terrain is closer than the interactable, it's blocking
-            //     if (terrainHit.distance < interactableHit.distance)
-            //     {
-            //         // Terrain is blocking, reset reticle and hide prompts
-            //         reticle.color = defaultReticleColor;
-            //         if (_interactablePrompt)
-            //             _interactablePrompt = false;
-            //         HideAllPrompts();
-            //         return;
-            //     }
-
-            // If we reach here, either there's no terrain blocking, or the interactable is in front of terrain
-            // if (hitInteractable)
-            // {
-            //     var interactable = interactableHit.collider.GetComponent<IInteractable>();
-            //     var button = interactableHit.collider.GetComponent<ButtonActivated>();
-            //
-            //     if (interactable != null)
-            //     {
-            //         reticle.color = interactReticleColor;
-            //         interactable.ShowInteractablePrompt();
-            //         _interactablePrompt = true;
-            //
-            //         // Show button prompt if applicable
-            //         if (button != null) button.ShowInteractablePrompt();
-            //         return;
-            //     }
-            //
-            //     var mineable = interactableHit.collider.GetComponent<IMinable>();
-            //
-            //     if (mineable != null)
-            //     {
-            //         reticle.color = interactReticleColor;
-            //         mineable.ShowMineablePrompt();
-            //         _mineablePrompt = true;
-            //         return;
-            //     }
-            // }
-
-            // Reset if no interactable is found or if it's blocked
-            // reticle.color = defaultReticleColor;
-            // if (_interactablePrompt)
-            //     _interactablePrompt = false;
-            //
-            // HideAllPrompts(); // Hide button prompts if nothing is targeted
         }
 
         private void HideAllPrompts()
