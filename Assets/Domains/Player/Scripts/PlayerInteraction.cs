@@ -5,6 +5,7 @@ using Domains.Gameplay.Mining.Scripts;
 using Domains.Input.Scripts;
 using Domains.Player.Events;
 using Domains.Scripts_that_Need_Sorting;
+using Domains.UI_Global.Reticle;
 using PixelCrushers.QuestMachine;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -18,9 +19,13 @@ namespace Domains.Player.Scripts
         public LayerMask interactableLayer; // Only detect objects in this layer
         public LayerMask terrainLayer; // Only detect objects in this layer
         public UnityEngine.Camera playerCamera; // Reference to the player’s camera
-        public Image reticle;
-        public Color defaultReticleColor = Color.white;
-        public Color interactReticleColor = Color.green;
+        // [Header("Reticle")]
+        // public Image reticle;
+        // public Color defaultReticleColor = Color.white;
+        // public Color interactReticleColor = Color.green;
+        
+        [Header("Reticle")]
+        public ReticleController reticleController;
 
         public LayerMask playerLayerMask;
 
@@ -121,66 +126,124 @@ namespace Domains.Player.Scripts
             var rayDirection = playerCamera.transform.forward;
 
             var terrMask = terrainLayer & ~playerLayerMask;
+            var interactMask = interactableLayer & ~playerLayerMask;
+            
+            // Combined raycast check
+            RaycastHit terrainHit;
+            var terrainBlocking = Physics.Raycast(rayOrigin, rayDirection, out terrainHit, interactionDistance, terrMask);
+
+            RaycastHit interactableHit;
+            var hitInteractable = Physics.Raycast(rayOrigin, rayDirection, out interactableHit, interactionDistance, interactMask);
 
             // First check if there's terrain blocking the view
-            RaycastHit terrainHit;
-            var terrainBlocking = Physics.Raycast(
-                rayOrigin, rayDirection, out terrainHit, interactionDistance, terrMask);
+            // RaycastHit terrainHit;
+            // var terrainBlocking = Physics.Raycast(
+                // rayOrigin, rayDirection, out terrainHit, interactionDistance, terrMask);
 
-            var interactMask = interactableLayer & ~playerLayerMask;
+            // var interactMask = interactableLayer & ~playerLayerMask;
 
             // Then check for interactables
-            RaycastHit interactableHit;
-            var hitInteractable = Physics.Raycast(
-                rayOrigin, rayDirection, out interactableHit, interactionDistance, interactMask);
-
-            // If we hit both, check if the terrain is in front of the interactable
+            // RaycastHit interactableHit;
+            // var hitInteractable = Physics.Raycast(
+            //     rayOrigin, rayDirection, out interactableHit, interactionDistance, interactMask);
+            
+            // Determine the hit to process
+            RaycastHit? actualHit = null;
+            bool isTerrainBlocking = false;
+            
             if (terrainBlocking && hitInteractable)
-                // If terrain is closer than the interactable, it's blocking
+            {
                 if (terrainHit.distance < interactableHit.distance)
                 {
-                    // Terrain is blocking, reset reticle and hide prompts
-                    reticle.color = defaultReticleColor;
-                    if (_interactablePrompt)
-                        _interactablePrompt = false;
-                    HideAllPrompts();
-                    return;
+                    isTerrainBlocking = true;
                 }
-
-            // If we reach here, either there's no terrain blocking, or the interactable is in front of terrain
-            if (hitInteractable)
+                else
+                {
+                    actualHit = interactableHit;
+                }
+            }
+            else if (hitInteractable)
             {
-                var interactable = interactableHit.collider.GetComponent<IInteractable>();
-                var button = interactableHit.collider.GetComponent<ButtonActivated>();
+                actualHit = interactableHit;
+            }
+            
+            // Update reticle through controller
+            reticleController.UpdateReticle(actualHit, isTerrainBlocking);
+            
+            // Show/hide prompts as needed (existing logic)
+            if (actualHit.HasValue && !isTerrainBlocking)
+            {
+                var interactable = actualHit.Value.collider.GetComponent<IInteractable>();
+                var button = actualHit.Value.collider.GetComponent<ButtonActivated>();
+                var mineable = actualHit.Value.collider.GetComponent<IMinable>();
 
                 if (interactable != null)
                 {
-                    reticle.color = interactReticleColor;
                     interactable.ShowInteractablePrompt();
                     _interactablePrompt = true;
-
-                    // Show button prompt if applicable
                     if (button != null) button.ShowInteractablePrompt();
-                    return;
                 }
-
-                var mineable = interactableHit.collider.GetComponent<IMinable>();
-
-                if (mineable != null)
+                else if (mineable != null)
                 {
-                    reticle.color = interactReticleColor;
                     mineable.ShowMineablePrompt();
                     _mineablePrompt = true;
-                    return;
                 }
             }
+            else
+            {
+                if (_interactablePrompt)
+                    _interactablePrompt = false;
+                HideAllPrompts();
+            }
+
+
+            // If we hit both, check if the terrain is in front of the interactable
+            // if (terrainBlocking && hitInteractable)
+            //     // If terrain is closer than the interactable, it's blocking
+            //     if (terrainHit.distance < interactableHit.distance)
+            //     {
+            //         // Terrain is blocking, reset reticle and hide prompts
+            //         reticle.color = defaultReticleColor;
+            //         if (_interactablePrompt)
+            //             _interactablePrompt = false;
+            //         HideAllPrompts();
+            //         return;
+            //     }
+
+            // If we reach here, either there's no terrain blocking, or the interactable is in front of terrain
+            // if (hitInteractable)
+            // {
+            //     var interactable = interactableHit.collider.GetComponent<IInteractable>();
+            //     var button = interactableHit.collider.GetComponent<ButtonActivated>();
+            //
+            //     if (interactable != null)
+            //     {
+            //         reticle.color = interactReticleColor;
+            //         interactable.ShowInteractablePrompt();
+            //         _interactablePrompt = true;
+            //
+            //         // Show button prompt if applicable
+            //         if (button != null) button.ShowInteractablePrompt();
+            //         return;
+            //     }
+            //
+            //     var mineable = interactableHit.collider.GetComponent<IMinable>();
+            //
+            //     if (mineable != null)
+            //     {
+            //         reticle.color = interactReticleColor;
+            //         mineable.ShowMineablePrompt();
+            //         _mineablePrompt = true;
+            //         return;
+            //     }
+            // }
 
             // Reset if no interactable is found or if it's blocked
-            reticle.color = defaultReticleColor;
-            if (_interactablePrompt)
-                _interactablePrompt = false;
-
-            HideAllPrompts(); // Hide button prompts if nothing is targeted
+            // reticle.color = defaultReticleColor;
+            // if (_interactablePrompt)
+            //     _interactablePrompt = false;
+            //
+            // HideAllPrompts(); // Hide button prompts if nothing is targeted
         }
 
         private void HideAllPrompts()
