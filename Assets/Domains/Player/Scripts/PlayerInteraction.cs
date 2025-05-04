@@ -131,6 +131,8 @@ namespace Domains.Player.Scripts
             var terrainBlocking =
                 Physics.Raycast(rayOrigin, rayDirection, out terrainHit, interactionDistance, terrMask);
 
+            if (terrainBlocking) forwardTerrainLayerDetector?.UpdateFromHit(terrainHit);
+
             RaycastHit interactableHit;
             var hitInteractable = Physics.Raycast(rayOrigin, rayDirection, out interactableHit, interactionDistance,
                 interactMask);
@@ -179,7 +181,6 @@ namespace Domains.Player.Scripts
                     _interactablePrompt = false;
                 HideAllPrompts();
             }
-
         }
 
         private void HideAllPrompts()

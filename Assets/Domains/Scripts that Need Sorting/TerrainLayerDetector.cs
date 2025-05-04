@@ -24,45 +24,45 @@ namespace Domains.Scripts_that_Need_Sorting
             diggerMaster = FindFirstObjectByType<DiggerMaster>();
         }
 
-        private void Update()
-        {
-            var notPlayerMask = ~playerMask;
-            if (Physics.Raycast(transform.position, transform.forward, out var hit, 500f, notPlayerMask))
-            {
-                UnityEngine.Debug.DrawLine(transform.position, hit.point, Color.green);
-
-                Terrain terrain;
-                var index = GetTextureIndex(hit, out terrain);
-
-                if (index >= 0)
-                {
-                    if (terrain)
-                    {
-                        var layers = terrain.terrainData.terrainLayers;
-                        if (index < layers.Length)
-                        {
-                            texture = $"name: {layers[index].name} | index: {index}";
-                            textureIndex = index;
-                        }
-                        else
-                        {
-                            texture = $"Terrain index out of bounds: {index}";
-                            textureIndex = -1;
-                        }
-                    }
-                    else
-                    {
-                        texture = $"Chunk texture index: {index}";
-                        textureIndex = index;
-                    }
-                }
-                else
-                {
-                    texture = "No valid texture hit";
-                    textureIndex = -1;
-                }
-            }
-        }
+        // private void Update()
+        // {
+        //     var notPlayerMask = ~playerMask;
+        //     if (Physics.Raycast(transform.position, transform.forward, out var hit, 500f, notPlayerMask))
+        //     {
+        //         UnityEngine.Debug.DrawLine(transform.position, hit.point, Color.green);
+        //
+        //         Terrain terrain;
+        //         var index = GetTextureIndex(hit, out terrain);
+        //
+        //         if (index >= 0)
+        //         {
+        //             if (terrain)
+        //             {
+        //                 var layers = terrain.terrainData.terrainLayers;
+        //                 if (index < layers.Length)
+        //                 {
+        //                     texture = $"name: {layers[index].name} | index: {index}";
+        //                     textureIndex = index;
+        //                 }
+        //                 else
+        //                 {
+        //                     texture = $"Terrain index out of bounds: {index}";
+        //                     textureIndex = -1;
+        //                 }
+        //             }
+        //             else
+        //             {
+        //                 texture = $"Chunk texture index: {index}";
+        //                 textureIndex = index;
+        //             }
+        //         }
+        //         else
+        //         {
+        //             texture = "No valid texture hit";
+        //             textureIndex = -1;
+        //         }
+        //     }
+        // }
 
         public int GetTextureIndex(RaycastHit hit, out Terrain terrain)
         {
@@ -150,6 +150,34 @@ namespace Domains.Scripts_that_Need_Sorting
                 }
 
             return maxIndex;
+        }
+
+        public void UpdateFromHit(RaycastHit hit)
+        {
+            Terrain terrain;
+            var index = GetTextureIndex(hit, out terrain);
+
+            if (index >= 0)
+            {
+                if (terrain)
+                {
+                    var layers = terrain.terrainData.terrainLayers;
+                    texture = index < layers.Length
+                        ? $"name: {layers[index].name} | index: {index}"
+                        : $"Terrain index out of bounds: {index}";
+                }
+                else
+                {
+                    texture = $"Chunk texture index: {index}";
+                }
+
+                textureIndex = index;
+            }
+            else
+            {
+                texture = "No valid texture hit";
+                textureIndex = -1;
+            }
         }
 
         public static int GetMeshTextureIndex(float4[] controls)
