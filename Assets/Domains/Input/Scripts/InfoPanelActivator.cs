@@ -1,4 +1,5 @@
-﻿using Domains.Gameplay.Mining.Scripts;
+﻿using System;
+using Domains.Gameplay.Mining.Scripts;
 using MoreMountains.Feedbacks;
 using UnityEngine;
 
@@ -51,5 +52,15 @@ namespace Domains.Input.Scripts
         public void Interact()
         {
         } // Optional: leave empty
+
+        public void ShowInfoPanel()
+        {
+            ShowInfoPanel();
+        }
+
+        public void HideInfoPanel()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

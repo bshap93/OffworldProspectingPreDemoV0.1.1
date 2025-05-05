@@ -7,6 +7,5 @@ namespace Domains.Gameplay.Mining.Scripts
         void ShowInteractablePrompt();
 
         void HideInteractablePrompt();
-        
     }
 }
