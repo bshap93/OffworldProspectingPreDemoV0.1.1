@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06cf26b9bb5042d48b17df66ade7b83b, type: 3}
   m_Name: ValidTerrainState
   m_EditorClassIdentifier: 
-  reticleSprite: {fileID: 21300000, guid: a75ddb2acfe03174c87f41bd9fc3f406, type: 3}
+  reticleSprite: {fileID: 21300000, guid: b3d806045db24c34f9a8706cba763348, type: 3}
   reticleColor: {r: 0.1882353, g: 0.8, b: 0.6784314, a: 1}
   stateName: Valid Terrrain State
   stateDescription: 
