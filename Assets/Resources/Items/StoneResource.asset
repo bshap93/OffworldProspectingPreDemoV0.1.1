@@ -18,3 +18,4 @@ MonoBehaviour:
   ItemIcon: {fileID: 21300000, guid: 669f58df294bc164e961ec781f815d94, type: 3}
   ItemWeight: 1
   ItemValue: 100
+  ItemType: 2

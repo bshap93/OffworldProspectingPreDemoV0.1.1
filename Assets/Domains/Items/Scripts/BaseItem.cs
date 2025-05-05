@@ -1,8 +1,17 @@
+using System;
 using UnityEngine;
 
 namespace Domains.Items.Scripts
 {
-    
+    [Serializable]
+    public enum ItemType
+    {
+        Ore,
+        Bundle,
+        Stone,
+        Crystal
+    }
+
     [CreateAssetMenu(fileName = "BaseItem", menuName = "Scriptable Objects/BaseItem")]
     public class BaseItem : ScriptableObject
     {
@@ -18,6 +27,8 @@ namespace Domains.Items.Scripts
         public float ItemWeight;
 
         public int ItemValue;
+
+        public ItemType ItemType;
 
         public virtual bool Pick()
         {

@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Domains.Items;
 using Domains.Items.Events;
 using Domains.Items.Scripts;
 using Domains.UI;
@@ -28,6 +27,7 @@ namespace Domains.UI_Global.Scripts
         [SerializeField] private MMFeedbacks orePickupFeedbacks;
         [SerializeField] private MMFeedbacks stonePickupFeedbacks;
         [SerializeField] private MMFeedbacks bundlePickupFeedbacks;
+        [SerializeField] private MMFeedbacks crystalPickupFeedbacks;
 
         // Dictionary to track active displays by item ID
         private readonly Dictionary<string, PickupDisplayItem> _displays = new();
@@ -66,18 +66,24 @@ namespace Domains.UI_Global.Scripts
             if (mmEvent.EventType == ItemEventType.Picked)
             {
                 DisplayPickedItem(mmEvent.Item.BaseItem, 1);
-                // if (mmEvent.Item.BaseItem is OreItem)
-                // {
-                //     orePickupFeedbacks?.PlayFeedbacks();
-                // }
-                // else if (mmEvent.Item.BaseItem is StoneItem)
-                // {
-                //     stonePickupFeedbacks?.PlayFeedbacks();
-                // }
-                // else if (mmEvent.Item.BaseItem is BundleItem)
-                // {
-                //     bundlePickupFeedbacks?.PlayFeedbacks();
-                // }
+                switch (mmEvent.Item.BaseItem.ItemType)
+                {
+                    case ItemType.Bundle:
+                        bundlePickupFeedbacks.PlayFeedbacks();
+                        break;
+                    case ItemType.Ore:
+                        orePickupFeedbacks.PlayFeedbacks();
+                        break;
+                    case ItemType.Stone:
+                        stonePickupFeedbacks.PlayFeedbacks();
+                        break;
+                    case ItemType.Crystal:
+                        crystalPickupFeedbacks.PlayFeedbacks();
+                        break;
+                    default:
+                        bundlePickupFeedbacks.PlayFeedbacks();
+                        break;
+                }
             }
         }
 
