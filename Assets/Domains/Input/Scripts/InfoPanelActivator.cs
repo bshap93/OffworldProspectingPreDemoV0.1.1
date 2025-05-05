@@ -11,6 +11,10 @@ namespace Domains.Input.Scripts
 
         public Canvas canvas;
 
+        public bool onlyShowOnce;
+
+        public bool hasBeenShown;
+
 
         [Tooltip("Optional offset from center of screen (Canvas space).")]
         public Vector2 screenOffset = Vector2.zero;
@@ -24,6 +28,8 @@ namespace Domains.Input.Scripts
         public void ShowInteractablePrompt()
         {
             if (infoPanelPrefab == null) return;
+
+            if (hasBeenShown && onlyShowOnce) return;
 
             if (_infoPanelInstance == null)
             {
@@ -45,11 +51,15 @@ namespace Domains.Input.Scripts
 
         public void HideInteractablePrompt()
         {
+            if (hasBeenShown && onlyShowOnce) return;
             if (_infoPanelInstance != null) _infoPanelInstance.SetActive(false);
         }
 
         public void Interact()
         {
-        } // Optional: leave empty
+            if (hasBeenShown && onlyShowOnce) return;
+
+            if (!hasBeenShown && onlyShowOnce) hasBeenShown = true;
+        } // Optional: leave empty if no interaction is needed
     }
 }

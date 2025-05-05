@@ -30,6 +30,8 @@ namespace Domains.Input.Scripts
 
         private ButtonPromptWithAction _buttonPrompt;
 
+        private InfoPanelActivator _infoPanelActivator;
+
         private void Start()
         {
             if (ButtonPromptPrefab != null)
@@ -40,11 +42,14 @@ namespace Domains.Input.Scripts
                 _buttonPrompt.Initialization();
                 _buttonPrompt.Hide();
             }
+
+            _infoPanelActivator = GetComponent<InfoPanelActivator>();
         }
 
 
         public void Interact()
         {
+            if (_infoPanelActivator != null) _infoPanelActivator.Interact();
             ActivateButton();
         }
 

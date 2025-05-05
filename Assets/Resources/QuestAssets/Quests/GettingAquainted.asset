@@ -804,7 +804,7 @@ MonoBehaviour:
       m_textTable: {fileID: 0}
       m_textTableFieldID: 0
     m_nodeType: 4
-    m_isOptional: 0
+    m_isOptional: 1
     m_state: 0
     m_speaker:
       m_text: 
@@ -1111,7 +1111,7 @@ MonoBehaviour:
       m_textTable: {fileID: 0}
       m_textTableFieldID: 0
     m_nodeType: 4
-    m_isOptional: 0
+    m_isOptional: 1
     m_state: 0
     m_speaker:
       m_text: 
@@ -1148,7 +1148,7 @@ MonoBehaviour:
     m_childIndexList: 02000000
     m_canvasRect:
       serializedVersion: 2
-      x: 357.33334
+      x: 356.6667
       y: 240.00003
       width: 120
       height: 48
