@@ -66,18 +66,18 @@ namespace Domains.UI_Global.Scripts
             if (mmEvent.EventType == ItemEventType.Picked)
             {
                 DisplayPickedItem(mmEvent.Item.BaseItem, 1);
-                if (mmEvent.Item.BaseItem is OreItem)
-                {
-                    orePickupFeedbacks?.PlayFeedbacks();
-                }
-                else if (mmEvent.Item.BaseItem is StoneItem)
-                {
-                    stonePickupFeedbacks?.PlayFeedbacks();
-                }
-                else if (mmEvent.Item.BaseItem is BundleItem)
-                {
-                    bundlePickupFeedbacks?.PlayFeedbacks();
-                }
+                // if (mmEvent.Item.BaseItem is OreItem)
+                // {
+                //     orePickupFeedbacks?.PlayFeedbacks();
+                // }
+                // else if (mmEvent.Item.BaseItem is StoneItem)
+                // {
+                //     stonePickupFeedbacks?.PlayFeedbacks();
+                // }
+                // else if (mmEvent.Item.BaseItem is BundleItem)
+                // {
+                //     bundlePickupFeedbacks?.PlayFeedbacks();
+                // }
             }
         }
 
