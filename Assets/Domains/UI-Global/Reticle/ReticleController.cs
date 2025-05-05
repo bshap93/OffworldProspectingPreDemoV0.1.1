@@ -10,8 +10,6 @@ namespace Domains.UI_Global.Reticle
 {
     public class ReticleController : MonoBehaviour
     {
-        [Header("Reticle UI")] public Image reticle;
-
         [Header("Reticle States")] public ReticleState defaultState;
 
         public ReticleState interactableState;
@@ -22,6 +20,7 @@ namespace Domains.UI_Global.Reticle
 
 
         public TerrainLayerDetector terrainLayerDetector;
+        [Header("Reticle UI")] public Image reticle;
 
         private ReticleState currentState;
         private IToolAction currentTool;

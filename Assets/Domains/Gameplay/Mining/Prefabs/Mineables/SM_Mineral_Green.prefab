@@ -802,9 +802,21 @@ MonoBehaviour:
       m_Calls: []
   OnOreHit:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1946925729643682920}
+        m_TargetAssemblyTypeName: HighlightEffectController, Assembly-CSharp
+        m_MethodName: TriggerHighlightHitEffect
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OreHardness: 0
-  UniqueID: de95c10b-f8ce-4d8a-8791-bd09f2987ee3
+  UniqueID: f1950851-84b1-49ce-ad8a-bb59d4fe0a70
   failHitFeedbacks: {fileID: 7234271836214855775}
   failHitParticles: {fileID: 6835221663383594993, guid: c14ae236c4c9aed41ba307d978ef96ee, type: 3}
   oreHitParticles: {fileID: 6835221663383594993, guid: c14ae236c4c9aed41ba307d978ef96ee, type: 3}
@@ -1017,10 +1029,10 @@ MonoBehaviour:
   seeThroughTextureScale: 1
   seeThroughChildrenSortingMode: 0
   rmsCount: 1
-  hitFxInitialIntensity: 0.095
+  hitFxInitialIntensity: 0.496
   hitFxMode: 0
   hitFxFadeOutDuration: 0.53
-  hitFxColor: {r: 1, g: 0.33224142, b: 0, a: 1}
+  hitFxColor: {r: 0.05512321, g: 0.5, b: 0, a: 1}
   hitFxRadius: 0.5
 --- !u!114 &1946925729643682920
 MonoBehaviour:
@@ -1034,7 +1046,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9eb18bd15cc5eb54dbddc9772eb732ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetID: 
+  targetID: c8416a0c-a513-4d43-ad09-b576ea515539
   onScanned:
     m_PersistentCalls:
       m_Calls: []

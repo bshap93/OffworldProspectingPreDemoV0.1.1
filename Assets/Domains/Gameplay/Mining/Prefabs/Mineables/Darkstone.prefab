@@ -713,8 +713,23 @@ MonoBehaviour:
   OnOreDestroyed:
     m_PersistentCalls:
       m_Calls: []
+  OnOreHit:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5178177609660149189}
+        m_TargetAssemblyTypeName: HighlightEffectController, Assembly-CSharp
+        m_MethodName: TriggerHighlightHitEffect
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OreHardness: 0
-  UniqueID: 9803104f-fe33-42d4-a122-19801423e7db
+  UniqueID: 219af683-28f5-4102-a26d-2dd252f31500
   failHitFeedbacks: {fileID: 2879248722755317898}
   failHitParticles: {fileID: 6835221663383594993, guid: 4dcc88f5d0e581d488cb4d6cf6aa94ac, type: 3}
   oreHitParticles: {fileID: 6835221663383594993, guid: 4dcc88f5d0e581d488cb4d6cf6aa94ac, type: 3}
@@ -731,7 +746,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9eb18bd15cc5eb54dbddc9772eb732ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetID: 269ec91a-3607-4a37-9a6c-0e1e30c29b1a
+  targetID: da6a6aca-ad74-4429-9c18-6b3f94c8ea98
   onScanned:
     m_PersistentCalls:
       m_Calls: []
@@ -932,7 +947,7 @@ MonoBehaviour:
   seeThroughTextureScale: 1
   seeThroughChildrenSortingMode: 0
   rmsCount: 1
-  hitFxInitialIntensity: 0.095
+  hitFxInitialIntensity: 0.508
   hitFxMode: 0
   hitFxFadeOutDuration: 0.53
   hitFxColor: {r: 1, g: 0.33224142, b: 0, a: 1}

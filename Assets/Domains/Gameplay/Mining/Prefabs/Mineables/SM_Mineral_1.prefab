@@ -801,7 +801,19 @@ MonoBehaviour:
       m_Calls: []
   OnOreHit:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8661982123325151153}
+        m_TargetAssemblyTypeName: HighlightEffectController, Assembly-CSharp
+        m_MethodName: TriggerHighlightHitEffect
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OreHardness: 0
   UniqueID: 11e289b2-9a95-4355-af5e-d63c69be7c5b
   failHitFeedbacks: {fileID: 7234271836214855775}
@@ -1004,10 +1016,10 @@ MonoBehaviour:
   seeThroughTextureScale: 1
   seeThroughChildrenSortingMode: 0
   rmsCount: 1
-  hitFxInitialIntensity: 0
+  hitFxInitialIntensity: 0.496
   hitFxMode: 0
-  hitFxFadeOutDuration: 0.25
-  hitFxColor: {r: 1, g: 1, b: 1, a: 1}
+  hitFxFadeOutDuration: 0.53
+  hitFxColor: {r: 0.04062321, g: 0.09390134, b: 0.99371064, a: 1}
   hitFxRadius: 0.5
 --- !u!114 &1744886574039614862
 MonoBehaviour:
@@ -1052,7 +1064,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9eb18bd15cc5eb54dbddc9772eb732ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetID: 36b70389-826e-4eb7-af8f-1571059e41d9
+  targetID: 2e990c81-75c6-4c93-8191-a3c6905c62f6
   onScanned:
     m_PersistentCalls:
       m_Calls: []
