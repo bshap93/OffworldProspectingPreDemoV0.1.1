@@ -66,6 +66,7 @@ namespace Domains.UI_Global.Scripts
             if (mmEvent.EventType == ItemEventType.Picked)
             {
                 DisplayPickedItem(mmEvent.Item.BaseItem, 1);
+                
                 switch (mmEvent.Item.BaseItem.ItemType)
                 {
                     case ItemType.Bundle:
