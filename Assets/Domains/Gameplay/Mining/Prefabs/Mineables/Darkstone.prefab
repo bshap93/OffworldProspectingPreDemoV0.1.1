@@ -714,7 +714,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OreHardness: 0
-  UniqueID: 03f430d4-6321-47d9-9b57-b11e3086a81a
+  UniqueID: 9803104f-fe33-42d4-a122-19801423e7db
   failHitFeedbacks: {fileID: 2879248722755317898}
   failHitParticles: {fileID: 6835221663383594993, guid: 4dcc88f5d0e581d488cb4d6cf6aa94ac, type: 3}
   oreHitParticles: {fileID: 6835221663383594993, guid: 4dcc88f5d0e581d488cb4d6cf6aa94ac, type: 3}
@@ -731,7 +731,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9eb18bd15cc5eb54dbddc9772eb732ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetID: 4537d3b5-7989-4a93-8e6b-0b801efe279e
+  targetID: 269ec91a-3607-4a37-9a6c-0e1e30c29b1a
   onScanned:
     m_PersistentCalls:
       m_Calls: []
@@ -932,10 +932,10 @@ MonoBehaviour:
   seeThroughTextureScale: 1
   seeThroughChildrenSortingMode: 0
   rmsCount: 1
-  hitFxInitialIntensity: 1
+  hitFxInitialIntensity: 0.095
   hitFxMode: 0
-  hitFxFadeOutDuration: 0.25
-  hitFxColor: {r: 1, g: 1, b: 1, a: 1}
+  hitFxFadeOutDuration: 0.53
+  hitFxColor: {r: 1, g: 0.33224142, b: 0, a: 1}
   hitFxRadius: 0.5
 --- !u!114 &7020157154326008017
 MonoBehaviour:

@@ -268,13 +268,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1516106591288381523}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7483216, y: 0.03235626, z: -0.036600973, w: 0.6615349}
-  m_LocalPosition: {x: -0.0000005327165, y: 0.35800195, z: 0.000002130866}
+  m_LocalRotation: {x: -0.9385425, y: -0.000000029802326, z: 0.0000000074505815, w: 0.34516376}
+  m_LocalPosition: {x: 0.0000011473894, y: 0.35800084, z: 0.000002130866}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8343209881824758203}
-  m_LocalEulerAnglesHint: {x: -98.991, y: -38.642, z: 38.296997}
+  m_LocalEulerAnglesHint: {x: -139.616, y: -38.642, z: 38.296997}
 --- !u!108 &5376424564081621359
 Light:
   m_ObjectHideFlags: 0
@@ -287,7 +287,7 @@ Light:
   m_Type: 0
   m_Color: {r: 0.86243105, g: 0, b: 1, a: 1}
   m_Intensity: 1.5
-  m_Range: 2
+  m_Range: 2.49
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -538,8 +538,11 @@ MonoBehaviour:
   OnOreDestroyed:
     m_PersistentCalls:
       m_Calls: []
+  OnOreHit:
+    m_PersistentCalls:
+      m_Calls: []
   OreHardness: 0
-  UniqueID: 
+  UniqueID: ba4dddac-01d7-433e-ac92-696be6359fd3
   failHitFeedbacks: {fileID: 0}
   failHitParticles: {fileID: 6835221663383594993, guid: c14ae236c4c9aed41ba307d978ef96ee, type: 3}
   oreHitParticles: {fileID: 6835221663383594993, guid: c14ae236c4c9aed41ba307d978ef96ee, type: 3}
@@ -716,7 +719,7 @@ MonoBehaviour:
   iconFXOffset: {x: 0, y: 1, z: 0}
   iconFXTransitionDuration: 0.5
   iconFXStayDuration: 1.5
-  seeThrough: 2
+  seeThrough: 1
   seeThroughOccluderMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -728,7 +731,7 @@ MonoBehaviour:
   seeThroughMaxDepth: 0
   seeThroughIntensity: 0.8
   seeThroughTintAlpha: 0.5
-  seeThroughTintColor: {r: 1, g: 0, b: 0, a: 1}
+  seeThroughTintColor: {r: 1, g: 0, b: 0.72551966, a: 1}
   seeThroughNoise: 1
   seeThroughBorder: 0
   seeThroughBorderColor: {r: 0, g: 0, b: 0, a: 1}
@@ -788,6 +791,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9eb18bd15cc5eb54dbddc9772eb732ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetID: fe5687eb-46d2-4629-a4fd-5fd7fbd05754
+  onScanned:
+    m_PersistentCalls:
+      m_Calls: []
+  targetDuration: 3
 --- !u!1 &5230576383020181172
 GameObject:
   m_ObjectHideFlags: 0

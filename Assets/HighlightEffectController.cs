@@ -124,6 +124,11 @@ public class HighlightEffectController : MonoBehaviour, MMEventListener<Equipmen
         return 0f;
     }
 
+    public void TriggerHighlightHitEffect()
+    {
+        highlightEffect.HitFX();
+    }
+
     public void ConfigureForTerrainObjects()
     {
         if (highlightEffect != null)

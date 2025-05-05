@@ -646,13 +646,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3675843010317040656}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.5754647, y: 0.01053377, z: -0.041372154, w: 0.81671154}
-  m_LocalPosition: {x: 0, y: 0.39799958, z: 0.21599832}
+  m_LocalRotation: {x: 0.5276125, y: 0.0105241835, z: -0.041334502, w: 0.8484137}
+  m_LocalPosition: {x: 0, y: 0.3979995, z: 0.21599919}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7426014740850340548}
-  m_LocalEulerAnglesHint: {x: 70.195, y: -5.149, z: -9.42}
+  m_LocalEulerAnglesHint: {x: 63.753, y: -5.149, z: -9.42}
 --- !u!108 &7913526014788743277
 Light:
   m_ObjectHideFlags: 0
@@ -897,8 +897,11 @@ MonoBehaviour:
   OnOreDestroyed:
     m_PersistentCalls:
       m_Calls: []
+  OnOreHit:
+    m_PersistentCalls:
+      m_Calls: []
   OreHardness: 0
-  UniqueID: 490365aa-934d-44ce-8cce-0108db0950eb
+  UniqueID: 2d56d90a-941d-4b9f-a5b7-f1c0f400252b
   failHitFeedbacks: {fileID: 5939243206290031498}
   failHitParticles: {fileID: 6835221663383594993, guid: b4fdebf16c953b245b30edeebb4ed72c, type: 3}
   oreHitParticles: {fileID: 6835221663383594993, guid: b4fdebf16c953b245b30edeebb4ed72c, type: 3}
@@ -1087,7 +1090,7 @@ MonoBehaviour:
   iconFXOffset: {x: 0, y: 1, z: 0}
   iconFXTransitionDuration: 0.5
   iconFXStayDuration: 1.5
-  seeThrough: 2
+  seeThrough: 1
   seeThroughOccluderMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -1099,7 +1102,7 @@ MonoBehaviour:
   seeThroughMaxDepth: 0
   seeThroughIntensity: 0.8
   seeThroughTintAlpha: 0.5
-  seeThroughTintColor: {r: 1, g: 0, b: 0, a: 1}
+  seeThroughTintColor: {r: 0.10739112, g: 1, b: 0, a: 1}
   seeThroughNoise: 1
   seeThroughBorder: 0
   seeThroughBorderColor: {r: 0, g: 0, b: 0, a: 1}
@@ -1159,7 +1162,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9eb18bd15cc5eb54dbddc9772eb732ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetID: fa6d1dff-a111-4cba-8046-841b563f0a23
+  targetID: 7e201183-2b48-43c1-97ba-4c6dbca9f6ed
   onScanned:
     m_PersistentCalls:
       m_Calls: []

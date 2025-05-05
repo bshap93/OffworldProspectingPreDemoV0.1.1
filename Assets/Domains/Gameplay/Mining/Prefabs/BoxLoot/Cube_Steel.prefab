@@ -397,7 +397,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 380f9b65545dc3b488923b80b2b83bb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uniqueID: ada0666f-37e8-4a7e-827c-0b4013cc14e8
+  uniqueID: c7f7e124-fd6b-43b6-96b7-1759e5b1374d
   itemType: {fileID: 11400000, guid: 0586b7fb6a837854d959dc2fbfcd8ba2, type: 2}
   quantity: 1
   OnItemPicked:
@@ -405,7 +405,6 @@ MonoBehaviour:
       m_Calls: []
   interactionHoldTime: 0.01
   pickedMmFeedbacks: {fileID: 6991868795587982878}
-  soldMmFeedbacks: {fileID: 0}
   notPickable: 0
   interactablePrompt: {fileID: 0}
   dissolver: {fileID: 0}
@@ -676,7 +675,7 @@ MonoBehaviour:
   iconFXOffset: {x: 0, y: 1, z: 0}
   iconFXTransitionDuration: 0.5
   iconFXStayDuration: 1.5
-  seeThrough: 2
+  seeThrough: 1
   seeThroughOccluderMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -748,7 +747,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9eb18bd15cc5eb54dbddc9772eb732ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetID: 4f009b80-22d0-4d28-b7d4-34d610a83d2d
+  targetID: 3ebf074b-e703-4c0e-8e4d-75777941ad11
   onScanned:
     m_PersistentCalls:
       m_Calls: []

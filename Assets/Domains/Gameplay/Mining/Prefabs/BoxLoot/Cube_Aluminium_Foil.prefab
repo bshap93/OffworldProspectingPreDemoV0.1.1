@@ -129,7 +129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 380f9b65545dc3b488923b80b2b83bb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uniqueID: 4bd8b25e-afae-4161-af29-e6290f70daaa
+  uniqueID: 65b1f52a-90f9-4286-9f37-ac24db12c51e
   itemType: {fileID: 11400000, guid: 0a2dd580cb4a54e4ca1670f0ad0873e6, type: 2}
   quantity: 1
   OnItemPicked:
@@ -137,7 +137,6 @@ MonoBehaviour:
       m_Calls: []
   interactionHoldTime: 1
   pickedMmFeedbacks: {fileID: 2840789604690446621}
-  soldMmFeedbacks: {fileID: 0}
   notPickable: 0
   interactablePrompt: {fileID: 0}
   dissolver: {fileID: 1440700462965812364}
@@ -451,7 +450,7 @@ MonoBehaviour:
   iconFXOffset: {x: 0, y: 1, z: 0}
   iconFXTransitionDuration: 0.5
   iconFXStayDuration: 1.5
-  seeThrough: 2
+  seeThrough: 1
   seeThroughOccluderMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -523,6 +522,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9eb18bd15cc5eb54dbddc9772eb732ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetID: fe090ab0-fd56-4e5b-93d0-d22ba959b10d
+  onScanned:
+    m_PersistentCalls:
+      m_Calls: []
+  targetDuration: 3
 --- !u!1 &8113279767753474682
 GameObject:
   m_ObjectHideFlags: 0

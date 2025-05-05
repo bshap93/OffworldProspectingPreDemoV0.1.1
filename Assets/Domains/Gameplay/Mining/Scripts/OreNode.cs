@@ -28,9 +28,11 @@ namespace Domains.Gameplay.Mining.Scripts
 
         [Header("Feedbacks")] [SerializeField] private MMFeedbacks oreHitFeedback;
 
+
         [SerializeField] private MMFeedbacks oreDestroyFeedback;
 
         [SerializeField] private UnityEvent OnOreDestroyed;
+        [SerializeField] private UnityEvent OnOreHit;
 
         public int OreHardness; // Hardness of the ore node.
 
@@ -90,6 +92,7 @@ namespace Domains.Gameplay.Mining.Scripts
                 }
 
                 oreHitFeedback?.PlayFeedbacks();
+                OnOreHit?.Invoke();
 
 
                 // Knock animation.
