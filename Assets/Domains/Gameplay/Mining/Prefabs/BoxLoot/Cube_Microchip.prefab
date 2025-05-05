@@ -393,20 +393,20 @@ MonoBehaviour:
   targetFXTransitionDuration: 0.5
   targetFXStayDuration: 1.5
   targetFXVisibility: 1
-  iconFX: 0
-  iconFXMesh: {fileID: 0}
-  iconFXLightColor: {r: 1, g: 1, b: 1, a: 1}
-  iconFXDarkColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  iconFX: 1
+  iconFXMesh: {fileID: 4300000, guid: 63cb43ab8fe058f428fcd4226087a692, type: 3}
+  iconFXLightColor: {r: 0.1882353, g: 0.8, b: 0.6784314, a: 1}
+  iconFXDarkColor: {r: 0.09411765, g: 0.4, b: 0.3392157, a: 1}
   iconFXCenter: {fileID: 0}
-  iconFXRotationSpeed: 50
+  iconFXRotationSpeed: 25
   iconFXAnimationOption: 0
   iconFXAnimationAmount: 0.1
   iconFXAnimationSpeed: 3
   iconFXScale: 1
   iconFXScaleToRenderBounds: 0
-  iconFXOffset: {x: 0, y: 1, z: 0}
+  iconFXOffset: {x: 0, y: 0.5, z: 0}
   iconFXTransitionDuration: 0.5
-  iconFXStayDuration: 1.5
+  iconFXStayDuration: 2.5
   seeThrough: 1
   seeThroughOccluderMask:
     serializedVersion: 2
@@ -479,7 +479,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9eb18bd15cc5eb54dbddc9772eb732ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetID: 0ea73a36-75f0-4e29-8476-87f2e6afd1a7
+  targetID: 9f4d740b-9278-461a-8798-b076c2258d51
   onScanned:
     m_PersistentCalls:
       m_Calls: []

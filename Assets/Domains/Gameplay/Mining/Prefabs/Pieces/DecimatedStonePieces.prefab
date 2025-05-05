@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3900661057832619708}
   - component: {fileID: 6543693720488822289}
   - component: {fileID: 1543536356086400091}
-  - component: {fileID: 9155897725718418555}
+  - component: {fileID: 2017236563505501774}
   m_Layer: 0
   m_Name: SM_Stone6_Pieces_9
   m_TagString: Untagged
@@ -110,7 +110,7 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -5527056149967686786, guid: 573b0906de979714bab8055415473de1, type: 3}
---- !u!54 &9155897725718418555
+--- !u!54 &2017236563505501774
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -118,7 +118,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1839185551541273740}
   serializedVersion: 4
-  m_Mass: 0.02
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -129,7 +129,7 @@ Rigidbody:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
@@ -149,7 +149,7 @@ GameObject:
   - component: {fileID: 1174973393707892567}
   - component: {fileID: 3661410466823652459}
   - component: {fileID: 6188846912214016491}
-  - component: {fileID: 902115793572392883}
+  - component: {fileID: 4655264555514476108}
   m_Layer: 0
   m_Name: SM_Stone6_Pieces_13
   m_TagString: Untagged
@@ -247,7 +247,7 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -143955012839517364, guid: 573b0906de979714bab8055415473de1, type: 3}
---- !u!54 &902115793572392883
+--- !u!54 &4655264555514476108
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -255,7 +255,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1958348501272403280}
   serializedVersion: 4
-  m_Mass: 0.02
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -266,7 +266,7 @@ Rigidbody:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
@@ -286,7 +286,7 @@ GameObject:
   - component: {fileID: 7670278014097256148}
   - component: {fileID: 2054576816723593563}
   - component: {fileID: 5666916978687610862}
-  - component: {fileID: 3276302239213742134}
+  - component: {fileID: 6552696954849613375}
   m_Layer: 0
   m_Name: SM_Stone6_Pieces_6
   m_TagString: Untagged
@@ -384,7 +384,7 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 8186750211184647425, guid: 573b0906de979714bab8055415473de1, type: 3}
---- !u!54 &3276302239213742134
+--- !u!54 &6552696954849613375
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -392,7 +392,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3307152270349898076}
   serializedVersion: 4
-  m_Mass: 0.02
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -403,7 +403,7 @@ Rigidbody:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
@@ -423,7 +423,7 @@ GameObject:
   - component: {fileID: 1612254883377593563}
   - component: {fileID: 1435943481028281107}
   - component: {fileID: 3497247840484002535}
-  - component: {fileID: 7438343635526306280}
+  - component: {fileID: 6111566844920932513}
   m_Layer: 0
   m_Name: SM_Stone6_Pieces_8
   m_TagString: Untagged
@@ -521,7 +521,7 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -1865788718574691786, guid: 573b0906de979714bab8055415473de1, type: 3}
---- !u!54 &7438343635526306280
+--- !u!54 &6111566844920932513
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -529,7 +529,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3743287672326687207}
   serializedVersion: 4
-  m_Mass: 0.02
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -540,7 +540,7 @@ Rigidbody:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
@@ -833,7 +833,7 @@ GameObject:
   - component: {fileID: 9205563017438665642}
   - component: {fileID: 9049968335409509230}
   - component: {fileID: 1338255108484223278}
-  - component: {fileID: 7137718405368145335}
+  - component: {fileID: 6038875019937668585}
   m_Layer: 0
   m_Name: SM_Stone6_Pieces_14
   m_TagString: Untagged
@@ -931,7 +931,7 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4771786667685056499, guid: 573b0906de979714bab8055415473de1, type: 3}
---- !u!54 &7137718405368145335
+--- !u!54 &6038875019937668585
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -939,7 +939,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5298379155928831333}
   serializedVersion: 4
-  m_Mass: 0.02
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -950,7 +950,7 @@ Rigidbody:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
@@ -970,7 +970,7 @@ GameObject:
   - component: {fileID: 6664063495174732642}
   - component: {fileID: 8131674650724973539}
   - component: {fileID: 4413669261061337249}
-  - component: {fileID: 6535354761779056320}
+  - component: {fileID: 6386739908317985879}
   m_Layer: 0
   m_Name: SM_Stone6_Pieces_1
   m_TagString: Untagged
@@ -1068,7 +1068,7 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 2502022666241048800, guid: 573b0906de979714bab8055415473de1, type: 3}
---- !u!54 &6535354761779056320
+--- !u!54 &6386739908317985879
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1076,7 +1076,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5796193320972786303}
   serializedVersion: 4
-  m_Mass: 0.02
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -1087,7 +1087,7 @@ Rigidbody:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
@@ -1107,7 +1107,7 @@ GameObject:
   - component: {fileID: 4073322429959103197}
   - component: {fileID: 4246230376634027347}
   - component: {fileID: 4655711235461033521}
-  - component: {fileID: 976064522742829916}
+  - component: {fileID: 5133011257380707864}
   m_Layer: 0
   m_Name: SM_Stone6_Pieces_7
   m_TagString: Untagged
@@ -1205,7 +1205,7 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 1644944338143460467, guid: 573b0906de979714bab8055415473de1, type: 3}
---- !u!54 &976064522742829916
+--- !u!54 &5133011257380707864
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1213,7 +1213,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6085473652072612255}
   serializedVersion: 4
-  m_Mass: 0.02
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -1224,7 +1224,7 @@ Rigidbody:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
@@ -1321,7 +1321,7 @@ GameObject:
   - component: {fileID: 5119066184680901491}
   - component: {fileID: 4695024601345984573}
   - component: {fileID: 1349269445665667627}
-  - component: {fileID: 3678397712899598175}
+  - component: {fileID: 1745002397877305658}
   m_Layer: 0
   m_Name: SM_Stone6_Pieces_3
   m_TagString: Untagged
@@ -1419,7 +1419,7 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -2279265762243896356, guid: 573b0906de979714bab8055415473de1, type: 3}
---- !u!54 &3678397712899598175
+--- !u!54 &1745002397877305658
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1427,7 +1427,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6799984655012400236}
   serializedVersion: 4
-  m_Mass: 0.02
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -1438,7 +1438,7 @@ Rigidbody:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
@@ -1458,7 +1458,7 @@ GameObject:
   - component: {fileID: 1466599238255851543}
   - component: {fileID: 5591227026586059652}
   - component: {fileID: 6313468245283936815}
-  - component: {fileID: 2334126586322639716}
+  - component: {fileID: 1832548275799220660}
   m_Layer: 0
   m_Name: SM_Stone6_Pieces_5
   m_TagString: Untagged
@@ -1556,7 +1556,7 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -771785155591815595, guid: 573b0906de979714bab8055415473de1, type: 3}
---- !u!54 &2334126586322639716
+--- !u!54 &1832548275799220660
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1564,7 +1564,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7036070766179224837}
   serializedVersion: 4
-  m_Mass: 0.02
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -1575,7 +1575,7 @@ Rigidbody:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
@@ -1595,7 +1595,7 @@ GameObject:
   - component: {fileID: 5772184730600955980}
   - component: {fileID: 1898356127237397479}
   - component: {fileID: 9012545450806747443}
-  - component: {fileID: 4091786820215900673}
+  - component: {fileID: 3062677974573723829}
   m_Layer: 0
   m_Name: SM_Stone6_Pieces_10
   m_TagString: Untagged
@@ -1693,7 +1693,7 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -2752401727975149281, guid: 573b0906de979714bab8055415473de1, type: 3}
---- !u!54 &4091786820215900673
+--- !u!54 &3062677974573723829
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1701,7 +1701,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7628226928389665168}
   serializedVersion: 4
-  m_Mass: 0.02
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -1712,7 +1712,7 @@ Rigidbody:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
@@ -1732,7 +1732,7 @@ GameObject:
   - component: {fileID: 3888815629850711645}
   - component: {fileID: 7134444353051372534}
   - component: {fileID: 684598689906171208}
-  - component: {fileID: 6197883789944177654}
+  - component: {fileID: 6856340150382714039}
   m_Layer: 0
   m_Name: SM_Stone6_Pieces_2
   m_TagString: Untagged
@@ -1830,7 +1830,7 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 7926762271680997156, guid: 573b0906de979714bab8055415473de1, type: 3}
---- !u!54 &6197883789944177654
+--- !u!54 &6856340150382714039
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1838,7 +1838,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7632137511637821525}
   serializedVersion: 4
-  m_Mass: 0.02
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -1849,7 +1849,7 @@ Rigidbody:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
@@ -1869,7 +1869,7 @@ GameObject:
   - component: {fileID: 1166344977952489219}
   - component: {fileID: 2550397843812890402}
   - component: {fileID: 5012945712091661547}
-  - component: {fileID: 7966399014372970659}
+  - component: {fileID: 1300288808533180890}
   m_Layer: 0
   m_Name: SM_Stone6_Pieces_4
   m_TagString: Untagged
@@ -1967,7 +1967,7 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -9027211743283619465, guid: 573b0906de979714bab8055415473de1, type: 3}
---- !u!54 &7966399014372970659
+--- !u!54 &1300288808533180890
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1975,7 +1975,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8464235616738593212}
   serializedVersion: 4
-  m_Mass: 0.02
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -1986,7 +1986,7 @@ Rigidbody:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
@@ -2006,7 +2006,7 @@ GameObject:
   - component: {fileID: 3888291454670452006}
   - component: {fileID: 6680948278950971892}
   - component: {fileID: 7030863845472694226}
-  - component: {fileID: 7650961036202109888}
+  - component: {fileID: 8160121956486423904}
   m_Layer: 0
   m_Name: SM_Stone6_Pieces_11
   m_TagString: Untagged
@@ -2104,7 +2104,7 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 7451241211591774380, guid: 573b0906de979714bab8055415473de1, type: 3}
---- !u!54 &7650961036202109888
+--- !u!54 &8160121956486423904
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2112,7 +2112,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8857769814990419110}
   serializedVersion: 4
-  m_Mass: 0.02
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -2123,7 +2123,7 @@ Rigidbody:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
