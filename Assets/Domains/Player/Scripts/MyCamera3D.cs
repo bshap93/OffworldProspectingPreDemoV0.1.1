@@ -6,7 +6,7 @@ using Lightbug.Utilities;
 using MoreMountains.Tools;
 using UnityEngine;
 
-namespace Domains
+namespace Domains.Player.Scripts
 {
     [AddComponentMenu("Character Controller Pro/Demo/Camera/Camera 3D")]
     [DefaultExecutionOrder(ExecutionOrder.CharacterGraphicsOrder + 100)] // <--- Do your job after everything else

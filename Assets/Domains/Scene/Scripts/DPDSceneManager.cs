@@ -1,4 +1,5 @@
 ﻿using System;
+using Domains.Player.Scripts;
 using Lightbug.CharacterControllerPro.Core;
 using Lightbug.CharacterControllerPro.Demo;
 using MoreMountains.Tools;
