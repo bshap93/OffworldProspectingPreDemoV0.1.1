@@ -1046,7 +1046,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9eb18bd15cc5eb54dbddc9772eb732ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetID: c8416a0c-a513-4d43-ad09-b576ea515539
+  targetID: 4adbae62-a3f5-4210-a442-1227ff29e4b6
   onScanned:
     m_PersistentCalls:
       m_Calls: []
@@ -1369,7 +1369,7 @@ Light:
   m_Type: 2
   m_Color: {r: 0.019768655, g: 0.8352941, b: 0.019607825, a: 1}
   m_Intensity: 2
-  m_Range: 2
+  m_Range: 1
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10

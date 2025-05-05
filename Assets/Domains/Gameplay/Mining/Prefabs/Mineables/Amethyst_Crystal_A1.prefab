@@ -284,11 +284,11 @@ Light:
   m_GameObject: {fileID: 1516106591288381523}
   m_Enabled: 1
   serializedVersion: 11
-  m_Type: 0
+  m_Type: 2
   m_Color: {r: 0.86243105, g: 0, b: 1, a: 1}
-  m_Intensity: 1.5
-  m_Range: 2.49
-  m_SpotAngle: 30
+  m_Intensity: 3.66
+  m_Range: 1
+  m_SpotAngle: 47.2
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
@@ -791,7 +791,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9eb18bd15cc5eb54dbddc9772eb732ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetID: fe5687eb-46d2-4629-a4fd-5fd7fbd05754
+  targetID: 02d2484f-7754-4c32-b111-6e8f261354d3
   onScanned:
     m_PersistentCalls:
       m_Calls: []
