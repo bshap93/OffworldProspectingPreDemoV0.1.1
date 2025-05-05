@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using Domains.Items;
 using Domains.Items.Events;
+using Domains.Items.Scripts;
+using Domains.UI;
 using Gameplay.Events;
+using MoreMountains.Feedbacks;
 using MoreMountains.Tools;
 using UnityEngine;
 
-namespace Domains.UI
+namespace Domains.UI_Global.Scripts
 {
     /// <summary>
     ///     A class that displays notifications when items are picked up.
@@ -21,6 +24,10 @@ namespace Domains.UI
         public float pickupDisplayDuration = 5f;
 
         [Tooltip("The fade in/out duration")] public float pickupFadeDuration = 0.2f;
+
+        [SerializeField] private MMFeedbacks orePickupFeedbacks;
+        [SerializeField] private MMFeedbacks stonePickupFeedbacks;
+        [SerializeField] private MMFeedbacks bundlePickupFeedbacks;
 
         // Dictionary to track active displays by item ID
         private readonly Dictionary<string, PickupDisplayItem> _displays = new();
@@ -56,7 +63,22 @@ namespace Domains.UI
 
         public void OnMMEvent(ItemEvent mmEvent)
         {
-            if (mmEvent.EventType == ItemEventType.Picked) DisplayPickedItem(mmEvent.Item.BaseItem, 1);
+            if (mmEvent.EventType == ItemEventType.Picked)
+            {
+                DisplayPickedItem(mmEvent.Item.BaseItem, 1);
+                if (mmEvent.Item.BaseItem is OreItem)
+                {
+                    orePickupFeedbacks?.PlayFeedbacks();
+                }
+                else if (mmEvent.Item.BaseItem is StoneItem)
+                {
+                    stonePickupFeedbacks?.PlayFeedbacks();
+                }
+                else if (mmEvent.Item.BaseItem is BundleItem)
+                {
+                    bundlePickupFeedbacks?.PlayFeedbacks();
+                }
+            }
         }
 
         public void DisplayPickedItem(BaseItem item, int quantity)

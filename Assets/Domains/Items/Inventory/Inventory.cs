@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Domains.Items.Events;
+using Domains.Items.Scripts;
 using Domains.Player.Events;
 using MoreMountains.Feedbacks;
 using UnityEngine;

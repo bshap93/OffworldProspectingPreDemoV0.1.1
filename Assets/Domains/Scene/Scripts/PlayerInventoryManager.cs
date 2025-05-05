@@ -4,6 +4,7 @@ using System.Linq;
 using Domains.Items;
 using Domains.Items.Events;
 using Domains.Items.Inventory;
+using Domains.Items.Scripts;
 using Domains.Player.Scripts;
 using Domains.UI_Global.Events;
 using Gameplay.Events;

@@ -1,4 +1,5 @@
 ﻿using Domains.Items;
+using Domains.Items.Scripts;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
