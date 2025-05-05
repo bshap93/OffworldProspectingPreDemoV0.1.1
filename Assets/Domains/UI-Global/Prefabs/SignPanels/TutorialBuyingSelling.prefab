@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: e4531aa11d4987345b27de4e01d57439, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b81108835fef5c0459394910ad4ba25b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -175,12 +175,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Your shovel tool digs into sand and dirt! Uncover compacted cube shaped
-    resource bundles and mineable ore clusters by removing the terrain that covers
-    them. When you do find a resource bundle, use Interact to collect it. Remember
-    to switch tools using the mousewheel.
-
-'
+  m_text: You can export your mined and collected resources at the console to the
+    left, for a profit. You may also buy upgrades and supplies. Upgrade your tools
+    with better versions which perform their task with more power.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b04f3173f946b754db673ac13842f4c1, type: 2}
   m_sharedMaterial: {fileID: 21728410361126204, guid: b04f3173f946b754db673ac13842f4c1, type: 2}
@@ -460,7 +457,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Shoveling
+  m_text: Buy/Sell
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: baf5990ef136e594abc52299c06d9b48, type: 2}
   m_sharedMaterial: {fileID: 21500823079736722, guid: baf5990ef136e594abc52299c06d9b48, type: 2}
@@ -614,7 +611,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4719635684000539548
 RectTransform:
   m_ObjectHideFlags: 0
