@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Linq;
 using Digger.Modules.Core.Sources;
 using Digger.Modules.Runtime.Sources;
@@ -85,113 +86,156 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
 
         public override void PerformToolAction()
         {
-            var detectedTextureIndex = terrainLayerDetector.GetTextureIndex(lastHit, out _);
+            try
+            {
+                var detectedTextureIndex = terrainLayerDetector.GetTextureIndex(lastHit, out _);
 // First, see if it's a mesh or rock object we can mine
-            var isMinableObject = CanInteractWithObject(lastHit.collider.gameObject);
+                var isMinableObject = CanInteractWithObject(lastHit.collider.gameObject);
 
 // Then decide if it’s terrain and valid
-            var isTerrain = detectedTextureIndex >= 0;
-            var isValidTerrain = CanInteractWithTextureIndex(detectedTextureIndex);
+                var isTerrain = detectedTextureIndex >= 0;
+                var isValidTerrain = CanInteractWithTextureIndex(detectedTextureIndex);
 
-            if (!isMinableObject && (!isTerrain || !isValidTerrain)) return;
-            
-
-            var textureIndex = GetTerrainLayerBasedOnDepthAndOverrides(detectedTextureIndex, lastHit.point.y);
+                if (!isMinableObject && (!isTerrain || !isValidTerrain)) return;
 
 
-            if (Time.time < lastDigTime + miningCooldown)
-                return;
-
-            lastDigTime = Time.time;
-
-            if (playerInteraction == null || digger == null)
-                return;
+                var textureIndex = GetTerrainLayerBasedOnDepthAndOverrides(detectedTextureIndex, lastHit.point.y);
 
 
-            var notPlayerMask = ~playerInteraction.playerLayerMask;
-            if (!Physics.Raycast(mainCamera.transform.position, mainCamera.transform.forward, out var hit,
-                    diggerUsingRange,
-                    notPlayerMask))
-                return;
+                if (Time.time < lastDigTime + miningCooldown)
+                    return;
 
-            // Cache hit for external access
-            lastHit = hit;
+                lastDigTime = Time.time;
 
-            // Interact
-            if (CanInteractWithObject(hit.collider.gameObject))
-            {
-                // Call IInteractable if implemented
-                hit.collider.GetComponent<IInteractable>()?.Interact();
+                if (playerInteraction == null || digger == null)
+                    return;
 
 
-                var minable = hit.collider.GetComponent<IMinable>();
-                if (minable != null)
+                var notPlayerMask = ~playerInteraction.playerLayerMask;
+                if (!Physics.Raycast(mainCamera.transform.position, mainCamera.transform.forward, out var hit,
+                        diggerUsingRange,
+                        notPlayerMask))
+                    return;
+
+                // Cache hit for external access
+                lastHit = hit;
+
+                // Interact
+                if (CanInteractWithObject(hit.collider.gameObject))
                 {
-                    if (minable.GetCurrentMinableHardness() <= hardnessCanBreak)
+                    // Call IInteractable if implemented
+                    hit.collider.GetComponent<IInteractable>()?.Interact();
+
+
+                    var minable = hit.collider.GetComponent<IMinable>();
+                    if (minable != null)
                     {
-                        minable.MinableMineHit();
-                        moveToolDespiteFailHitFeedbacks?.PlayFeedbacks();
-                    }
-                    else
-                    {
-                        minable.MinableFailHit(hit.point);
-                        moveToolDespiteFailHitFeedbacks?.PlayFeedbacks();
+                        if (minable.GetCurrentMinableHardness() <= hardnessCanBreak)
+                        {
+                            minable.MinableMineHit();
+                            moveToolDespiteFailHitFeedbacks?.PlayFeedbacks();
+                        }
+                        else
+                        {
+                            minable.MinableFailHit(hit.point);
+                            moveToolDespiteFailHitFeedbacks?.PlayFeedbacks();
+                        }
                     }
                 }
-            }
 
-            // Return after triggering failed mining feedbacks, and before digging
-            if (!allowedTerrainTextureIndices.Contains(detectedTextureIndex)) return;
+                // Return after triggering failed mining feedbacks, and before digging
+                if (!allowedTerrainTextureIndices.Contains(detectedTextureIndex)) return;
 
 
-            // Distance check: is this close enough to the last hit?
-            if (terrainHitCount > 0 && Vector3.Distance(hit.point, lastHitPosition) > hitThresholdDistance)
+                // Distance check: is this close enough to the last hit?
+                if (terrainHitCount > 0 && Vector3.Distance(hit.point, lastHitPosition) > hitThresholdDistance)
+                    terrainHitCount = 0;
+
+                // Store current hit
+                lastHitPosition = hit.point;
+                terrainHitCount++;
+
+                if (terrainHitCount < 2)
+                {
+                    var digPositionFirst = hit.point + mainCamera.transform.forward * 0.3f;
+
+                    StartCoroutine(Dig(digPositionFirst, textureIndex, firstHitEffectOpacity,
+                        firstHitEffectRadius, BrushType.Stalagmite)); // first hit dig
+                    TriggerDebrisEffect(debrisEffectFirstHitPrefab, hit);
+
+                    firstHitFeedbacks?.PlayFeedbacks(hit.point); // optional first-hit feedback
+
+                    return;
+                }
+
+                if (terrainHitCount == 2)
+                {
+                    UnityEngine.Debug.Log("Removing decal");
+                    TriggerDebrisEffect(debrisEffectSecondHitPrefab, hit);
+                    secondHitFeedbacks?.PlayFeedbacks(hit.point); // optional second-hit feedback
+                }
+
+
                 terrainHitCount = 0;
 
-            // Store current hit
-            lastHitPosition = hit.point;
-            terrainHitCount++;
+                var digPosition = hit.point + mainCamera.transform.forward * 0.3f;
 
-            if (terrainHitCount < 2)
-            {
-                var digPositionFirst = hit.point + mainCamera.transform.forward * 0.3f;
-
-                StartCoroutine(Dig(digPositionFirst, textureIndex, firstHitEffectOpacity,
-                    firstHitEffectRadius, BrushType.Stalagmite)); // first hit dig
-                TriggerDebrisEffect(debrisEffectFirstHitPrefab, hit);
-
-                firstHitFeedbacks?.PlayFeedbacks(hit.point); // optional first-hit feedback
-
-                return;
+                StartCoroutine(Dig(digPosition, textureIndex, effectOpacity, effectRadius));
             }
-
-            if (terrainHitCount == 2)
+            catch (Exception ex)
             {
-                UnityEngine.Debug.Log("Removing decal");
-                TriggerDebrisEffect(debrisEffectSecondHitPrefab, hit);
-                secondHitFeedbacks?.PlayFeedbacks(hit.point); // optional second-hit feedback
+                UnityEngine.Debug.LogError($"Pickaxe error: {ex.Message}\n{ex.StackTrace}");
             }
-
-
-            terrainHitCount = 0;
-
-            var digPosition = hit.point + mainCamera.transform.forward * 0.3f;
-
-            StartCoroutine(Dig(digPosition, textureIndex, effectOpacity, effectRadius));
         }
 
+        // private IEnumerator Dig(Vector3 digPosition, int textureIndex,
+        //     float localEffectOpacity, float localEffectRadius, BrushType brushLoc = BrushType.Sphere)
+        // {
+        //     yield return new WaitForSeconds(delayBeforeDigging);
+        //
+        //     if (digger == null)
+        //     {
+        //         UnityEngine.Debug.LogError("Digger reference lost");
+        //         yield break;
+        //     }
+        //
+        //     try
+        //     {
+        //         if (EditAsynchronously)
+        //             digger.ModifyAsyncBuffured(digPosition, brushLoc, Action, textureIndex,
+        //                 localEffectOpacity, localEffectRadius, stalagmiteHeight, true);
+        //         else
+        //             digger.Modify(digPosition, brushLoc, Action, textureIndex,
+        //                 localEffectOpacity, localEffectRadius, stalagmiteHeight, true);
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         UnityEngine.Debug.LogError($"Dig operation error: {ex.Message}\n{ex.StackTrace}");
+        //     }
+        // }
         private IEnumerator Dig(Vector3 digPosition, int textureIndex,
             float effectOpacityLoc, float effectRadiusLoc, BrushType brushLoc = BrushType.Sphere)
         {
+            yield return new WaitForSeconds(delayBeforeDigging);
+
+            if (digger == null)
             {
-                yield return new WaitForSeconds(delayBeforeDigging);
+                UnityEngine.Debug.LogError("Digger reference lost");
+                yield break;
+            }
+
+            try
+            {
                 if (EditAsynchronously)
-                    digger.ModifyAsyncBuffured(digPosition, brushLoc, Action, textureIndex, effectOpacity, effectRadius,
-                        stalagmiteHeight, true);
+                    digger.ModifyAsyncBuffured(digPosition, brushLoc, Action, textureIndex,
+                        effectOpacityLoc, effectRadiusLoc, stalagmiteHeight, true);
                 else
-                    digger.Modify(digPosition, brushLoc, Action, textureIndex, effectOpacity, effectRadius,
-                        stalagmiteHeight,
-                        true);
+                    digger.Modify(digPosition, brushLoc, Action, textureIndex,
+                        effectOpacityLoc, effectRadiusLoc, stalagmiteHeight, true);
+            }
+            catch (Exception ex)
+            {
+                UnityEngine.Debug.LogError($"Dig operation error: {ex.Message}");
             }
         }
     }
