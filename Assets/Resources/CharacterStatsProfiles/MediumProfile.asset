@@ -29,3 +29,4 @@ MonoBehaviour:
   pickaxeMiningToolWidth: 0.64
   initialShovelToolEffectOpacity: 150
   pickaxeMiningToolEffectOpacity: 75
+  initialJetPackParticleColor: {r: 1, g: 1, b: 1, a: 1}

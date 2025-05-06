@@ -4,6 +4,7 @@ using Domains.Player.Scripts.ScriptableObjects;
 using MoreMountains.Tools;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Domains.Scripts
 {
@@ -16,14 +17,20 @@ namespace Domains.Scripts
 
         public TMP_Text nextUpgradeCostText;
 
+        [SerializeReference] private Image upgradeIconImage;
+
         private PlayerUpgradeManager _playerUpgradeManager;
 
         private int _upgradeLevel;
+
+        private Image cardBackgroundImage;
 
         private void Start()
         {
             _playerUpgradeManager = FindFirstObjectByType<PlayerUpgradeManager>();
             _upgradeLevel = _playerUpgradeManager.GetUpgradeLevel(upgradeData.upgradeTypeName);
+
+            cardBackgroundImage = GetComponent<Image>();
 
 
             upgradeTypeNameText.text = upgradeData.upgradeTypeName; // Show upgrade category
