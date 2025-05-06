@@ -17,13 +17,13 @@ namespace Domains.Scripts
 
         public TMP_Text nextUpgradeCostText;
 
-        [SerializeReference] private Image upgradeIconImage;
+        [SerializeField] private Image upgradeIconImage;
+
+        [SerializeField] private Image cardBackgroundImage;
 
         private PlayerUpgradeManager _playerUpgradeManager;
 
         private int _upgradeLevel;
-
-        private Image cardBackgroundImage;
 
         private void Start()
         {
