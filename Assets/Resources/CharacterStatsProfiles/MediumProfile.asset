@@ -23,6 +23,7 @@ MonoBehaviour:
   InitialUpgradeState: 0
   initialShovelToolEffectRadius: 0.4
   initialPickaxeToolEffectRadius: 0.4
+  initialJetPackSpeedMultiplier: 1.22
   SkipTutorial: 0
   shovelMiningToolWidth: 0.64
   pickaxeMiningToolWidth: 0.64

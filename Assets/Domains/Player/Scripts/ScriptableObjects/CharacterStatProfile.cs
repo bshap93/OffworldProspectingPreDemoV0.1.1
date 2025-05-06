@@ -29,6 +29,8 @@ namespace Domains.Player.Scripts.ScriptableObjects
 
         public float initialPickaxeToolEffectRadius;
 
+        public float initialJetPackSpeedMultiplier;
+
         [Header("Skip Tutorial")] public bool SkipTutorial;
 
         [FormerlySerializedAs("MiningToolWidth")] [Header("Mining Tool Width")]
@@ -40,5 +42,8 @@ namespace Domains.Player.Scripts.ScriptableObjects
         public float initialShovelToolEffectOpacity;
 
         public float pickaxeMiningToolEffectOpacity;
+
+        [FormerlySerializedAs("initialJetPackParticleMaterial")]
+        public Color initialJetPackParticleColor;
     }
 }

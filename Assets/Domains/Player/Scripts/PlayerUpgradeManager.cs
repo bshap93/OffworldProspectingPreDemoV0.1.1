@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Domains.Gameplay.Equipment.Scripts;
+using Domains.Gameplay.Mining.Scripts;
 using Domains.Gameplay.Tools.ToolSpecifics;
 using Domains.Items.Events;
 using Domains.Player.Events;
@@ -24,6 +25,8 @@ namespace Domains.Player.Scripts
         private static float pickaxeToolEffectRadius = 0.8f;
         private static float pickaxeToolEffectOpacity = 10f;
 
+        private static float jetPackSpeedMultiplier = 1.22f;
+
         // Tool dimensions
         private static float shovelToolWidth = 0.6410909f;
         private static float pickaxeMiningToolWidth = 0.6410909f;
@@ -31,6 +34,7 @@ namespace Domains.Player.Scripts
         // Current material indices for tools
         private static int shovelMaterialLevel;
         private static int pickaxeMaterialLevel;
+        private static int jetPackMaterialLevel;
 
         private static float fuelCapacity = 100f;
         private static string currentToolId = "Shovel";
@@ -38,11 +42,15 @@ namespace Domains.Player.Scripts
         // Tool references
         private static PickaxeTool pickaxeTool;
         private static ShovelTool shovelTool;
+        private static MyNormalMovement playerMovement;
+        private static ParticleSystem jetPackParticleSystem;
+
 
         // ---------------------------------------------------------
         // 2) Instance Fields: references to scene objects
         // --------------------------------------------
         [SerializeField] private List<UpgradeData> availableUpgrades;
+        [SerializeField] private ParticleSystem setParticleSystem;
         public MMFeedbacks upgradeFeedback;
         private CharacterStatProfile characterStatProfile;
 
@@ -112,6 +120,20 @@ namespace Domains.Player.Scripts
                 if (pickaxeTool == null)
                     UnityEngine.Debug.LogWarning("PickaxeTool not found. Upgrades may not apply correctly.");
             }
+
+            if (playerMovement == null)
+            {
+                playerMovement = FindFirstObjectByType<MyNormalMovement>();
+                if (playerMovement == null)
+                    UnityEngine.Debug.LogWarning("PlayerMovement not found. Upgrades may not apply correctly.");
+            }
+
+            if (jetPackParticleSystem == null)
+            {
+                jetPackParticleSystem = setParticleSystem;
+                if (jetPackParticleSystem == null)
+                    UnityEngine.Debug.LogWarning("JetPackParticleSystem not found. Upgrades may not apply correctly.");
+            }
         }
 
         private void InitializeDefaultValues()
@@ -125,9 +147,12 @@ namespace Domains.Player.Scripts
             pickaxeToolEffectRadius = characterStatProfile.initialPickaxeToolEffectRadius;
             pickaxeToolEffectOpacity = characterStatProfile.pickaxeMiningToolEffectOpacity;
 
+            jetPackSpeedMultiplier = characterStatProfile.initialJetPackSpeedMultiplier;
+
             // Reset material levels (0 = initial/no upgrades)
             shovelMaterialLevel = 0;
             pickaxeMaterialLevel = 0;
+            jetPackMaterialLevel = 0;
         }
 
         private PickaxeTool FindPickaxeTool()
@@ -291,7 +316,18 @@ namespace Domains.Player.Scripts
                 case "Pickaxe":
                     ApplyPickaxeUpgrade(level, multiplier, secondaryMultiplier, upgradeMaterial);
                     break;
+                case "Jetpack":
+                    ApplyJetpackUpgrade(level, multiplier, secondaryMultiplier, upgradeMaterial);
+                    break;
             }
+        }
+
+        private void ApplyJetpackUpgrade(int level, float multiplier, float secondaryMultiplier,
+            Material upgradeMaterial)
+        {
+            var newSpeedMultiplier = jetPackSpeedMultiplier * multiplier;
+            playerMovement.jetPackSpeedMultiplier = newSpeedMultiplier;
+            jetPackParticleSystem.startColor = upgradeMaterial.color;
         }
 
         private void ApplyEnduranceUpgrade(float multiplier)
@@ -444,6 +480,11 @@ namespace Domains.Player.Scripts
             ES3.Save("PickaxeToolWidth", pickaxeMiningToolWidth, "UpgradeSave.es3");
             ES3.Save("PickaxeMaterialLevel", pickaxeMaterialLevel, "UpgradeSave.es3");
 
+            // Save jetpack properties
+            ES3.Save("JetPackSpeedMultiplier", jetPackSpeedMultiplier, "UpgradeSave.es3");
+            ES3.Save("JetPackMaterialLevel", jetPackMaterialLevel, "UpgradeSave.es3");
+
+
             // Save other properties
             ES3.Save("CurrentToolID", currentToolId, "UpgradeSave.es3");
             ES3.Save("MaxStamina", PlayerFuelManager.MaxFuelPoints, "UpgradeSave.es3");
@@ -533,6 +574,11 @@ namespace Domains.Player.Scripts
                 UnityEngine.Debug.Log($"Loaded shovel material level: {shovelMaterialLevel}");
             }
 
+            if (ES3.KeyExists("JetPackSpeedMultiplier", "UpgradeSave.es3"))
+                jetPackSpeedMultiplier = ES3.Load<float>("JetPackSpeedMultiplier", "UpgradeSave.es3");
+            if (ES3.KeyExists("JetPackMaterialLevel", "UpgradeSave.es3"))
+                jetPackMaterialLevel = ES3.Load<int>("JetPackMaterialLevel", "UpgradeSave.es3");
+
             // Apply shovel properties
             if (shovelTool != null)
                 shovelTool.SetDiggerUsingToolEffectSize(shovelToolEffectRadius, shovelToolEffectOpacity);
@@ -592,6 +638,12 @@ namespace Domains.Player.Scripts
                 pickaxeTool.SetCurrentMaterial(characterStatProfile.initialPickaxeMaterial);
                 UnityEngine.Debug.Log("Applied initial pickaxe material");
             }
+
+            if (jetPackParticleSystem != null)
+            {
+                jetPackParticleSystem.startColor = characterStatProfile.initialJetPackParticleColor;
+                UnityEngine.Debug.Log("Applied initial jetpack material");
+            }
         }
 
 
@@ -646,6 +698,30 @@ namespace Domains.Player.Scripts
                     }
                 }
             }
+
+            if (jetPackParticleSystem != null)
+            {
+                var jetPackUpgrade = availableUpgrades.Find(u => u.upgradeTypeName == "Jetpack");
+                if (jetPackUpgrade != null)
+                {
+                    var upgradedJetPackLevel = GetUpgradeLevel("Jetpack");
+
+                    // Determine material based on level and material level
+                    if (upgradedJetPackLevel <= 0 && jetPackMaterialLevel <= 0)
+                    {
+                        // Initial state - grey material
+                        jetPackParticleSystem.startColor = characterStatProfile.initialJetPackParticleColor;
+                        UnityEngine.Debug.Log("Applied initial GREY jetpack material (no upgrades)");
+                    }
+                    else if (jetPackMaterialLevel >= 0 && jetPackMaterialLevel < jetPackUpgrade.upgradeMaterials.Length)
+                    {
+                        // Upgraded state - use material from upgrade data
+                        jetPackParticleSystem.startColor = jetPackUpgrade.upgradeMaterials[jetPackMaterialLevel].color;
+                        UnityEngine.Debug.Log($"Applied jetpack material level {jetPackMaterialLevel}");
+                    }
+                }
+            }
+
 
             // Pickaxe material based on level
             if (pickaxeTool != null)
@@ -713,10 +789,12 @@ namespace Domains.Player.Scripts
             pickaxeToolEffectRadius = characterStatProfile.initialPickaxeToolEffectRadius;
             pickaxeToolEffectOpacity = characterStatProfile.pickaxeMiningToolEffectOpacity;
             pickaxeMiningToolWidth = characterStatProfile.pickaxeMiningToolWidth;
+            jetPackSpeedMultiplier = characterStatProfile.initialJetPackSpeedMultiplier;
 
             // Reset material levels
             shovelMaterialLevel = 0;
             pickaxeMaterialLevel = 0;
+            jetPackMaterialLevel = 0;
 
             // Apply default materials
             if (shovelTool != null)
@@ -737,12 +815,23 @@ namespace Domains.Player.Scripts
                 UnityEngine.Debug.Log("Reset to initial pickaxe material");
             }
 
+            if (jetPackParticleSystem != null)
+            {
+                jetPackParticleSystem.startColor = characterStatProfile.initialJetPackParticleColor;
+                playerMovement.jetPackSpeedMultiplier = characterStatProfile.initialJetPackSpeedMultiplier;
+                UnityEngine.Debug.Log("Reset to initial GREY jetpack material");
+            }
+
             // Delete material-related keys to ensure clean state
             if (ES3.KeyExists("ShovelMaterialLevel", "UpgradeSave.es3"))
                 ES3.DeleteKey("ShovelMaterialLevel", "UpgradeSave.es3");
 
             if (ES3.KeyExists("PickaxeMaterialLevel", "UpgradeSave.es3"))
                 ES3.DeleteKey("PickaxeMaterialLevel", "UpgradeSave.es3");
+
+            if (ES3.KeyExists("JetPackMaterialLevel", "UpgradeSave.es3"))
+                ES3.DeleteKey("JetPackMaterialLevel", "UpgradeSave.es3");
+
 
             // Trigger events
             UpgradeEvent.Trigger(UpgradeType.Shovel, UpgradeEventType.ShovelMiningSizeSet, null, 0,

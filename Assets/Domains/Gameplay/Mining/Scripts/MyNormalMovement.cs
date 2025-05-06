@@ -62,7 +62,7 @@ namespace Domains.Gameplay.Mining.Scripts
 
         [SerializeField] private MMFeedbacks jetPackFeedbacks;
 
-        [SerializeField] protected float jetPackSpeedMultiplier = 3f;
+        [SerializeField] public float jetPackSpeedMultiplier = 1.22f;
 
         // Add these new fields for fall damage
         [Header("Fall Damage")] [SerializeField]
