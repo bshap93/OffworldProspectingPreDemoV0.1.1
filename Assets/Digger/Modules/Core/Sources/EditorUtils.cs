@@ -1,26 +1,32 @@
-﻿#if UNITY_EDITOR
-using System;
+﻿using System;
 using System.Linq;
+using Unity.Burst;
 using Unity.Jobs.LowLevel.Unsafe;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Scripting;
 using Object = UnityEngine.Object;
 
+[Preserve]
+internal static class BurstGuardRuntime
+{
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    private static void DisableBurstForNow()
+    {
+        // Grab the one global options object Unity creates
+        var options = BurstCompiler.Options;
+        options.EnableBurstCompilation = false; // <- instance property
 
+        // Optional: also tell the Job System not to use any cached Burst funcs
+        JobsUtility.JobCompilerEnabled = false;
+
+        Debug.Log("<color=orange>[BurstGuard]</color> Burst disabled via global options.");
+    }
+}
+
+#if UNITY_EDITOR
 namespace Digger.Modules.Core.Sources
 {
-#if UNITY_EDITOR
-    [InitializeOnLoad]
-    public static class BurstGuard
-    {
-        static BurstGuard()
-        {
-            // Disable Burst for a single job type:
-            // "Digger.Modules.Core.Sources.Jobs.VoxelModificationJob"
-            JobsUtility.JobCompilerEnabled = false;
-        }
-    }
-#endif
     public static class EditorUtils
     {
         public static bool MicroSplatExists(Terrain terrain)
