@@ -667,15 +667,20 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
                     radius,
                     height
                 );
+                if (!success)
+                {
+                    // optional: let the player know nothing happened
+                    cannotInteractFeedbacks?.PlayFeedbacks();
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+                    UnityEngine.Debug.LogWarning($"[{name}] dig skipped – invalid parameters");
+#endif
 
-                if (success)
-                {
-                    if (debugLogging) UnityEngine.Debug.Log("Dig operation executed successfully");
+                    isDigging = false; // reset tool state
+                    yield break; // **skip the rest of the coroutine**
                 }
-                else
-                {
-                    UnityEngine.Debug.LogError("Dig operation failed");
-                }
+
+
+                if (debugLogging) UnityEngine.Debug.Log("Dig operation executed successfully");
             }
             catch (Exception ex)
             {

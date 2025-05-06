@@ -37,10 +37,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: aa76393b307c859428fa0d6a35c36365, type: 3}
   effectTypes: 00000000000000000000000000000000
   effectValues:
-  - 1.5
-  - 1.5
-  - 1.5
   - 1.35
+  - 1.5
+  - 1.5
+  - 1.5
   toolChangeIDs:
   - 
   - 

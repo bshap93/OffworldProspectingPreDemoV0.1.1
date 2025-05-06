@@ -10,14 +10,14 @@ namespace Domains.Debug
         [Header("Settings")] public bool enableLogging = true;
 
         public string logFileName = "digger_debug.log";
-        private int bufferCount;
         private readonly float flushInterval = 5.0f; // Flush to disk every 5 seconds
+        private readonly StringBuilder logBuffer = new();
+        private readonly int maxBufferSize = 100; // Max entries before forced flush
+        private int bufferCount;
         private bool isInitialized;
         private float lastFlushTime;
-        private readonly StringBuilder logBuffer = new();
 
         private string logFilePath;
-        private readonly int maxBufferSize = 100; // Max entries before forced flush
         public static DiggerDebugLogger Instance { get; private set; }
 
         private void Awake()
@@ -111,9 +111,9 @@ namespace Domains.Debug
                 bufferCount++;
 
                 // Also log to Unity console if in editor
-#if UNITY_EDITOR
-                UnityEngine.Debug.Log($"[DiggerDebug] {message}");
-#endif
+// #if UNITY_EDITOR
+//                 UnityEngine.Debug.Log($"[DiggerDebug] {message}");
+// #endif
             }
             catch (Exception ex)
             {

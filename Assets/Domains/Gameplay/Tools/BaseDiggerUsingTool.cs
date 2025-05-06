@@ -314,6 +314,16 @@ namespace Domains.Gameplay.Tools
                                           $"opacity={safeOpacity}, radius={safeRadius}, height={safeHeight}, " +
                                           $"brush={brushType}, action={actionType}, smooth={smooth}");
 
+                if (!IsValidVector3(safePosition) ||
+                    !IsValidFloat(safeRadius) ||
+                    !IsValidFloat(safeOpacity) ||
+                    !IsValidFloat(safeHeight))
+                {
+                    UnityEngine.Debug.LogError(
+                        $"[SafeModify] BANISHED:  p={safePosition} r={safeRadius} o={safeOpacity} h={safeHeight}");
+                    return false; // do not call Digger if ANY field is bad
+                }
+
                 // Call Digger's modify with safe parameters
                 try
                 {

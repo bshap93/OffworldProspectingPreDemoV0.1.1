@@ -366,6 +366,19 @@ namespace Domains.Player.Scripts
             pickaxeToolEffectRadius = newEffectRadius;
             pickaxeToolEffectOpacity = newOpacity;
 
+            if (float.IsNaN(multiplier) || multiplier <= 0f)
+            {
+                UnityEngine.Debug.LogError($"[UpgradeData] invalid multiplier {multiplier} – defaulting to 1");
+                multiplier = 1f;
+            }
+
+            if (float.IsNaN(secondaryMultiplier) || secondaryMultiplier <= 0f)
+            {
+                UnityEngine.Debug.LogError(
+                    $"[UpgradeData] invalid secondary multiplier {secondaryMultiplier} – defaulting to 1");
+                secondaryMultiplier = 1f;
+            }
+
             // Apply scale
             var oldScale = pickaxeTool.transform.localScale;
             pickaxeTool.transform.localScale = new Vector3(newWidth, oldScale.y, oldScale.z);
