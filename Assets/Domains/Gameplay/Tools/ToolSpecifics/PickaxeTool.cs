@@ -664,17 +664,13 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
 
                 // Use the safe modify method to ensure no NaN values reach the Digger system
 // 3. use the snapshots
-                var success = SafeModify(digPosition, brushLoc, Action,
+                var didModify = SafeModify(digPosition, brushLoc, Action,
                     textureIndex, safeOpacity, safeRadius, safeHeight);
+                if (!didModify)
+                    yield break;
 
-                if (!success)
-                {
-                    cannotInteractFeedbacks?.PlayFeedbacks(); // optional user feedback
-                    isDigging = false;
-                    yield break; // <- stops before any other dig call
-                }
-
-                if (debugLogging) UnityEngine.Debug.Log("Dig operation executed successfully");
+// after SafeModify you KNOW parameters are finite.
+                UnityEngine.Debug.Log($"DIG {Time.frameCount}: p={digPosition} r={radius} o={opacity}");
             }
             catch (Exception ex)
             {

@@ -1,6 +1,7 @@
 ﻿#if UNITY_EDITOR
 using System;
 using System.Linq;
+using Unity.Jobs.LowLevel.Unsafe;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -8,6 +9,18 @@ using Object = UnityEngine.Object;
 
 namespace Digger.Modules.Core.Sources
 {
+#if UNITY_EDITOR
+    [InitializeOnLoad]
+    public static class BurstGuard
+    {
+        static BurstGuard()
+        {
+            // Disable Burst for a single job type:
+            // "Digger.Modules.Core.Sources.Jobs.VoxelModificationJob"
+            JobsUtility.JobCompilerEnabled = false;
+        }
+    }
+#endif
     public static class EditorUtils
     {
         public static bool MicroSplatExists(Terrain terrain)

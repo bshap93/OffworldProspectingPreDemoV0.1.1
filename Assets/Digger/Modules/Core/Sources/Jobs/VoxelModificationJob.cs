@@ -6,7 +6,8 @@ using Unity.Mathematics;
 
 namespace Digger.Modules.Core.Sources.Jobs
 {
-    [BurstCompile(CompileSynchronously = true, FloatMode = FloatMode.Fast)]
+    // [BurstCompile(CompileSynchronously = true, FloatMode = FloatMode.Fast)]
+    [BurstCompile(FloatMode = FloatMode.Fast, FloatPrecision = FloatPrecision.Low)]
     public struct VoxelModificationJob : IJobParallelFor, IDisposable
     {
         public int SizeVox;
@@ -22,24 +23,21 @@ namespace Digger.Modules.Core.Sources.Jobs
         public float ChunkAltitude;
         public uint TextureIndex;
 
-        [ReadOnly]
-        [NativeDisableParallelForRestriction]
+        [ReadOnly] [NativeDisableParallelForRestriction]
         public NativeArray<float> Heights;
 
-        [ReadOnly]
-        [NativeDisableParallelForRestriction]
+        [ReadOnly] [NativeDisableParallelForRestriction]
         public NativeArray<Voxel> InputVoxels;
+
         public int3 InputSizeVox;
         public int3 InputOriginVox;
 
         public NativeArray<Voxel> Voxels;
 
-        [WriteOnly]
-        [NativeDisableParallelForRestriction]
+        [WriteOnly] [NativeDisableParallelForRestriction]
         public NativeArray<int> Holes;
 
-        [WriteOnly]
-        [NativeDisableParallelForRestriction]
+        [WriteOnly] [NativeDisableParallelForRestriction]
         public NativeArray<int> NewHolesConcurrentCounter;
 
         private double coneAngle;
@@ -104,9 +102,8 @@ namespace Digger.Modules.Core.Sources.Jobs
 
 
             if (voxel.Alteration != Voxel.Unaltered)
-            {
-                voxel = Utils.AdjustAlteration(voxel, pi, HeightmapScale.y, p.y + ChunkAltitude, terrainHeightValue, SizeVox, Heights);
-            }
+                voxel = Utils.AdjustAlteration(voxel, pi, HeightmapScale.y, p.y + ChunkAltitude, terrainHeightValue,
+                    SizeVox, Heights);
 
             if (Action != ActionType.Reset && (voxel.IsAlteredNearBelowSurface || voxel.IsAlteredNearAboveSurface))
             {
@@ -116,15 +113,10 @@ namespace Digger.Modules.Core.Sources.Jobs
                 {
                     NativeCollections.Utils.IncrementAt(Holes, Utils.XZToHoleIndex(pi.x - 1, pi.z, SizeVox));
                     if (pi.z >= 1)
-                    {
                         NativeCollections.Utils.IncrementAt(Holes, Utils.XZToHoleIndex(pi.x - 1, pi.z - 1, SizeVox));
-                    }
                 }
 
-                if (pi.z >= 1)
-                {
-                    NativeCollections.Utils.IncrementAt(Holes, Utils.XZToHoleIndex(pi.x, pi.z - 1, SizeVox));
-                }
+                if (pi.z >= 1) NativeCollections.Utils.IncrementAt(Holes, Utils.XZToHoleIndex(pi.x, pi.z - 1, SizeVox));
             }
 
             Voxels[index] = voxel;
@@ -134,12 +126,11 @@ namespace Digger.Modules.Core.Sources.Jobs
         {
             var inputVoxPos = (int3)math.round((pi - InputOriginVox) / Size);
             if (inputVoxPos.x < 0 || inputVoxPos.x >= InputSizeVox.x ||
-            inputVoxPos.y < 0 || inputVoxPos.y >= InputSizeVox.y ||
-            inputVoxPos.z < 0 || inputVoxPos.z >= InputSizeVox.z)
-            {
+                inputVoxPos.y < 0 || inputVoxPos.y >= InputSizeVox.y ||
+                inputVoxPos.z < 0 || inputVoxPos.z >= InputSizeVox.z)
                 return -100f;
-            }
-            return InputVoxels[inputVoxPos.x * InputSizeVox.y * InputSizeVox.z + inputVoxPos.y * InputSizeVox.z + inputVoxPos.z].Value;
+            return InputVoxels[
+                inputVoxPos.x * InputSizeVox.y * InputSizeVox.z + inputVoxPos.y * InputSizeVox.z + inputVoxPos.z].Value;
         }
 
 
@@ -148,7 +139,8 @@ namespace Digger.Modules.Core.Sources.Jobs
             var radius = Size.x;
             var radiusHeightRatio = radius / math.max(Size.y, 0.01f);
             var vec = p - Center;
-            var distance = math.sqrt(vec.x * vec.x + vec.y * vec.y * radiusHeightRatio * radiusHeightRatio + vec.z * vec.z);
+            var distance = math.sqrt(vec.x * vec.x + vec.y * vec.y * radiusHeightRatio * radiusHeightRatio +
+                                     vec.z * vec.z);
             return radius - distance;
         }
 
@@ -182,13 +174,9 @@ namespace Digger.Modules.Core.Sources.Jobs
             var currentValF = voxel.Value;
 
             if (dig)
-            {
                 voxel.Value = math.max(currentValF, currentValF + Intensity * intensityWeight * distance);
-            }
             else
-            {
                 voxel.Value = math.min(currentValF, currentValF - Intensity * intensityWeight * distance);
-            }
 
             if (distance >= 0)
             {
@@ -208,48 +196,26 @@ namespace Digger.Modules.Core.Sources.Jobs
                 if (IsTargetIntensity)
                 {
                     if (TextureIndex < 28)
-                    {
                         voxel.SetTexture(TextureIndex, Intensity);
-                    }
                     else if (TextureIndex == 28)
-                    {
                         voxel.NormalizedWetnessWeight = Intensity;
-                    }
                     else if (TextureIndex == 29)
-                    {
                         voxel.NormalizedPuddlesWeight = Intensity;
-                    }
                     else if (TextureIndex == 30)
-                    {
                         voxel.NormalizedStreamsWeight = Intensity;
-                    }
-                    else if (TextureIndex == 31)
-                    {
-                        voxel.NormalizedLavaWeight = Intensity;
-                    }
+                    else if (TextureIndex == 31) voxel.NormalizedLavaWeight = Intensity;
                 }
                 else
                 {
                     if (TextureIndex < 28)
-                    {
                         voxel.AddTexture(TextureIndex, Intensity);
-                    }
                     else if (TextureIndex == 28)
-                    {
                         voxel.NormalizedWetnessWeight += Intensity;
-                    }
                     else if (TextureIndex == 29)
-                    {
                         voxel.NormalizedPuddlesWeight += Intensity;
-                    }
                     else if (TextureIndex == 30)
-                    {
                         voxel.NormalizedStreamsWeight += Intensity;
-                    }
-                    else if (TextureIndex == 31)
-                    {
-                        voxel.NormalizedLavaWeight += Intensity;
-                    }
+                    else if (TextureIndex == 31) voxel.NormalizedLavaWeight += Intensity;
                 }
             }
 
@@ -279,9 +245,7 @@ namespace Digger.Modules.Core.Sources.Jobs
                 var height = Heights[Utils.XYZToHeightIndex(pi, SizeVox)];
                 var voxel = new Voxel(p.y + ChunkAltitude - height);
                 if (Utils.IsOnSurface(pi, HeightmapScale.y, p.y + ChunkAltitude, SizeVox, Heights))
-                {
                     NativeCollections.Utils.SetZeroAt(Holes, Utils.XZToHoleIndex(pi.x, pi.z, SizeVox));
-                }
 
                 return voxel;
             }
