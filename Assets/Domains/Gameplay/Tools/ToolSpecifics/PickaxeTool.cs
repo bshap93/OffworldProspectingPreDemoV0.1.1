@@ -478,7 +478,12 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
                 }
 
                 // Distance check for hit count
-                if (terrainHitCount > 0 && Vector3.Distance(hit.point, lastHitPosition) > hitThresholdDistance)
+// reset and clamp FIRST, so radius is always > 0
+                firstHitEffectRadius = ClampFloat(firstHitEffectRadius, 0.1f, 2f);
+                firstHitEffectOpacity = ClampFloat(firstHitEffectOpacity, 1f, 50f);
+
+                if (terrainHitCount > 0 &&
+                    Vector3.Distance(hit.point, lastHitPosition) > hitThresholdDistance)
                     terrainHitCount = 0;
 
                 // Update hit tracking
@@ -619,10 +624,10 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
             if (!IsValidFloat(opacity)) opacity = defaultEffectOpacity;
             if (!IsValidFloat(height)) height = defaultStalagmiteHeight;
 
-            // Clamp to safe ranges
-            radius = Mathf.Clamp(radius, 0.1f, maxEffectRadius);
-            opacity = Mathf.Clamp(opacity, 1f, maxEffectOpacity);
-            height = Mathf.Clamp(height, 1f, maxStalagmiteHeight);
+// 1. make safe snapshots
+            var safeRadius = Mathf.Clamp(effectRadiusLoc, 0.1f, maxEffectRadius);
+            var safeOpacity = Mathf.Clamp(effectOpacityLoc, 1f, 200f);
+            var safeHeight = Mathf.Clamp(stalagmiteHeight, 1f, maxStalagmiteHeight);
 
             // Wait for delay - outside the try-catch
             yield return new WaitForSeconds(delayBeforeDigging);
@@ -658,27 +663,16 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
                     UnityEngine.Debug.Log($"Final dig parameters: radius={radius}, opacity={opacity}, height={height}");
 
                 // Use the safe modify method to ensure no NaN values reach the Digger system
-                var success = SafeModify(
-                    digPosition,
-                    brushLoc,
-                    Action,
-                    textureIndex,
-                    opacity,
-                    radius,
-                    height
-                );
+// 3. use the snapshots
+                var success = SafeModify(digPosition, brushLoc, Action,
+                    textureIndex, safeOpacity, safeRadius, safeHeight);
+
                 if (!success)
                 {
-                    // optional: let the player know nothing happened
-                    cannotInteractFeedbacks?.PlayFeedbacks();
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
-                    UnityEngine.Debug.LogWarning($"[{name}] dig skipped – invalid parameters");
-#endif
-
-                    isDigging = false; // reset tool state
-                    yield break; // **skip the rest of the coroutine**
+                    cannotInteractFeedbacks?.PlayFeedbacks(); // optional user feedback
+                    isDigging = false;
+                    yield break; // <- stops before any other dig call
                 }
-
 
                 if (debugLogging) UnityEngine.Debug.Log("Dig operation executed successfully");
             }

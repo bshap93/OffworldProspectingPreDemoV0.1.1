@@ -45,7 +45,7 @@ namespace Digger.Modules.AdvancedOperations.Sources.Editor
 
         public void OnEnable()
         {
-            diggerSystems = Object.FindObjectsOfType<DiggerSystem>();
+            diggerSystems = Object.FindObjectsByType<DiggerSystem>(FindObjectsSortMode.None);
         }
 
         public void OnDisable()
@@ -56,7 +56,7 @@ namespace Digger.Modules.AdvancedOperations.Sources.Editor
 
         public void OnInspectorGUI()
         {
-            var diggerSystem = Object.FindObjectOfType<DiggerSystem>();
+            var diggerSystem = Object.FindFirstObjectByType<DiggerSystem>();
             if (!diggerSystem)
                 return;
             
@@ -74,7 +74,7 @@ namespace Digger.Modules.AdvancedOperations.Sources.Editor
         {
         }
 
-        public void OnScene(UnityEditor.Editor editor, SceneView sceneview)
+        public async Awaitable OnScene(UnityEditor.Editor editor, SceneView sceneview)
         {
             var e = Event.current;
             
@@ -113,7 +113,7 @@ namespace Digger.Modules.AdvancedOperations.Sources.Editor
                 operation.Opacity = opacity;
 
                 foreach (var diggerSystem in diggerSystems) {
-                    diggerSystem.Modify(operation);
+                    await diggerSystem.ModifyAsync(operation);
                 }
             }
         }

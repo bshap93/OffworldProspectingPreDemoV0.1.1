@@ -27,11 +27,11 @@ namespace Digger.Modules.Core.Sources.Operations
         public VoxelKernelModificationJob Do(VoxelChunk chunk)
         {
             chunk.InitVoxelArrayBeforeOperation();
-            var voxels = new NativeArray<Voxel>(chunk.VoxelArray, Allocator.TempJob);
-            var voxelsOut = new NativeArray<Voxel>(chunk.VoxelArray, Allocator.TempJob);
+            var voxels = new NativeArray<Voxel>(chunk.VoxelArray, Allocator.Persistent);
+            var voxelsOut = new NativeArray<Voxel>(chunk.VoxelArray, Allocator.Persistent);
 
-            var heights = new NativeArray<float>(chunk.HeightArray, Allocator.TempJob);
-            var holes = new NativeArray<int>(chunk.HolesArray, Allocator.TempJob);
+            var heights = new NativeArray<float>(chunk.HeightArray, Allocator.Persistent);
+            var holes = new NativeArray<int>(chunk.HolesArray, Allocator.Persistent);
             var chunkPosition = chunk.ChunkPosition;
             var digger = chunk.Digger;
 
@@ -51,7 +51,7 @@ namespace Digger.Modules.Core.Sources.Operations
                 ChunkAltitude = chunk.WorldPosition.y,
                 Heights = heights,
                 Holes = holes,
-                NewHolesConcurrentCounter = new NativeArray<int>(1, Allocator.TempJob),
+                NewHolesConcurrentCounter = new NativeArray<int>(1, Allocator.Persistent),
 
                 NeighborVoxelsLBB = VoxelChunk.LoadVoxels(digger, chunkPosition + new Vector3i(-1, -1, -1)),
                 NeighborVoxelsLBF = VoxelChunk.LoadVoxels(digger, chunkPosition + new Vector3i(-1, -1, +1)),

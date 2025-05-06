@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Digger.Modules.Core.Sources;
 using Digger.Modules.Core.Sources.Operations;
 using Unity.Jobs;
@@ -31,7 +32,8 @@ namespace Digger.Modules.Runtime.Sources
         /// </summary>
         public bool IsRunningAsync => isRunningAsync;
 
-        public int BufferSize {
+        public int BufferSize
+        {
             get => bufferSize;
             set => bufferSize = Math.Max(1, value);
         }
@@ -42,16 +44,44 @@ namespace Digger.Modules.Runtime.Sources
         /// <param name="operation">The operation to perform</param>
         public void Modify<T>(IOperation<T> operation) where T : struct, IJobParallelFor
         {
-            if (isRunningAsync) {
+            if (isRunningAsync)
+            {
                 Debug.LogError("Cannot Modify as asynchronous modification is already in progress");
                 return;
             }
 
-            foreach (var diggerSystem in diggerSystems) {
-                diggerSystem.Modify(operation);
-            }
+            Task.Run(() => ModifyAsync(operation)).Wait();
         }
 
+        /// <summary>
+        /// Modify the terrain at runtime by performing the operation synchronously.
+        /// </summary>
+        /// <param name="p">Modification parameters</param>
+        public void Modify(ModificationParameters p)
+        {
+            if (isRunningAsync)
+            {
+                Debug.LogError("Cannot Modify as asynchronous modification is already in progress");
+                return;
+            }
+
+            if (p.Action == ActionType.Smooth && p.Brush != BrushType.Sphere)
+            {
+                Debug.LogError("Smooth action only supports Sphere brush");
+                return;
+            }
+
+            if (p.Action == ActionType.Smooth || p.Action == ActionType.BETA_Sharpen)
+            {
+                kernelOperation.Params = p;
+                Modify(kernelOperation);
+            }
+            else
+            {
+                basicOperation.Params = p;
+                Modify(basicOperation);
+            }
+        }
 
         /// <summary>
         /// Modify the terrain at runtime by performing the requested action.
@@ -68,12 +98,7 @@ namespace Digger.Modules.Runtime.Sources
         public void Modify(Vector3 position, BrushType brush, ActionType action, int textureIndex, float opacity,
             float size, float stalagmiteHeight = 8f, bool stalagmiteUpsideDown = false, bool opacityIsTarget = false)
         {
-            if (action == ActionType.Smooth && brush != BrushType.Sphere) {
-                Debug.LogError("Smooth action only supports Sphere brush");
-                return;
-            }
-
-            var p = new ModificationParameters
+            Modify(new ModificationParameters
             {
                 Position = position,
                 Brush = brush,
@@ -84,15 +109,7 @@ namespace Digger.Modules.Runtime.Sources
                 StalagmiteUpsideDown = stalagmiteUpsideDown,
                 OpacityIsTarget = opacityIsTarget,
                 Callback = null
-            };
-
-            if (action == ActionType.Smooth || action == ActionType.BETA_Sharpen) {
-                kernelOperation.Params = p;
-                Modify(kernelOperation);
-            } else {
-                basicOperation.Params = p;
-                Modify(basicOperation);
-            }
+            });
         }
 
         /// <summary>
@@ -102,32 +119,32 @@ namespace Digger.Modules.Runtime.Sources
         /// </summary>
         /// <param name="operation">The operation to perform</param>
         /// <param name="callback">Callback method called once modification is done</param>
-        public IEnumerator ModifyAsync<T>(IOperation<T> operation, Action callback = null) where T : struct, IJobParallelFor
+        public async Awaitable ModifyAsync<T>(IOperation<T> operation, Action callback = null) where T : struct, IJobParallelFor
         {
-            if (isRunningAsync) {
+            if (isRunningAsync)
+            {
                 Debug.LogError("Cannot Modify as asynchronous modification is already in progress");
-                yield break;
+                return;
             }
 
             isRunningAsync = true;
 
-            foreach (var diggerSystem in diggerSystems) {
-                var area = operation.GetAreaToModify(diggerSystem);
-                if (!area.NeedsModification)
-                    continue;
+            try
+            {
+                foreach (var diggerSystem in diggerSystems)
+                {
+                    var area = operation.GetAreaToModify(diggerSystem);
+                    if (!area.NeedsModification)
+                        continue;
 
-                yield return diggerSystem.ModifyAsync(operation);
+                    await diggerSystem.ModifyAsync(operation);
+                }
+            }
+            finally
+            {
+                isRunningAsync = false;
             }
 
-            foreach (var diggerSystem in diggerSystems) {
-                var area = operation.GetAreaToModify(diggerSystem);
-                if (!area.NeedsModification)
-                    continue;
-
-                diggerSystem.ApplyModify();
-            }
-
-            isRunningAsync = false;
             callback?.Invoke();
         }
 
@@ -146,15 +163,10 @@ namespace Digger.Modules.Runtime.Sources
         /// <param name="stalagmiteUpsideDown">Defines if stalagmite is upside-down or not (only when Brush is stalagmite)</param>
         /// <param name="opacityIsTarget">If true when painting texture, the weight of the texture will be directly set to the given opacity</param>
         /// <param name="callback">A callback function that will be called once modification is done</param>
-        public IEnumerator ModifyAsync(Vector3 position, BrushType brush, ActionType action, int textureIndex, float opacity,
+        public async Awaitable ModifyAsync(Vector3 position, BrushType brush, ActionType action, int textureIndex, float opacity,
             float size, float stalagmiteHeight = 8f, bool stalagmiteUpsideDown = false, bool opacityIsTarget = false, Action callback = null)
         {
-            if (action == ActionType.Smooth && brush != BrushType.Sphere) {
-                Debug.LogError("Smooth action only supports Sphere brush");
-                brush = BrushType.Sphere;
-            }
-
-            var p = new ModificationParameters
+            await ModifyAsync(new ModificationParameters
             {
                 Position = position,
                 Brush = brush,
@@ -165,22 +177,27 @@ namespace Digger.Modules.Runtime.Sources
                 StalagmiteUpsideDown = stalagmiteUpsideDown,
                 OpacityIsTarget = opacityIsTarget,
                 Callback = callback
-            };
-
-            if (action == ActionType.Smooth || action == ActionType.BETA_Sharpen) {
-                kernelOperation.Params = p;
-                return ModifyAsync(kernelOperation, callback);
-            }
-
-            basicOperation.Params = p;
-            return ModifyAsync(basicOperation, callback);
+            });
         }
 
         /// <see cref="ModifyAsync(UnityEngine.Vector3,BrushType,ActionType,int,float,float,bool,bool,float,bool,bool,System.Action)"/>
         /// <param name="p">Modification parameters</param>
-        public IEnumerator ModifyAsync(ModificationParameters p)
+        public async Awaitable ModifyAsync(ModificationParameters p)
         {
-            return ModifyAsync(p.Position, p.Brush, p.Action, p.TextureIndex, p.Opacity, p.Size.x, p.Size.y, p.StalagmiteUpsideDown, p.OpacityIsTarget, p.Callback);
+            if (p.Action == ActionType.Smooth && p.Brush != BrushType.Sphere)
+            {
+                Debug.LogError("Smooth action only supports Sphere brush");
+                p.Brush = BrushType.Sphere;
+            }
+
+            if (p.Action == ActionType.Smooth || p.Action == ActionType.BETA_Sharpen)
+            {
+                kernelOperation.Params = p;
+                await ModifyAsync(kernelOperation, p.Callback);
+            }
+
+            basicOperation.Params = p;
+            await ModifyAsync(basicOperation, p.Callback);
         }
 
         /// <summary>
@@ -202,7 +219,8 @@ namespace Digger.Modules.Runtime.Sources
         public bool ModifyAsyncBuffured(Vector3 position, BrushType brush, ActionType action, int textureIndex, float opacity,
             float size, float stalagmiteHeight = 8f, bool stalagmiteUpsideDown = false, bool opacityIsTarget = false, Action callback = null)
         {
-            if (buffer.Count >= BufferSize) {
+            if (buffer.Count >= BufferSize)
+            {
                 return false;
             }
 
@@ -224,7 +242,8 @@ namespace Digger.Modules.Runtime.Sources
         /// <param name="parameters">Modification parameters</param>
         public bool ModifyAsyncBuffured(ModificationParameters parameters)
         {
-            if (buffer.Count >= BufferSize) {
+            if (buffer.Count >= BufferSize)
+            {
                 return false;
             }
 
@@ -234,7 +253,8 @@ namespace Digger.Modules.Runtime.Sources
 
         private void Update()
         {
-            if (!isRunningAsync && buffer.Count > 0) {
+            if (!isRunningAsync && buffer.Count > 0)
+            {
                 var parameters = buffer.Dequeue();
                 StartCoroutine(ModifyAsync(parameters));
             }
@@ -245,16 +265,21 @@ namespace Digger.Modules.Runtime.Sources
         /// </summary>
         public void PersistAll()
         {
-            if (isRunningAsync) {
+            if (isRunningAsync)
+            {
                 Debug.LogError("Cannot Persist as asynchronous modification is already in progress");
                 return;
             }
 
-            if (!Application.isEditor) {
-                foreach (var diggerSystem in diggerSystems) {
+            if (!Application.isEditor)
+            {
+                foreach (var diggerSystem in diggerSystems)
+                {
                     diggerSystem.PersistAtRuntime();
                 }
-            } else {
+            }
+            else
+            {
                 Debug.Log("Digger 'PersistAll' method has no effect in Unity editor");
             }
         }
@@ -264,12 +289,27 @@ namespace Digger.Modules.Runtime.Sources
         /// </summary>
         public void DeleteAllPersistedData()
         {
-            if (!Application.isEditor) {
-                foreach (var diggerSystem in diggerSystems) {
+            if (!Application.isEditor)
+            {
+                foreach (var diggerSystem in diggerSystems)
+                {
                     diggerSystem.DeleteDataPersistedAtRuntime();
                 }
-            } else {
+            }
+            else
+            {
                 Debug.Log("Digger 'DeleteAllPersistedData' method has no effect in Unity editor");
+            }
+        }
+        
+        /// <summary>
+        /// Clears the scene from all Digger modifications.
+        /// </summary>
+        public void ClearScene()
+        {
+            foreach (var diggerSystem in diggerSystems)
+            {
+                diggerSystem.ClearAtRuntime();
             }
         }
 
@@ -281,7 +321,8 @@ namespace Digger.Modules.Runtime.Sources
         public void SetPersistenceDataPathPrefix(string pathPrefix)
         {
             // we do not use diggerSystems field as it might not be initialized when this method is called
-            foreach (var diggerSystem in FindObjectsOfType<DiggerSystem>()) {
+            foreach (var diggerSystem in FindObjectsByType<DiggerSystem>(FindObjectsSortMode.None))
+            {
                 diggerSystem.PersistenceSubPath = pathPrefix;
             }
         }
@@ -294,8 +335,9 @@ namespace Digger.Modules.Runtime.Sources
         /// <param name="guid">Optionally, you can set a specific Digger GUID for this terrain. This is useful if you plan to persist data of terrains created at runtime to be able to load data back on the next launch.</param>
         public void SetupRuntimeTerrain(Terrain terrain, string guid = null)
         {
-            var existingDiggerSystem = FindObjectOfType<DiggerSystem>();
-            if (!existingDiggerSystem) {
+            var existingDiggerSystem = FindFirstObjectByType<DiggerSystem>();
+            if (!existingDiggerSystem)
+            {
                 Debug.LogError(
                     "SetupRuntimeTerrain needs at least one terrain to be already setup with Digger. You must have at least one terrain with Digger on it " +
                     "to be able to setup other terrains at runtime");
@@ -328,13 +370,14 @@ namespace Digger.Modules.Runtime.Sources
         /// </summary>
         public void RefreshTerrainList()
         {
-            diggerSystems = FindObjectsOfType<DiggerSystem>();
+            diggerSystems = FindObjectsByType<DiggerSystem>(FindObjectsSortMode.None);
         }
 
         private void Awake()
         {
-            diggerSystems = FindObjectsOfType<DiggerSystem>();
-            foreach (var diggerSystem in diggerSystems) {
+            diggerSystems = FindObjectsByType<DiggerSystem>(FindObjectsSortMode.None);
+            foreach (var diggerSystem in diggerSystems)
+            {
                 Init(diggerSystem);
             }
         }

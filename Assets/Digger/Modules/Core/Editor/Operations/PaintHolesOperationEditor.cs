@@ -15,7 +15,7 @@ namespace Digger.Modules.Core.Editor.Operations
 
         public void OnInspectorGUI()
         {
-            var diggerSystem = Object.FindObjectOfType<DiggerSystem>();
+            var diggerSystem = Object.FindFirstObjectByType<DiggerSystem>();
             if (!diggerSystem)
                 return;
 
@@ -31,11 +31,11 @@ namespace Digger.Modules.Core.Editor.Operations
         {
         }
 
-        protected override void PerformModification(Vector3 p)
+        protected override async Awaitable PerformModification(Vector3 p)
         {
             var op = OperationAt(p);
             foreach (var diggerSystem in diggerSystems) {
-                diggerSystem.Modify(op);
+                await diggerSystem.ModifyAsync(op);
             }
         }
 

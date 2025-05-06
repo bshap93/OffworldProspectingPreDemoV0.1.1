@@ -6,7 +6,9 @@ using Digger.Modules.Core.Sources.Polygonizers;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEditor;
-
+#if __MICROSPLAT_DIGGER__
+using JBooth.MicroSplat;
+#endif
 
 namespace Digger.Modules.Core.Editor
 {
@@ -98,7 +100,7 @@ namespace Digger.Modules.Core.Editor
             } else if (EditorUtils.MicroSplatExists(diggerSystem.Terrain)) {
                 diggerSystem.MaterialType = TerrainMaterialType.MicroSplat;
                 Debug.Log("Setting up Digger with MicroSplat shaders");
-                // SetupMicroSplatMaterials(diggerSystem);
+                SetupMicroSplatMaterials(diggerSystem);
             } else if (IsBuiltInURP()) {
                 ImportURPShaders(forceRefresh);
                 diggerSystem.MaterialType = TerrainMaterialType.URP;
@@ -124,7 +126,7 @@ namespace Digger.Modules.Core.Editor
 
         private static bool IsBlockMaterial()
         {
-            var provider = FindObjectOfType<APolygonizerProvider>();
+            var provider = FindFirstObjectByType<APolygonizerProvider>();
             if (!provider)
                 return false;
             return provider.GetMaterials() != null;
@@ -146,7 +148,7 @@ namespace Digger.Modules.Core.Editor
         
         private static void SetupBlockMaterial(DiggerSystem diggerSystem)
         {
-            var provider = FindObjectOfType<APolygonizerProvider>();
+            var provider = FindFirstObjectByType<APolygonizerProvider>();
             diggerSystem.Materials = provider.GetMaterials();
         }
 
@@ -242,12 +244,9 @@ namespace Digger.Modules.Core.Editor
         {
             if (!forceRefresh && Shader.Find("Digger/Terrain/URP/Lit") != null && Shader.Find("Digger/Mesh/URP/Lit-Pass0") != null)
                 return;
-            
-#if UNITY_6000_0_OR_NEWER
+
             ImportPackageImmediately("Assets/Digger/Shaders/URP/Digger-URP17-shaders.unitypackage");
-#else
-            ImportPackageImmediately("Assets/Digger/Shaders/URP/Digger-URP12-14-shaders.unitypackage");
-#endif
+
             AssetDatabase.ImportAsset("Assets/Digger/Shaders/URP",
                 ImportAssetOptions.ForceSynchronousImport | ImportAssetOptions.ForceUpdate | ImportAssetOptions.ImportRecursive);
             Debug.Log("Digger URP shaders imported.");
@@ -260,9 +259,6 @@ namespace Digger.Modules.Core.Editor
 
             if (forceRefresh || !terrainAlreadyHasDiggerMaterial) {
                 var terrainMaterial = new Material(Shader.Find("Digger/Terrain/URP/Lit"));
-#if USING_URP_14_OR_ABOVE
-                terrainMaterial.EnableKeyword("USING_URP_14_OR_ABOVE");
-#endif
                 terrainMaterial.SetFloat(TerrainWidthInvProperty, 1f / diggerSystem.Terrain.terrainData.size.x);
                 terrainMaterial.SetFloat(TerrainHeightInvProperty, 1f / diggerSystem.Terrain.terrainData.size.z);
                 if (diggerSystem.Terrain.materialTemplate && diggerSystem.Terrain.materialTemplate.IsKeywordEnabled("_TERRAIN_BLEND_HEIGHT")) {
@@ -343,10 +339,6 @@ namespace Digger.Modules.Core.Editor
                 material = new Material(Shader.Find(expectedShaderName));
             }
 
-#if USING_URP_14_OR_ABOVE
-            material.EnableKeyword("USING_URP_14_OR_ABOVE");
-#endif
-
             var tData = diggerSystem.Terrain.terrainData;
 
             if (tData.terrainLayers.Length <= 4 && diggerSystem.Terrain.materialTemplate.IsKeywordEnabled("_TERRAIN_BLEND_HEIGHT")) {
@@ -419,11 +411,8 @@ namespace Digger.Modules.Core.Editor
             if (!forceRefresh && Shader.Find("Digger/HDRP/TerrainLit") != null && Shader.Find("Digger/HDRP/MeshLit") != null)
                 return;
             
-#if UNITY_6000_0_OR_NEWER
             ImportPackageImmediately("Assets/Digger/Shaders/HDRP/Digger-HDRP17-shaders.unitypackage");
-#else
-            ImportPackageImmediately("Assets/Digger/Shaders/HDRP/Digger-HDRP12-14-shaders.unitypackage");
-#endif
+
             AssetDatabase.ImportAsset("Assets/Digger/Shaders/HDRP", 
                 ImportAssetOptions.ForceSynchronousImport | ImportAssetOptions.ForceUpdate | ImportAssetOptions.ImportRecursive);
             Debug.Log("Digger HDRP shaders imported.");
@@ -546,92 +535,92 @@ namespace Digger.Modules.Core.Editor
 
 #endregion
 
-//         #region MicroSplat
-//
-//         private static void SetupMicroSplatMaterials(DiggerSystem diggerSystem)
-//         {
-//             if (diggerSystem.Materials == null || diggerSystem.Materials.Length != 1) {
-//                 diggerSystem.Materials = new Material[1];
-//             }
-//
-//             var textures = new List<Texture2D>();
-//             var tData = diggerSystem.Terrain.terrainData;
-//
-//             for (var i = 0; i < tData.terrainLayers.Length && i < 28; i++) {
-//                 var terrainLayer = tData.terrainLayers[i];
-//                 if (terrainLayer == null || terrainLayer.diffuseTexture == null)
-//                     continue;
-//
-//                 textures.Add(terrainLayer.diffuseTexture);
-//             }
-//
-//             diggerSystem.TerrainTextures = textures.ToArray();
-// #if __MICROSPLAT_DIGGER__
-//             CheckMicroSplatTerrainFeatures(diggerSystem);
-//             SetupMicroSplatMaterial(diggerSystem);
-//             SetupMicroSplatMaterialSyncEventHandler(diggerSystem);
-// #endif // __MICROSPLAT_DIGGER__
-//         }
-//
-// #if __MICROSPLAT_DIGGER__
-//         private static void CheckMicroSplatTerrainFeatures(DiggerSystem diggerSystem)
-//         {
-//             var microSplat = diggerSystem.Terrain.GetComponent<MicroSplatTerrain>();
-//             if (!microSplat) {
-//                 Debug.LogError($"Could not find MicroSplatTerrain on terrain {diggerSystem.Terrain.name}");
-//                 return;
-//             }
-//
-// #if __MICROSPLAT_TRIPLANAR__
-//             if (!microSplat.keywordSO.IsKeywordEnabled("_TRIPLANAR")) {
-//                 microSplat.keywordSO.EnableKeyword("_TRIPLANAR");
-//             }
-//
-//             if (microSplat.keywordSO.IsKeywordEnabled("_TRIPLANARLOCALSPACE")) {
-//                 microSplat.keywordSO.DisableKeyword("_TRIPLANARLOCALSPACE");
-//             }
-// #else
-//             Debug.LogError("MicroSplat Digger integration requires the MicroSplat Triplanar module.");
-// #endif
-//         }
-//
-//         private static void SetupMicroSplatMaterial(DiggerSystem diggerSystem)
-//         {
-//             var microSplat = diggerSystem.Terrain.GetComponent<MicroSplatTerrain>();
-//             if (!microSplat) {
-//                 Debug.LogError($"Could not find MicroSplatTerrain on terrain {diggerSystem.Terrain.name}");
-//                 return;
-//             }
-//
-//             var microSplatShader = MicroSplatUtilities.GetDiggerShader(microSplat);
-//             if (microSplatShader == null) {
-//                 Debug.LogError($"Could not find MicroSplat Digger shader");
-//                 return;
-//             }
-//
-//             var material = new Material(microSplatShader);
-//             material.CopyPropertiesFromMaterial(microSplat.matInstance);
-//             
-//             var matPath = Path.Combine(diggerSystem.BasePathData, $"diggerMicroSplat.mat");
-//             material.name = "diggerMicroSplat";
-//             material = EditorUtils.CreateOrReplaceAsset(material, matPath);
-//             AssetDatabase.ImportAsset(matPath, ImportAssetOptions.ForceUpdate);
-//             diggerSystem.Materials[0] = material;
-//         }
-//
-//         private static void SetupMicroSplatMaterialSyncEventHandler(DiggerSystem diggerSystem)
-//         {
-//             var msSync = diggerSystem.gameObject.GetComponent<MicroSplatSync>();
-//             if (!msSync) {
-//                 diggerSystem.gameObject.AddComponent<MicroSplatSync>();
-//             } else {
-//                 msSync.OnDisable();
-//                 msSync.OnEnable();
-//             }
-//         }
-// #endif // __MICROSPLAT_DIGGER__
-//
-//         #endregion
+        #region MicroSplat
+
+        private static void SetupMicroSplatMaterials(DiggerSystem diggerSystem)
+        {
+            if (diggerSystem.Materials == null || diggerSystem.Materials.Length != 1) {
+                diggerSystem.Materials = new Material[1];
+            }
+
+            var textures = new List<Texture2D>();
+            var tData = diggerSystem.Terrain.terrainData;
+
+            for (var i = 0; i < tData.terrainLayers.Length && i < 28; i++) {
+                var terrainLayer = tData.terrainLayers[i];
+                if (terrainLayer == null || terrainLayer.diffuseTexture == null)
+                    continue;
+
+                textures.Add(terrainLayer.diffuseTexture);
+            }
+
+            diggerSystem.TerrainTextures = textures.ToArray();
+#if __MICROSPLAT_DIGGER__
+            CheckMicroSplatTerrainFeatures(diggerSystem);
+            SetupMicroSplatMaterial(diggerSystem);
+            SetupMicroSplatMaterialSyncEventHandler(diggerSystem);
+#endif // __MICROSPLAT_DIGGER__
+        }
+
+#if __MICROSPLAT_DIGGER__
+        private static void CheckMicroSplatTerrainFeatures(DiggerSystem diggerSystem)
+        {
+            var microSplat = diggerSystem.Terrain.GetComponent<MicroSplatTerrain>();
+            if (!microSplat) {
+                Debug.LogError($"Could not find MicroSplatTerrain on terrain {diggerSystem.Terrain.name}");
+                return;
+            }
+
+#if __MICROSPLAT_TRIPLANAR__
+            if (!microSplat.keywordSO.IsKeywordEnabled("_TRIPLANAR")) {
+                microSplat.keywordSO.EnableKeyword("_TRIPLANAR");
+            }
+
+            if (microSplat.keywordSO.IsKeywordEnabled("_TRIPLANARLOCALSPACE")) {
+                microSplat.keywordSO.DisableKeyword("_TRIPLANARLOCALSPACE");
+            }
+#else
+            Debug.LogError("MicroSplat Digger integration requires the MicroSplat Triplanar module.");
+#endif
+        }
+
+        private static void SetupMicroSplatMaterial(DiggerSystem diggerSystem)
+        {
+            var microSplat = diggerSystem.Terrain.GetComponent<MicroSplatTerrain>();
+            if (!microSplat) {
+                Debug.LogError($"Could not find MicroSplatTerrain on terrain {diggerSystem.Terrain.name}");
+                return;
+            }
+
+            var microSplatShader = MicroSplatUtilities.GetDiggerShader(microSplat);
+            if (microSplatShader == null) {
+                Debug.LogError($"Could not find MicroSplat Digger shader");
+                return;
+            }
+
+            var material = new Material(microSplatShader);
+            material.CopyPropertiesFromMaterial(microSplat.matInstance);
+            
+            var matPath = Path.Combine(diggerSystem.BasePathData, $"diggerMicroSplat.mat");
+            material.name = "diggerMicroSplat";
+            material = EditorUtils.CreateOrReplaceAsset(material, matPath);
+            AssetDatabase.ImportAsset(matPath, ImportAssetOptions.ForceUpdate);
+            diggerSystem.Materials[0] = material;
+        }
+
+        private static void SetupMicroSplatMaterialSyncEventHandler(DiggerSystem diggerSystem)
+        {
+            var msSync = diggerSystem.gameObject.GetComponent<MicroSplatSync>();
+            if (!msSync) {
+                diggerSystem.gameObject.AddComponent<MicroSplatSync>();
+            } else {
+                msSync.OnDisable();
+                msSync.OnEnable();
+            }
+        }
+#endif // __MICROSPLAT_DIGGER__
+
+        #endregion
 
         private static int GetPassCount(TerrainData tData)
         {

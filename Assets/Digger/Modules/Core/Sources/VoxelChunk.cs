@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using Digger.Modules.Core.Sources.Jobs;
 using Digger.Modules.Core.Sources.Polygonizers;
 using Digger.Modules.Core.Sources.TerrainInterface;
@@ -10,14 +9,12 @@ using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.Rendering;
 using Debug = UnityEngine.Debug;
 
 namespace Digger.Modules.Core.Sources
 {
     public class VoxelChunk : MonoBehaviour
     {
-        private const int TempJobAllocationFrameDuration = 4;
         [SerializeField] private DiggerSystem digger;
         [SerializeField] private int sizeVox;
         [SerializeField] private int sizeOfMesh;
@@ -36,45 +33,41 @@ namespace Digger.Modules.Core.Sources
 
         [NonSerialized] private JobHandle? currentJobHandle;
         [NonSerialized] private IJobParallelFor currentJob;
-        [NonSerialized] private int currentJobStartFrame;
         [NonSerialized] private NativeArray<Voxel> voxels;
         [NonSerialized] private NativeArray<float> heights;
         [NonSerialized] private NativeArray<int> holes;
         [NonSerialized] private NativeParallelHashSet<int> chunkOnSurfaceY;
+        [NonSerialized] private readonly Dictionary<int, IPolygonizer> polygonizersPerLod = new();
+        [NonSerialized] private int needToBakePhysicMeshInstanceID;
 
-        private const MeshUpdateFlags MeshUpdateFlags = UnityEngine.Rendering.MeshUpdateFlags.DontRecalculateBounds | UnityEngine.Rendering.MeshUpdateFlags.DontValidateIndices | UnityEngine.Rendering.MeshUpdateFlags.DontNotifyMeshUsers |
-                                                        UnityEngine.Rendering.MeshUpdateFlags.DontResetBoneBounds;
+        private IPolygonizer GetPolygonizer(int lod)
+        {
+            if (polygonizersPerLod.TryGetValue(lod, out var polygonizer)) return polygonizer;
+            polygonizer = digger.PolygonizerProvider ? digger.PolygonizerProvider.NewPolygonizer(digger) : new MarchingCubesPolygonizer();
+            polygonizersPerLod.Add(lod, polygonizer);
+            return polygonizer;
+        }
         
-        public bool IsLoaded => VoxelArray != null && VoxelArray.Length > 0;
-
+        
+        public bool IsLoaded => VoxelArray is { Length: > 0 };
         public Vector3i ChunkPosition => chunkPosition;
         public Vector3i VoxelPosition => voxelPosition;
-
-        public float Altitude => voxelPosition.y * digger.HeightmapScale.y;
+        private float Altitude => voxelPosition.y * digger.HeightmapScale.y;
         public float3 WorldPosition => worldPosition;
         public float3 AbsoluteWorldPosition => digger.transform.TransformPoint(worldPosition);
         public int3 AbsoluteVoxelPosition => Utils.UnityToVoxelPosition(digger.transform.TransformPoint(worldPosition), HeightmapScale);
-
         public int SizeVox => sizeVox;
-
         public int SizeOfMesh => sizeOfMesh;
-
         public float3 HeightmapScale => digger.HeightmapScale;
-
         public Voxel[] VoxelArray => voxelArray;
-
         public float[] HeightArray => heightArray;
         public float3[] NormalArray => normalArray;
         public float[] AlphamapArray => alphamapArray;
-
         public int[] HolesArray => digger.Cutter.GetHoles(chunkPosition, voxelPosition);
-
         public float3 CutMargin => digger.CutMargin;
         public TerrainCutter Cutter => digger.Cutter;
         public DiggerSystem Digger => digger;
-
         public int3 AlphamapArraySize => alphamapArraySize;
-
         public int2 AlphamapArrayOrigin => alphamapArrayOrigin;
 
         internal static VoxelChunk Create(DiggerSystem digger, Chunk chunk)
@@ -82,12 +75,15 @@ namespace Digger.Modules.Core.Sources
             Utils.Profiler.BeginSample("VoxelChunk.Create");
             var go = new GameObject("VoxelChunk")
             {
-                hideFlags = HideFlags.DontSaveInBuild
+                hideFlags = HideFlags.DontSaveInBuild,
+                transform =
+                {
+                    parent = chunk.transform,
+                    localPosition = Vector3.zero,
+                    localRotation = Quaternion.identity,
+                    localScale = Vector3.one
+                }
             };
-            go.transform.parent = chunk.transform;
-            go.transform.localPosition = Vector3.zero;
-            go.transform.localRotation = Quaternion.identity;
-            go.transform.localScale = Vector3.one;
             var voxelChunk = go.AddComponent<VoxelChunk>();
             voxelChunk.digger = digger;
             voxelChunk.sizeVox = digger.SizeVox;
@@ -106,8 +102,7 @@ namespace Digger.Modules.Core.Sources
         {
             Utils.Profiler.BeginSample("[Dig] VoxelChunk.GenerateVoxels");
             var sizeVox = digger.SizeVox;
-            if (voxelArray == null)
-                voxelArray = new Voxel[sizeVox * sizeVox * sizeVox];
+            voxelArray ??= new Voxel[sizeVox * sizeVox * sizeVox];
 
             var heights = new NativeArray<float>(heightArray, Allocator.TempJob);
             var voxels = new NativeArray<Voxel>(sizeVox * sizeVox * sizeVox, Allocator.TempJob,
@@ -173,21 +168,22 @@ namespace Digger.Modules.Core.Sources
             Utils.Profiler.EndSample();
         }
 
-        public void DoOperation<T>(IOperation<T> operation) where T : struct, IJobParallelFor
+        public void PrepareOperationJob<T>(IOperation<T> operation) where T : struct, IJobParallelFor
         {
             var job = operation.Do(this);
             currentJob = job;
-            currentJobHandle = job.Schedule(VoxelArray.Length, 64);
-            currentJobStartFrame = Time.frameCount;
+        }
+        
+        public void ScheduleOperationJob<T>() where T : struct, IJobParallelFor
+        {
+            currentJobHandle = ((T)currentJob).Schedule(VoxelArray.Length, digger.SizeVox);
         }
 
         public void CompleteOperation<T>(IOperation<T> operation) where T : struct, IJobParallelFor
         {
-            CompleteJob();
+            CompleteBackgroundJob();
             operation.Complete((T)currentJob, this);
-#if UNITY_EDITOR
             RecordUndoIfNeeded();
-#endif
             digger.EnsureChunkWillBePersisted(this);
         }
 
@@ -197,10 +193,10 @@ namespace Digger.Modules.Core.Sources
             if (VoxelArray == null)
                 return;
 
-            heights = new NativeArray<float>(HeightArray, Allocator.TempJob);
-            voxels = new NativeArray<Voxel>(VoxelArray, Allocator.TempJob);
+            heights = new NativeArray<float>(HeightArray, Allocator.Persistent);
+            voxels = new NativeArray<Voxel>(VoxelArray, Allocator.Persistent);
             var cutter = digger.Cutter;
-            holes = new NativeArray<int>(cutter.GetHoles(chunkPosition, voxelPosition), Allocator.TempJob);
+            holes = new NativeArray<int>(cutter.GetHoles(chunkPosition, voxelPosition), Allocator.Persistent);
 
             // Set up the job data
             var jobData = new VoxelFillSurfaceJob()
@@ -216,12 +212,11 @@ namespace Digger.Modules.Core.Sources
 
             // Schedule the job
             currentJobHandle = jobData.Schedule(voxels.Length, 64);
-            currentJobStartFrame = Time.frameCount;
         }
 
         public void CompleteUpdateVoxelsOnSurface()
         {
-            CompleteJob();
+            CompleteBackgroundJob();
             voxels.CopyTo(VoxelArray);
             heights.Dispose();
             voxels.Dispose();
@@ -233,10 +228,10 @@ namespace Digger.Modules.Core.Sources
             if (VoxelArray == null)
                 return;
 
-            heights = new NativeArray<float>(HeightArray, Allocator.TempJob);
-            chunkOnSurfaceY = new NativeParallelHashSet<int>(100, Allocator.TempJob);
+            heights = new NativeArray<float>(HeightArray, Allocator.Persistent);
+            chunkOnSurfaceY = new NativeParallelHashSet<int>(100, Allocator.Persistent);
             var cutter = digger.Cutter;
-            holes = new NativeArray<int>(cutter.GetHoles(chunkPosition, voxelPosition), Allocator.TempJob);
+            holes = new NativeArray<int>(cutter.GetHoles(chunkPosition, voxelPosition), Allocator.Persistent);
 
             // Set up the job data
             var jobData = new GetSurfaceChunksJob()
@@ -251,32 +246,31 @@ namespace Digger.Modules.Core.Sources
 
             // Schedule the job
             currentJobHandle = jobData.Schedule(holes.Length, 64);
-            currentJobStartFrame = Time.frameCount;
         }
         
-        public bool ShouldCompleteCurrentJob()
+        private void CompleteBackgroundJob()
         {
-            return Time.frameCount >= currentJobStartFrame + TempJobAllocationFrameDuration || currentJobHandle is { IsCompleted: true };
+            if (!currentJobHandle.HasValue)
+                return;
+            currentJobHandle.Value.Complete();
+            currentJobHandle = null;
         }
         
-        public bool HasAnyJobRunning()
+        private void CompleteJobSync()
         {
-            return currentJobHandle.HasValue;
-        }
-        
-        private void CompleteJob()
-        {
-            currentJobHandle?.Complete();
+            if (!currentJobHandle.HasValue)
+                return;
+            currentJobHandle.Value.Complete();
             currentJobHandle = null;
         }
 
-        public HashSet<int> CompleteGetSurfaceChunksOnHoles()
+        public HashSet<int3> CompleteGetSurfaceChunksOnHoles()
         {
-            CompleteJob();
-            var result = new HashSet<int>();
+            CompleteBackgroundJob();
+            var result = new HashSet<int3>();
             foreach (var chunkY in chunkOnSurfaceY)
             {
-                result.Add(chunkY);
+                result.Add(new int3(chunkPosition.x, chunkY, chunkPosition.z));
             }
             chunkOnSurfaceY.Dispose();
             heights.Dispose();
@@ -289,53 +283,43 @@ namespace Digger.Modules.Core.Sources
             return VoxelArray != null && VoxelArray.Any(voxel => voxel.Alteration != Voxel.Unaltered);
         }
 
-        public Mesh BuildMesh(int lod)
+        public void BuildMesh(int lod)
         {
-            return digger.Polygonizer.BuildMesh(this, lod);
+            currentJobHandle = GetPolygonizer(lod).BuildMesh(this, lod);
+        }
+        
+        public bool BuildMeshSync(int lod, Mesh mesh)
+        {
+            currentJobHandle = GetPolygonizer(lod).BuildMesh(this, lod);
+            CompleteJobSync();
+            return GetPolygonizer(lod).CompleteBuildMesh(mesh, Digger.GetChunkBounds());
+        }
+        
+        public void CompleteBuildMeshJob()
+        {
+            CompleteBackgroundJob();
+        }
+        
+        public void CompleteBuildMesh(Mesh mesh, int lod)
+        {
+            needToBakePhysicMeshInstanceID = GetPolygonizer(lod).CompleteBuildMesh(mesh, Digger.GetChunkBounds()) ? 
+                mesh.GetInstanceID() : 0;
         }
 
-        public static Mesh ToMesh(VoxelChunk chunk, PolyOut o, int vertexCount, int triangleCount)
+        public void BakePhysicMesh()
         {
-            if (vertexCount < 3 || triangleCount < 1 || vertexCount >= PolyOut.MaxVertexCount || triangleCount >= PolyOut.MaxTriangleCount)
-                return null;
-
-            Utils.Profiler.BeginSample("[Dig] VoxelChunk.ToMesh");
-
-            var mesh = new Mesh();
-            AddVertexData(mesh, o, vertexCount, triangleCount);
-
-            mesh.bounds = chunk.Digger.GetChunkBounds();
-
-            Utils.Profiler.EndSample();
-            return mesh;
-        }
-
-        private static void AddVertexData(Mesh mesh, PolyOut o, int vertexCount, int triangleCount)
-        {
-            Utils.Profiler.BeginSample("[Dig] VoxelChunk.AddVertexData");
-            mesh.SetVertexBufferParams(vertexCount, VertexData.Layout);
-            mesh.SetVertexBufferData(o.outVertexData, 0, 0, vertexCount, 0, MeshUpdateFlags);
-            mesh.SetIndexBufferParams(triangleCount, IndexFormat.UInt16);
-            mesh.SetIndexBufferData(o.outTriangles, 0, 0, triangleCount, MeshUpdateFlags);
-            mesh.SetSubMesh(0, new SubMeshDescriptor(0, triangleCount), MeshUpdateFlags);
-            Utils.Profiler.EndSample();
-        }
-
-        public void BakePhysicMesh(int meshInstanceId)
-        {
+            if (needToBakePhysicMeshInstanceID == 0)
+                return;
             var job = new PhysicsBakeMeshJob
             {
-                MeshInstanceId = meshInstanceId
+                MeshInstanceId = needToBakePhysicMeshInstanceID
             };
-
-            // Schedule the job
             currentJobHandle = job.Schedule();
-            currentJobStartFrame = Time.frameCount;
         }
-
+        
         public void CompleteBakePhysicMesh()
         {
-            CompleteJob();
+            CompleteBackgroundJob();
         }
 
         private void RecordUndoIfNeeded()
@@ -395,7 +379,7 @@ namespace Digger.Modules.Core.Sources
 
             if (rawBytes == null) {
                 if (VoxelArray == null) {
-                    // If there is no persisted voxels but voxel array is null, then we fallback and (re)generate them.
+                    // If there is no persisted voxels but voxel array is null, then we fall back and (re)generate them.
                     GenerateVoxels(digger, HeightArray, Altitude, ref voxelArray);
                     digger.EnsureChunkWillBePersisted(this);
                 }
@@ -421,8 +405,7 @@ namespace Digger.Modules.Core.Sources
 
         private static void ReadVoxelFile(int sizeVox, byte[] rawBytes, ref Voxel[] voxelArray)
         {
-            if (voxelArray == null)
-                voxelArray = new Voxel[sizeVox * sizeVox * sizeVox];
+            voxelArray ??= new Voxel[sizeVox * sizeVox * sizeVox];
 
             var voxelBytes = new NativeArray<byte>(rawBytes, Allocator.Temp);
             var bytes = new NativeSlice<byte>(voxelBytes);
@@ -442,7 +425,7 @@ namespace Digger.Modules.Core.Sources
                     if (!neighbor.IsChunkBelongingToMe(neighborChunkPosition)) {
                         Debug.LogError(
                             $"neighborChunkPosition {neighborChunkPosition} should always belong to neighbor");
-                        return new NativeArray<Voxel>(1, Allocator.TempJob);
+                        return new NativeArray<Voxel>(1, Allocator.Persistent);
                     }
 
                     return LoadVoxels(neighbor, neighborChunkPosition);
@@ -451,14 +434,14 @@ namespace Digger.Modules.Core.Sources
 
             if (digger.GetChunk(chunkPosition, out var chunk)) {
                 if (chunk.VoxelChunk.voxelArrayBeforeOperation != null) {
-                    return new NativeArray<Voxel>(chunk.VoxelChunk.voxelArrayBeforeOperation, Allocator.TempJob);
+                    return new NativeArray<Voxel>(chunk.VoxelChunk.voxelArrayBeforeOperation, Allocator.Persistent);
                 }
 
                 chunk.LazyLoad();
-                return new NativeArray<Voxel>(chunk.VoxelChunk.VoxelArray, Allocator.TempJob);
+                return new NativeArray<Voxel>(chunk.VoxelChunk.VoxelArray, Allocator.Persistent);
             }
 
-            return new NativeArray<Voxel>(1, Allocator.TempJob);
+            return new NativeArray<Voxel>(1, Allocator.Persistent);
         }
     }
 }

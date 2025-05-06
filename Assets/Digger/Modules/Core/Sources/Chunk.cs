@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
 using Unity.Jobs;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -17,16 +18,13 @@ namespace Digger.Modules.Core.Sources
         [SerializeField] private Vector3 sizeInWorld;
         [SerializeField] private bool hasVisualMesh;
 
-        private readonly List<Mesh> nextVisualMeshes = new List<Mesh>();
-        private readonly List<Mesh> nextCollisionMeshes = new List<Mesh>();
-
         public Vector3i ChunkPosition => chunkPosition;
         public Vector3i VoxelPosition => voxelPosition;
         public Vector3 WorldPosition => worldPosition;
         public DiggerSystem Digger => digger;
         public bool HasVisualMesh => hasVisualMesh;
 
-        public VoxelChunk VoxelChunk => voxelChunk;
+        internal VoxelChunk VoxelChunk => voxelChunk;
 
         private bool IsLoaded => voxelChunk != null && voxelChunk.IsLoaded;
 
@@ -68,14 +66,18 @@ namespace Digger.Modules.Core.Sources
             worldPosition.y *= digger.HeightmapScale.y;
             worldPosition.z *= digger.HeightmapScale.z;
 
-            var go = new GameObject(GetName(chunkPosition));
-            go.layer = layer;
-            go.hideFlags = digger.ShowDebug ? HideFlags.None : HideFlags.HideInHierarchy | HideFlags.HideInInspector;
-
-            go.transform.parent = digger.transform;
-            go.transform.localPosition = worldPosition + Vector3.up * 0.001f;
-            go.transform.localRotation = Quaternion.identity;
-            go.transform.localScale = Vector3.one;
+            var go = new GameObject(GetName(chunkPosition))
+            {
+                layer = layer,
+                hideFlags = digger.ShowDebug ? HideFlags.None : HideFlags.HideInHierarchy | HideFlags.HideInInspector,
+                transform =
+                {
+                    parent = digger.transform,
+                    localPosition = worldPosition + Vector3.up * 0.001f,
+                    localRotation = Quaternion.identity,
+                    localScale = Vector3.one
+                }
+            };
 
             var chunk = go.AddComponent<Chunk>();
             chunk.digger = digger;
@@ -114,10 +116,14 @@ namespace Digger.Modules.Core.Sources
         }
 #endif
         
-        public void DoOperation<T>(IOperation<T> operation) where T : struct, IJobParallelFor
+        public void PrepareOperationJob<T>(IOperation<T> operation) where T : struct, IJobParallelFor
         {
-            LazyLoad();
-            voxelChunk.DoOperation(operation);
+            voxelChunk.PrepareOperationJob(operation);
+        }
+        
+        public void ScheduleOperationJob<T>(IOperation<T> operation) where T : struct, IJobParallelFor
+        {
+            voxelChunk.ScheduleOperationJob<T>();
         }
 
         public void CompleteOperation<T>(IOperation<T> operation) where T : struct, IJobParallelFor
@@ -125,20 +131,30 @@ namespace Digger.Modules.Core.Sources
             voxelChunk.CompleteOperation(operation);
         }
         
-        internal void BuildVisualMesh()
+        internal void BuildVisualMesh(int lod)
         {
-            Utils.Profiler.BeginSample("BuildVisualMesh");
-            for (var lodIndex = 0; lodIndex < chunkLodGroup.LODCount; ++lodIndex) {
-                var lod = ChunkLODGroup.IndexToLod(lodIndex);
-                var nextVisualMesh = voxelChunk.BuildMesh(lod);
-                if (nextVisualMesh != null) {
-                    voxelChunk.BakePhysicMesh(nextVisualMesh.GetInstanceID());
-                }
-
-                nextVisualMeshes.Add(nextVisualMesh);
-                nextCollisionMeshes.Add(lodIndex == digger.ColliderLodIndex || chunkLodGroup.LODCount == 1 ? nextVisualMesh : null);
-            }
-            Utils.Profiler.EndSample();
+            voxelChunk.BuildMesh(lod);
+        }
+        
+        internal void CompleteBuildVisualMeshJob()
+        {
+            voxelChunk.CompleteBuildMeshJob();
+        }
+        
+        internal void CompleteBuildVisualMesh(int lod, int lodIndex)
+        {
+            var nextMesh = chunkLodGroup.NextMesh(lodIndex);
+            voxelChunk.CompleteBuildMesh(nextMesh, lod);
+        }
+        
+        internal void BakePhysicMesh()
+        {
+            voxelChunk.BakePhysicMesh();
+        }
+        
+        internal void CompleteBakePhysicMesh()
+        {
+            voxelChunk.CompleteBakePhysicMesh();
         }
         
         internal void UpdateVoxelsOnSurface()
@@ -156,36 +172,19 @@ namespace Digger.Modules.Core.Sources
             voxelChunk.GetSurfaceChunksOnHoles();
         }
 
-        internal HashSet<int> CompleteGetSurfaceChunksOnHoles()
+        internal HashSet<int3> CompleteGetSurfaceChunksOnHoles()
         {
             return voxelChunk.CompleteGetSurfaceChunksOnHoles();
-        }
-        
-        internal void CompleteBakePhysicMesh()
-        {
-            voxelChunk.CompleteBakePhysicMesh();
-        }
-        
-        internal bool ShouldCompleteCurrentJob()
-        {
-            return voxelChunk.ShouldCompleteCurrentJob();
-        }
-        
-        internal bool HasAnyJobRunning()
-        {
-            return voxelChunk.HasAnyJobRunning();
         }
 
         internal void ApplyModify()
         {
             for (var lodIndex = 0; lodIndex < chunkLodGroup.LODCount; ++lodIndex) {
-                var res = chunkLodGroup.PostBuild(lodIndex, nextVisualMeshes[lodIndex], nextCollisionMeshes[lodIndex]);
+                var nextMesh = chunkLodGroup.NextMesh(lodIndex);
+                var res = chunkLodGroup.PostBuild(lodIndex, nextMesh);
                 if (lodIndex == 0)
                     hasVisualMesh = res;
             }
-
-            nextVisualMeshes.Clear();
-            nextCollisionMeshes.Clear();
             ResetVoxelArrayBeforeOperation();
         }
 
@@ -212,22 +211,18 @@ namespace Digger.Modules.Core.Sources
         {
             for (var lodIndex = 0; lodIndex < chunkLodGroup.LODCount; ++lodIndex) {
                 var lod = ChunkLODGroup.IndexToLod(lodIndex);
-                var visualMesh = voxelChunk.BuildMesh(lod);
-                if (visualMesh != null) {
-                    voxelChunk.BakePhysicMesh(visualMesh.GetInstanceID());
-                    voxelChunk.CompleteBakePhysicMesh();
+                var nextMesh = chunkLodGroup.NextMesh(lodIndex);
+                if (voxelChunk.BuildMeshSync(lod, nextMesh)) {
+                    voxelChunk.BakePhysicMesh();
                 }
 
-                var collisionMesh =
-                    lodIndex == digger.ColliderLodIndex || chunkLodGroup.LODCount == 1 ? visualMesh : null;
-
-                var res = chunkLodGroup.PostBuild(lodIndex, visualMesh, collisionMesh);
+                var res = chunkLodGroup.PostBuild(lodIndex,lodIndex == digger.ColliderLodIndex || chunkLodGroup.LODCount == 1);
                 if (lodIndex == 0)
                     hasVisualMesh = res;
             }
         }
 
-        public static Vector3i GetVoxelPosition(DiggerSystem digger, Vector3i chunkPosition)
+        private static Vector3i GetVoxelPosition(DiggerSystem digger, Vector3i chunkPosition)
         {
             return chunkPosition * digger.SizeOfMesh;
         }

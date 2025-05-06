@@ -230,11 +230,14 @@ namespace Digger.Modules.Core.Sources
 
         public static byte[] GetBytes(string path)
         {
+#if (UNITY_WEBGL && !UNITY_EDITOR)
+            return null;
+#endif
 #if ((!UNITY_ANDROID && !UNITY_WEBGL) || UNITY_EDITOR)
             return File.Exists(path) ? File.ReadAllBytes(path) : null;
 #else
             var uri = path;
-            if (!uri.StartsWith("jar:") && !uri.StartsWith("file:")) {
+            if (!uri.StartsWith("jar:") && !uri.StartsWith("file:") && !uri.StartsWith("http:") && !uri.StartsWith("https:")) {
                 if (File.Exists(uri)) {
                     uri = Path.GetFullPath(uri);
                 }

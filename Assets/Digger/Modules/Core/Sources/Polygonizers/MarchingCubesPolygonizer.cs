@@ -10,26 +10,30 @@ namespace Digger.Modules.Core.Sources.Polygonizers
     public class MarchingCubesPolygonizer : IPolygonizer
     {
         private readonly byte isLowPolyStyle;
+        private PolyOut mcOut;
+        private NativeArray<Voxel> voxels;
+        private NativeArray<float3> normals;
+        private NativeArray<float> alphamaps;
+        private NativeCounter vertexCounter;
 
         public MarchingCubesPolygonizer(bool lowPolyStyle = false)
         {
             this.isLowPolyStyle = (byte)(lowPolyStyle ? 1 : 0);
         }
 
-        public Mesh BuildMesh(VoxelChunk chunk, int lod)
+        public JobHandle BuildMesh(VoxelChunk chunk, int lod)
         {
+            mcOut = PolyOut.New();
             var edgeTable = NativeCollectionsPool.Instance.GetMCEdgeTable();
             var triTable = NativeCollectionsPool.Instance.GetMCTriTable();
             var corners = NativeCollectionsPool.Instance.GetMCCorners();
-            var voxels = new NativeArray<Voxel>(chunk.VoxelArray, Allocator.TempJob);
-            var normals = new NativeArray<float3>(chunk.NormalArray, Allocator.TempJob);
-            var alphamaps = new NativeArray<float>(chunk.AlphamapArray, Allocator.TempJob);
-            var mcOut = NativeCollectionsPool.Instance.GetPolyOut();
-            var vertexCounter = new NativeCounter(Allocator.TempJob, 3);
+            voxels = new NativeArray<Voxel>(chunk.VoxelArray, Allocator.Persistent);
+            normals = new NativeArray<float3>(chunk.NormalArray, Allocator.Persistent);
+            alphamaps = new NativeArray<float>(chunk.AlphamapArray, Allocator.Persistent);
+            vertexCounter = new NativeCounter(Allocator.Persistent, 3);
 
-            var tData = chunk.Digger.Terrain.terrainData;
-            var alphamapsSize = new int2(tData.alphamapWidth, tData.alphamapHeight);
-            var uvScale = new Vector2(1f / tData.size.x, 1f / tData.size.z);
+            var alphamapsSize = chunk.Digger.AlphamapsSize;
+            var uvScale = chunk.Digger.UVScale;
             var scale = new float3(chunk.Digger.HeightmapScale); // { y = 1f };
 
             // for retro-compatibility
@@ -67,18 +71,23 @@ namespace Digger.Modules.Core.Sources.Polygonizers
 
 
             // Schedule the job
-            var currentJobHandle = jobData.Schedule(voxels.Length, 4);
-            // Wait for the job to complete
-            currentJobHandle.Complete();
-
+            return jobData.Schedule(voxels.Length, 4);
+        }
+        
+        public bool CompleteBuildMesh(Mesh mesh, Bounds bounds)
+        {
             var vertexCount = vertexCounter.Count;
+            mcOut.vertexCount = vertexCount;
+            mcOut.triangleCount = vertexCount;
+            
+            var hasMesh = mcOut.TransferVertexData(mesh, bounds);
 
             voxels.Dispose();
             normals.Dispose();
             alphamaps.Dispose();
             vertexCounter.Dispose();
-
-            return VoxelChunk.ToMesh(chunk, mcOut, vertexCount, vertexCount);
+            mcOut.Dispose();
+            return hasMesh;
         }
     }
 }

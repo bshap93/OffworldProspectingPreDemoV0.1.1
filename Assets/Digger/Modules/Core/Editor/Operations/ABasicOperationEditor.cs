@@ -221,7 +221,7 @@ namespace Digger.Modules.Core.Editor.Operations
 
         public void OnEnable()
         {
-            diggerSystems = Object.FindObjectsOfType<DiggerSystem>();
+            diggerSystems = Object.FindObjectsByType<DiggerSystem>(FindObjectsSortMode.None);
         }
 
         public void OnDisable()
@@ -289,7 +289,7 @@ namespace Digger.Modules.Core.Editor.Operations
 
                     if (customBrush == null && !string.IsNullOrEmpty(customBrushId))
                     {
-                        customBrush = Object.FindObjectsOfType<CustomBrush>().FirstOrDefault(cb => cb.Id == customBrushId);
+                        customBrush = Object.FindObjectsByType<CustomBrush>(FindObjectsSortMode.None).FirstOrDefault(cb => cb.Id == customBrushId);
                     }
 
                     customBrush = (CustomBrush)EditorGUILayout.ObjectField("Custom brush object", customBrush, typeof(CustomBrush), true);
@@ -321,7 +321,7 @@ namespace Digger.Modules.Core.Editor.Operations
             return newValue;
         }
 
-        public virtual void OnScene(UnityEditor.Editor editor, SceneView sceneview)
+        public virtual async Awaitable OnScene(UnityEditor.Editor editor, SceneView sceneview)
         {
             var e = Event.current;
             HandleShortcuts(editor);
@@ -388,14 +388,12 @@ namespace Digger.Modules.Core.Editor.Operations
                 else
                 {
                     warnedAboutPlayMode = false;
-                    PerformModification(p);
+                    await PerformModification(p);
                 }
             }
-
-            HandleUtility.Repaint();
         }
 
-        protected abstract void PerformModification(Vector3 p);
+        protected abstract Awaitable PerformModification(Vector3 p);
 
         protected void UpdateReticlePosition(Vector3 position)
         {

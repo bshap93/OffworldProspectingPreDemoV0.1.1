@@ -312,6 +312,9 @@ namespace Domains.Player.Scripts
 
             // Apply effects
             shovelTool.SetDiggerUsingToolEffectSize(newEffectRadius, newOpacity);
+            if (newEffectRadius <= 0f || float.IsNaN(newEffectRadius))
+                newEffectRadius = 0.5f;
+            newEffectRadius = Mathf.Clamp(newEffectRadius, 0.1f, 5f);
             shovelToolEffectRadius = newEffectRadius;
             shovelToolEffectOpacity = newOpacity;
 
@@ -358,7 +361,7 @@ namespace Domains.Player.Scripts
 
             // Clamp values to reasonable ranges
             newEffectRadius = Mathf.Clamp(newEffectRadius, 0.1f, 5f);
-            newOpacity = Mathf.Clamp(newOpacity, 1f, 200f);
+            newOpacity = Mathf.Clamp(newOpacity, 1f, 255f);
             newWidth = Mathf.Clamp(newWidth, 0.1f, 3f);
 
             // Apply effects

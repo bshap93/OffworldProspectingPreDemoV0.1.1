@@ -78,10 +78,15 @@ namespace Digger.Modules.Core.Sources
         {
             return $"ChunkLODGroup_{chunkPosition.x}_{chunkPosition.y}_{chunkPosition.z}";
         }
-
-        public bool PostBuild(int lodIndex, Mesh visualMesh, Mesh collisionMesh)
+        
+        public Mesh NextMesh(int lodIndex)
         {
-            var hasVisualMesh = chunks[lodIndex].PostBuild(visualMesh, collisionMesh);
+            return chunks[lodIndex].NextMesh();
+        }
+
+        public bool PostBuild(int lodIndex, bool withCollision)
+        {
+            var hasVisualMesh = chunks[lodIndex].PostBuild(withCollision);
             if (LODCount > 1) {
                 lodGroup.RecalculateBounds();
             }

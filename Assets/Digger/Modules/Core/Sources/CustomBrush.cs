@@ -13,13 +13,13 @@ namespace Digger.Modules.Core.Sources
     public class CustomBrush : MonoBehaviour
     {
         [SerializeField] private string id;
-        [SerializeField] private Voxel[] inputVoxels;
-        [SerializeField] private int3 inputSizeVox;
-        [SerializeField] private int3 inputOriginVox;
+        [NonSerialized] private Voxel[] inputVoxels;
+        [NonSerialized] private int3 inputSizeVox;
+        [NonSerialized] private int3 inputOriginVox;
 
-        [SerializeField] private Mesh usedMesh;
-        [SerializeField] private float3 usedRotation;
-        [SerializeField] private float3 usedScale;
+        [NonSerialized] private Mesh usedMesh;
+        [NonSerialized] private float3 usedRotation;
+        [NonSerialized] private float3 usedScale;
         
         [SerializeField] public bool autoRefresh = true;
 
@@ -44,7 +44,7 @@ namespace Digger.Modules.Core.Sources
 
         public void ComputeVoxels()
         {
-            var digger = FindObjectOfType<DiggerSystem>();
+            var digger = FindFirstObjectByType<DiggerSystem>();
             if (!digger)
                 return;
             var terrainData = digger.Terrain.terrainData;

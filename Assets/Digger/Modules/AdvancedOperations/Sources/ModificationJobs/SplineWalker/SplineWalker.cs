@@ -16,28 +16,28 @@ namespace Digger.Modules.AdvancedOperations.Sources.ModificationJobs.SplineWalke
             this.diggerSystems = diggerSystems;
         }
 
-        public void WalkAlongSpline<T>(BezierSpline spline, float step, OperationAt<T> getOperationAt) where T : struct, IJobParallelFor
+        public async Awaitable WalkAlongSpline<T>(BezierSpline spline, float step, OperationAt<T> getOperationAt) where T : struct, IJobParallelFor
         {
             var length = spline.GetApproxLength();
             step /= length;
             for (var t = 0f; t < 1f; t += step) {
                 var operation = getOperationAt(spline.GetPoint(t));
-                DoOperation(operation);
+                await DoOperation(operation);
             }
 
             foreach (var diggerSystem in diggerSystems) {
-                diggerSystem.BuildPendingMeshes();
+                diggerSystem.BuildPendingMeshesAsync();
             }
         }
 
-        private void DoOperation<T>(IOperation<T> operation) where T : struct, IJobParallelFor
+        private async Awaitable DoOperation<T>(IOperation<T> operation) where T : struct, IJobParallelFor
         {
             foreach (var diggerSystem in diggerSystems) {
                 var area = operation.GetAreaToModify(diggerSystem);
                 if (!area.NeedsModification)
                     continue;
 
-                diggerSystem.ModifyWithoutMeshes(operation);
+                await diggerSystem.ModifyAsyncWithoutMeshes(operation);
             }
         }
     }

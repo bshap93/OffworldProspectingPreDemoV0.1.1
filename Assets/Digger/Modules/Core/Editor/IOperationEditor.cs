@@ -1,4 +1,5 @@
 using UnityEditor;
+using UnityEngine;
 
 namespace Digger.Modules.Core.Editor
 {
@@ -8,6 +9,6 @@ namespace Digger.Modules.Core.Editor
         void OnDisable();
         void OnInspectorGUI();
         void OnSceneGUI();
-        void OnScene(UnityEditor.Editor editor, SceneView sceneview);
+        Awaitable OnScene(UnityEditor.Editor editor, SceneView sceneview);
     }
 }

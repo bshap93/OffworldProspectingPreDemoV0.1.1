@@ -39,9 +39,12 @@ namespace Digger.Modules.Core.Sources.Jobs
             public VertexData V10;
             public VertexData V11;
 
-            public VertexData this[int i] {
-                get {
-                    switch (i) {
+            public VertexData this[int i]
+            {
+                get
+                {
+                    switch (i)
+                    {
                         case 0: return V0;
                         case 1: return V1;
                         case 2: return V2;
@@ -64,22 +67,28 @@ namespace Digger.Modules.Core.Sources.Jobs
         public int SizeVox;
         public int SizeVox2;
 
-        [ReadOnly] [NativeDisableParallelForRestriction]
+        [ReadOnly]
+        [NativeDisableParallelForRestriction]
         private NativeArray<int> edgeTable;
 
-        [ReadOnly] [NativeDisableParallelForRestriction]
+        [ReadOnly]
+        [NativeDisableParallelForRestriction]
         private NativeArray<int> triTable;
 
-        [ReadOnly] [NativeDisableParallelForRestriction]
+        [ReadOnly]
+        [NativeDisableParallelForRestriction]
         private NativeArray<float3> corners;
 
-        [ReadOnly] [NativeDisableParallelForRestriction]
+        [ReadOnly]
+        [NativeDisableParallelForRestriction]
         private NativeArray<Voxel> voxels;
 
-        [ReadOnly] [NativeDisableParallelForRestriction]
+        [ReadOnly]
+        [NativeDisableParallelForRestriction]
         private NativeArray<float> alphamaps;
 
-        [ReadOnly] [NativeDisableParallelForRestriction]
+        [ReadOnly]
+        [NativeDisableParallelForRestriction]
         private NativeArray<float3> normals;
 
         private int2 alphamapsSize;
@@ -90,7 +99,8 @@ namespace Digger.Modules.Core.Sources.Jobs
         [NativeDisableParallelForRestriction]
         public NativeArray<VertexData> outVertexData;
 
-        [WriteOnly] [NativeDisableParallelForRestriction]
+        [WriteOnly]
+        [NativeDisableParallelForRestriction]
         public NativeArray<ushort> outTriangles;
 
         private float3 chunkWorldPosition;
@@ -172,33 +182,54 @@ namespace Digger.Modules.Core.Sources.Jobs
 
         private float3 VertexInterp(float3 p1, float3 p2, Voxel vA, Voxel vB)
         {
-            if (Utils.Approximately(vA.Value, 0))
+            if (math.abs(Isovalue - vA.Value) < 0.0001f)
                 return p1;
-            if (Utils.Approximately(vB.Value, 0))
+            if (math.abs(Isovalue - vB.Value) < 0.0001f)
                 return p2;
+            if (math.abs(vB.Value - vA.Value) < 0.0001f)
+                return p1;
 
             var mu = (Isovalue - vA.Value) / (vB.Value - vA.Value);
-            return p1 + mu * (p2 - p1);
+            return math.lerp(p1, p2, mu);
         }
-
+        
         private float3 ComputeNormalAt(int xi, int yi, int zi, float voxelOriginValue)
         {
-            return math.normalize(new float3(
+            var normal = new float3(
                 voxels[(xi + 1) * SizeVox2 + yi * SizeVox + zi].Value - voxelOriginValue,
                 voxels[xi * SizeVox2 + (yi + 1) * SizeVox + zi].Value - voxelOriginValue,
                 voxels[xi * SizeVox2 + yi * SizeVox + (zi + 1)].Value - voxelOriginValue
-            ));
-        }
+            );
+            
+            // Try to handle degenerate case with other voxels
+            if (math.all(math.abs(normal) < 0.0001f) && xi > 0 && yi > 0 && zi > 0)
+            {
+                normal = new float3(
+                    voxelOriginValue - voxels[(xi - 1) * SizeVox2 + yi * SizeVox + zi].Value,
+                    voxelOriginValue - voxels[xi * SizeVox2 + (yi - 1) * SizeVox + zi].Value,
+                    voxelOriginValue - voxels[xi * SizeVox2 + yi * SizeVox + (zi - 1)].Value
+                );
+            }
+            
+            // Degenerate case
+            if (math.all(math.abs(normal) < 0.0001f))
+            {
+                return new float3(0, 0, 0); // 0 means we can't determine a proper normal
+            }
 
+            return normal;
+        }
 
         private unsafe void ComputeUVsAndColor(int3 pi, VertexData* v, float3 vertexRelativePos, Voxel voxel)
         {
             var alt = voxel.Alteration;
-            if (alt == Voxel.Unaltered || alt == Voxel.OnSurface) {
+            if (alt == Voxel.Unaltered || alt == Voxel.OnSurface)
+            {
                 v->Normal = InterpolateNormal(pi.x, pi.z, vertexRelativePos.xz);
             }
 
-            if (materialType == TerrainMaterialType.MicroSplat) {
+            if (materialType == TerrainMaterialType.MicroSplat)
+            {
                 ComputeUVsAndColorForMicroSplat(v, voxel);
                 return;
             }
@@ -207,7 +238,7 @@ namespace Digger.Modules.Core.Sources.Jobs
                 (chunkWorldPosition.z + v->Vertex.z) * uvScale.y);
 
             v->UV = uv;
-            
+
 #if UNITY_6000_0_OR_NEWER && (USING_URP || USING_HDRP)
             if (alt == Voxel.Unaltered || alt == Voxel.OnSurface) {
                 // near the terrain surface -> set same texture
@@ -225,13 +256,16 @@ namespace Digger.Modules.Core.Sources.Jobs
                 v->SplatControl4 = GetControlFor(firstTextureIndex, secondTextureIndex, lerp, 3);
             }
 #else
-            if (alt == Voxel.Unaltered || alt == Voxel.OnSurface) {
+            if (alt == Voxel.Unaltered || alt == Voxel.OnSurface)
+            {
                 // near the terrain surface -> set same texture
                 v->SplatControl0 = GetControlAt(uv, 0);
                 v->SplatControl1 = GetControlAt(uv, 1);
                 v->SplatControl2 = GetControlAt(uv, 2);
                 v->SplatControl3 = GetControlAt(uv, 3);
-            } else {
+            }
+            else
+            {
                 var firstTextureIndex = voxel.FirstTextureIndex;
                 var secondTextureIndex = voxel.SecondTextureIndex;
                 var lerp = voxel.NormalizedTextureLerp;
@@ -241,7 +275,8 @@ namespace Digger.Modules.Core.Sources.Jobs
                 v->SplatControl3 = GetControlFor(firstTextureIndex, secondTextureIndex, lerp, 3);
             }
 
-            if (IsBuiltInHDRP == 1) {
+            if (IsBuiltInHDRP == 1)
+            {
                 v->SplatControl2 = v->SplatControl1;
                 v->SplatControl1 = v->SplatControl0;
             }
@@ -254,7 +289,8 @@ namespace Digger.Modules.Core.Sources.Jobs
                 (chunkWorldPosition.z + v->Vertex.z) * uvScale.y);
             v->UV = uv;
 
-            if (voxel.Alteration == Voxel.Unaltered || voxel.Alteration == Voxel.OnSurface) {
+            if (voxel.Alteration == Voxel.Unaltered || voxel.Alteration == Voxel.OnSurface)
+            {
                 // near the terrain surface -> set same texture
                 v->Color = new float4(
                     EncodeToFloat(GetControlAt(uv, 0)),
@@ -274,7 +310,9 @@ namespace Digger.Modules.Core.Sources.Jobs
                     EncodeToFloat(GetControlAt(uv, 6)),
                     EncodeToFloat(GetControlAt(uv, 7))
                 );
-            } else {
+            }
+            else
+            {
                 var firstTextureIndex = voxel.FirstTextureIndex;
                 var secondTextureIndex = voxel.SecondTextureIndex;
                 var lerp = voxel.NormalizedTextureLerp;
@@ -316,19 +354,23 @@ namespace Digger.Modules.Core.Sources.Jobs
 
             var mapCount = localAlphamapsSize.z;
             var ctrl = float4.zero;
-            if (index + 0 < mapCount) {
+            if (index + 0 < mapCount)
+            {
                 ctrl[0] = InterpolateAlphamap(index, mapCount, x, z, 0, relPos);
             }
 
-            if (index + 1 < mapCount) {
+            if (index + 1 < mapCount)
+            {
                 ctrl[1] = InterpolateAlphamap(index, mapCount, x, z, 1, relPos);
             }
 
-            if (index + 2 < mapCount) {
+            if (index + 2 < mapCount)
+            {
                 ctrl[2] = InterpolateAlphamap(index, mapCount, x, z, 2, relPos);
             }
 
-            if (index + 3 < mapCount) {
+            if (index + 3 < mapCount)
+            {
                 ctrl[3] = InterpolateAlphamap(index, mapCount, x, z, 3, relPos);
             }
 
@@ -400,6 +442,7 @@ namespace Digger.Modules.Core.Sources.Jobs
         {
             var pi = Utils.IndexToXYZ(index, SizeVox, SizeVox2);
 
+            // Early out if this voxel should be skipped based on LOD or boundaries
             if (pi.x >= SizeVox - lod - 1 ||
                 pi.y >= SizeVox - lod - 1 ||
                 pi.z >= SizeVox - lod - 1 ||
@@ -433,7 +476,8 @@ namespace Digger.Modules.Core.Sources.Jobs
                 alt7 == Voxel.Hole)
                 return;
 
-            if (AlteredOnly == 1) {
+            if (AlteredOnly == 1)
+            {
                 if (alt0 == Voxel.Unaltered &&
                     alt1 == Voxel.Unaltered &&
                     alt2 == Voxel.Unaltered &&
@@ -445,6 +489,7 @@ namespace Digger.Modules.Core.Sources.Jobs
                     return;
             }
 
+            // Calculate cube index
             var cubeindex = 0;
             if (v0.IsInside) cubeindex |= 1;
             if (v1.IsInside) cubeindex |= 2;
@@ -480,171 +525,196 @@ namespace Digger.Modules.Core.Sources.Jobs
 
             var wVert = new WorkVert();
 
-            unsafe {
+            unsafe
+            {
                 /* Find the vertices where the surface intersects the cube */
-                if ((edgeTable[cubeindex] & 1) != 0) {
+                if ((edgeTable[cubeindex] & 1) != 0)
+                {
                     var norm = VertexInterp(voxelNorm.N0, voxelNorm.N1, v0, v1);
                     var relPos = VertexInterp(corners[0], corners[1], v0, v1);
                     wVert.V0 = new VertexData
                     {
                         Vertex = scale * (position + relPos * lod),
-                        Normal = math.normalize(norm)
+                        Normal = norm
                     };
-                    if (FullOutput == 1) {
+                    if (FullOutput == 1)
+                    {
                         var vox = GetProminentVoxel(v0, v1);
                         ComputeUVsAndColor(pi, &wVert.V0, relPos, vox);
                     }
                 }
 
-                if ((edgeTable[cubeindex] & 2) != 0) {
+                if ((edgeTable[cubeindex] & 2) != 0)
+                {
                     var norm = VertexInterp(voxelNorm.N1, voxelNorm.N2, v1, v2);
                     var relPos = VertexInterp(corners[1], corners[2], v1, v2);
                     wVert.V1 = new VertexData
                     {
                         Vertex = scale * (position + relPos * lod),
-                        Normal = math.normalize(norm)
+                        Normal = norm
                     };
-                    if (FullOutput == 1) {
+                    if (FullOutput == 1)
+                    {
                         var vox = GetProminentVoxel(v1, v2);
                         ComputeUVsAndColor(pi, &wVert.V1, relPos, vox);
                     }
                 }
 
-                if ((edgeTable[cubeindex] & 4) != 0) {
+                if ((edgeTable[cubeindex] & 4) != 0)
+                {
                     var norm = VertexInterp(voxelNorm.N2, voxelNorm.N3, v2, v3);
                     var relPos = VertexInterp(corners[2], corners[3], v2, v3);
                     wVert.V2 = new VertexData
                     {
                         Vertex = scale * (position + relPos * lod),
-                        Normal = math.normalize(norm)
+                        Normal = norm
                     };
-                    if (FullOutput == 1) {
+                    if (FullOutput == 1)
+                    {
                         var vox = GetProminentVoxel(v2, v3);
                         ComputeUVsAndColor(pi, &wVert.V2, relPos, vox);
                     }
                 }
 
-                if ((edgeTable[cubeindex] & 8) != 0) {
+                if ((edgeTable[cubeindex] & 8) != 0)
+                {
                     var norm = VertexInterp(voxelNorm.N3, voxelNorm.N0, v3, v0);
                     var relPos = VertexInterp(corners[3], corners[0], v3, v0);
                     wVert.V3 = new VertexData
                     {
                         Vertex = scale * (position + relPos * lod),
-                        Normal = math.normalize(norm)
+                        Normal = norm
                     };
-                    if (FullOutput == 1) {
+                    if (FullOutput == 1)
+                    {
                         var vox = GetProminentVoxel(v3, v0);
                         ComputeUVsAndColor(pi, &wVert.V3, relPos, vox);
                     }
                 }
 
-                if ((edgeTable[cubeindex] & 16) != 0) {
+                if ((edgeTable[cubeindex] & 16) != 0)
+                {
                     var norm = VertexInterp(voxelNorm.N4, voxelNorm.N5, v4, v5);
                     var relPos = VertexInterp(corners[4], corners[5], v4, v5);
                     wVert.V4 = new VertexData
                     {
                         Vertex = scale * (position + relPos * lod),
-                        Normal = math.normalize(norm)
+                        Normal = norm
                     };
-                    if (FullOutput == 1) {
+                    if (FullOutput == 1)
+                    {
                         var vox = GetProminentVoxel(v4, v5);
                         ComputeUVsAndColor(pi, &wVert.V4, relPos, vox);
                     }
                 }
 
-                if ((edgeTable[cubeindex] & 32) != 0) {
+                if ((edgeTable[cubeindex] & 32) != 0)
+                {
                     var norm = VertexInterp(voxelNorm.N5, voxelNorm.N6, v5, v6);
                     var relPos = VertexInterp(corners[5], corners[6], v5, v6);
                     wVert.V5 = new VertexData
                     {
                         Vertex = scale * (position + relPos * lod),
-                        Normal = math.normalize(norm)
+                        Normal = norm
                     };
-                    if (FullOutput == 1) {
+                    if (FullOutput == 1)
+                    {
                         var vox = GetProminentVoxel(v5, v6);
                         ComputeUVsAndColor(pi, &wVert.V5, relPos, vox);
                     }
                 }
 
-                if ((edgeTable[cubeindex] & 64) != 0) {
+                if ((edgeTable[cubeindex] & 64) != 0)
+                {
                     var norm = VertexInterp(voxelNorm.N6, voxelNorm.N7, v6, v7);
                     var relPos = VertexInterp(corners[6], corners[7], v6, v7);
                     wVert.V6 = new VertexData
                     {
                         Vertex = scale * (position + relPos * lod),
-                        Normal = math.normalize(norm)
+                        Normal = norm
                     };
-                    if (FullOutput == 1) {
+                    if (FullOutput == 1)
+                    {
                         var vox = GetProminentVoxel(v6, v7);
                         ComputeUVsAndColor(pi, &wVert.V6, relPos, vox);
                     }
                 }
 
-                if ((edgeTable[cubeindex] & 128) != 0) {
+                if ((edgeTable[cubeindex] & 128) != 0)
+                {
                     var norm = VertexInterp(voxelNorm.N7, voxelNorm.N4, v7, v4);
                     var relPos = VertexInterp(corners[7], corners[4], v7, v4);
                     wVert.V7 = new VertexData
                     {
                         Vertex = scale * (position + relPos * lod),
-                        Normal = math.normalize(norm)
+                        Normal = norm
                     };
-                    if (FullOutput == 1) {
+                    if (FullOutput == 1)
+                    {
                         var vox = GetProminentVoxel(v7, v4);
                         ComputeUVsAndColor(pi, &wVert.V7, relPos, vox);
                     }
                 }
 
-                if ((edgeTable[cubeindex] & 256) != 0) {
+                if ((edgeTable[cubeindex] & 256) != 0)
+                {
                     var norm = VertexInterp(voxelNorm.N0, voxelNorm.N4, v0, v4);
                     var relPos = VertexInterp(corners[0], corners[4], v0, v4);
                     wVert.V8 = new VertexData
                     {
                         Vertex = scale * (position + relPos * lod),
-                        Normal = math.normalize(norm)
+                        Normal = norm
                     };
-                    if (FullOutput == 1) {
+                    if (FullOutput == 1)
+                    {
                         var vox = GetProminentVoxel(v0, v4);
                         ComputeUVsAndColor(pi, &wVert.V8, relPos, vox);
                     }
                 }
 
-                if ((edgeTable[cubeindex] & 512) != 0) {
+                if ((edgeTable[cubeindex] & 512) != 0)
+                {
                     var norm = VertexInterp(voxelNorm.N1, voxelNorm.N5, v1, v5);
                     var relPos = VertexInterp(corners[1], corners[5], v1, v5);
                     wVert.V9 = new VertexData
                     {
                         Vertex = scale * (position + relPos * lod),
-                        Normal = math.normalize(norm)
+                        Normal = norm
                     };
-                    if (FullOutput == 1) {
+                    if (FullOutput == 1)
+                    {
                         var vox = GetProminentVoxel(v1, v5);
                         ComputeUVsAndColor(pi, &wVert.V9, relPos, vox);
                     }
                 }
 
-                if ((edgeTable[cubeindex] & 1024) != 0) {
+                if ((edgeTable[cubeindex] & 1024) != 0)
+                {
                     var norm = VertexInterp(voxelNorm.N2, voxelNorm.N6, v2, v6);
                     var relPos = VertexInterp(corners[2], corners[6], v2, v6);
                     wVert.V10 = new VertexData
                     {
                         Vertex = scale * (position + relPos * lod),
-                        Normal = math.normalize(norm)
+                        Normal = norm
                     };
-                    if (FullOutput == 1) {
+                    if (FullOutput == 1)
+                    {
                         var vox = GetProminentVoxel(v2, v6);
                         ComputeUVsAndColor(pi, &wVert.V10, relPos, vox);
                     }
                 }
 
-                if ((edgeTable[cubeindex] & 2048) != 0) {
+                if ((edgeTable[cubeindex] & 2048) != 0)
+                {
                     var norm = VertexInterp(voxelNorm.N3, voxelNorm.N7, v3, v7);
                     var relPos = VertexInterp(corners[3], corners[7], v3, v7);
                     wVert.V11 = new VertexData
                     {
                         Vertex = scale * (position + relPos * lod),
-                        Normal = math.normalize(norm)
+                        Normal = norm
                     };
-                    if (FullOutput == 1) {
+                    if (FullOutput == 1)
+                    {
                         var vox = GetProminentVoxel(v3, v7);
                         ComputeUVsAndColor(pi, &wVert.V11, relPos, vox);
                     }
@@ -673,37 +743,51 @@ namespace Digger.Modules.Core.Sources.Jobs
             var vert2 = wVert[i2];
             var vert3 = wVert[i3];
 
-            if (!Utils.Approximately(vert1.Vertex, vert2.Vertex) &&
-                !Utils.Approximately(vert2.Vertex, vert3.Vertex) &&
-                !Utils.Approximately(vert1.Vertex, vert3.Vertex) &&
-                !Utils.AreColinear(vert1.Vertex, vert2.Vertex, vert3.Vertex)) {
+            float3 v1 = vert1.Vertex;
+            float3 v2 = vert2.Vertex;
+            float3 v3 = vert3.Vertex;
 
-                var triIndex = vertexCounter.Increment() - 3;
-                if (triIndex + 2 >= PolyOut.MaxTriangleCount) return false;
-
-                if (materialType == TerrainMaterialType.Standard || materialType == TerrainMaterialType.URP || materialType == TerrainMaterialType.HDRP)
-                {
-                    vert1.Color = new float4(1, 0, 0, 0);
-                    vert2.Color = new float4(0, 1, 0, 0);
-                    vert3.Color = new float4(0, 0, 1, 0);
-                }
-
-                if (IsLowPolyStyle == 1)
-                {
-                    var nrm = math.normalize(math.cross(vert2.Vertex - vert1.Vertex, vert3.Vertex - vert1.Vertex));
-                    vert1.Normal = nrm;
-                    vert2.Normal = nrm;
-                    vert3.Normal = nrm;
-                }
-
-                outVertexData[triIndex + 0] = vert1;
-                outVertexData[triIndex + 1] = vert2;
-                outVertexData[triIndex + 2] = vert3;
-
-                outTriangles[triIndex + 0] = (ushort)(triIndex + 0);
-                outTriangles[triIndex + 1] = (ushort)(triIndex + 1);
-                outTriangles[triIndex + 2] = (ushort)(triIndex + 2);
+            // Fast check for degenerate triangles
+            if (Utils.Approximately(v1, v2) ||
+                Utils.Approximately(v2, v3) ||
+                Utils.Approximately(v1, v3) ||
+                Utils.AreColinear(v1, v2, v3))
+            {
+                return true; // Skip this triangle but continue processing
             }
+
+            var triIndex = vertexCounter.Increment() - 3;
+            if (triIndex + 2 >= PolyOut.MaxTriangleCount) return false;
+
+            if (materialType == TerrainMaterialType.Standard || materialType == TerrainMaterialType.URP || materialType == TerrainMaterialType.HDRP)
+            {
+                vert1.Color = new float4(1, 0, 0, 0);
+                vert2.Color = new float4(0, 1, 0, 0);
+                vert3.Color = new float4(0, 0, 1, 0);
+            }
+
+            if (IsLowPolyStyle == 1)
+            {
+                var nrm = math.normalize(math.cross(v2 - v1, v3 - v1));
+                vert1.Normal = nrm;
+                vert2.Normal = nrm;
+                vert3.Normal = nrm;
+            }
+            else
+            {
+                var healthyNormal = math.all(vert1.Normal == float3.zero) ? math.all(vert2.Normal == float3.zero)  ? math.normalize(vert3.Normal) : math.normalize(vert2.Normal) : math.normalize(vert1.Normal);
+                vert1.Normal = math.all(vert1.Normal == float3.zero) ? healthyNormal : math.normalize(vert1.Normal);
+                vert2.Normal = math.all(vert2.Normal == float3.zero) ? healthyNormal : math.normalize(vert2.Normal);
+                vert3.Normal = math.all(vert3.Normal == float3.zero) ? healthyNormal : math.normalize(vert3.Normal);
+            }
+
+            outVertexData[triIndex + 0] = vert1;
+            outVertexData[triIndex + 1] = vert2;
+            outVertexData[triIndex + 2] = vert3;
+
+            outTriangles[triIndex + 0] = (ushort)(triIndex + 0);
+            outTriangles[triIndex + 1] = (ushort)(triIndex + 1);
+            outTriangles[triIndex + 2] = (ushort)(triIndex + 2);
 
             return true;
         }

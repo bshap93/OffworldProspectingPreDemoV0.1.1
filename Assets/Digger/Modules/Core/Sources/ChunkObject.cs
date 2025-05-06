@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using UnityEngine;
 using UnityEngine.Rendering;
 #if UNITY_EDITOR
@@ -16,6 +17,13 @@ namespace Digger.Modules.Core.Sources
         [SerializeField] private bool isStatic;
         [SerializeField] private Terrain terrain;
         [SerializeField] private DiggerSystem digger;
+        
+        [SerializeField] private Mesh mesh1;
+        [SerializeField] private Mesh mesh2;
+        [SerializeField] private bool nextMeshIsMesh1;
+        [NonSerialized] private Mesh mesh1PlayingInEditor;
+        [NonSerialized] private Mesh mesh2PlayingInEditor;
+        [NonSerialized] private bool nextMeshIsMesh1PlayingInEditor;
 
         public Mesh Mesh => filter.sharedMesh;
         public Terrain Terrain => terrain;
@@ -57,6 +65,9 @@ namespace Digger.Modules.Core.Sources
             go.GetComponent<Renderer>().receiveShadows = true;
             chunkObject.filter = go.AddComponent<MeshFilter>();
             chunkObject.meshRenderer.enabled = false;
+            chunkObject.mesh1 = new Mesh();
+            chunkObject.mesh2 = new Mesh();
+            chunkObject.nextMeshIsMesh1 = true;
 
             if (hasCollider) {
                 chunkObject.meshCollider = go.AddComponent<MeshCollider>();
@@ -77,7 +88,7 @@ namespace Digger.Modules.Core.Sources
         {
 #if UNITY_EDITOR
 
-            var runtime = FindObjectOfType<ADiggerRuntimeMonoBehaviour>();
+            var runtime = FindFirstObjectByType<ADiggerRuntimeMonoBehaviour>();
             StaticEditorFlags flags = 0;
 
             if (!runtime)
@@ -104,7 +115,7 @@ namespace Digger.Modules.Core.Sources
         
         public void GenerateSecondaryUVSet()
         {
-#if UNITY_EDITOR && UNITY_6000_0_OR_NEWER
+#if UNITY_EDITOR
             if (isStatic && filter.sharedMesh)
             {
                 meshRenderer.scaleInLightmap = 0.25f;
@@ -131,24 +142,44 @@ namespace Digger.Modules.Core.Sources
         {
             return $"ChunkObject_{chunkPosition.x}_{chunkPosition.y}_{chunkPosition.z}";
         }
+        
+        public Mesh NextMesh()
+        {
+            if (Application.isEditor && Application.isPlaying)
+            {
+                if (!mesh1PlayingInEditor) mesh1PlayingInEditor = new Mesh();
+                if (!mesh2PlayingInEditor) mesh2PlayingInEditor = new Mesh();
+                return nextMeshIsMesh1PlayingInEditor ? mesh1PlayingInEditor : mesh2PlayingInEditor;
+            }
+            if (!mesh1) mesh1 = new Mesh();
+            if (!mesh2) mesh2 = new Mesh();
+            return nextMeshIsMesh1 ? mesh1 : mesh2;
+        }
+        
+        public void ClearOldMesh()
+        {
+            if (Application.isEditor && Application.isPlaying)
+            {
+                var meshToClear = nextMeshIsMesh1PlayingInEditor ? mesh2PlayingInEditor : mesh1PlayingInEditor;
+                meshToClear.Clear();
+                nextMeshIsMesh1PlayingInEditor = !nextMeshIsMesh1PlayingInEditor;
+            }
+            else
+            {
+                var meshToClear = nextMeshIsMesh1 ? mesh2 : mesh1;
+                meshToClear.Clear();
+                nextMeshIsMesh1 = !nextMeshIsMesh1;
+            }
+        }
 
-        public bool PostBuild(Mesh visualMesh, Mesh collisionMesh)
+        public bool PostBuild(bool withCollision)
         {
             Utils.Profiler.BeginSample("[Dig] Chunk.PostBuild");
-            if (filter.sharedMesh && !isStatic) {
-                if (Application.isEditor && !Application.isPlaying) {
-                    DestroyImmediate(filter.sharedMesh, true);
-                } else {
-#if UNITY_EDITOR
-                    if (string.IsNullOrEmpty(AssetDatabase.GetAssetPath(filter.sharedMesh.GetInstanceID())))
-#endif
-                        Destroy(filter.sharedMesh);
-                }
-            }
 
+            var mesh = NextMesh();
             var hasVisualMesh = false;
-            if (!ReferenceEquals(visualMesh, null) && visualMesh.vertexCount > 0) {
-                filter.sharedMesh = visualMesh;
+            if (mesh.vertexCount > 0) {
+                filter.sharedMesh = mesh;
                 meshRenderer.enabled = true;
                 hasVisualMesh = true;
             } else {
@@ -157,25 +188,16 @@ namespace Digger.Modules.Core.Sources
             }
 
             if (hasCollider) {
-                if (meshCollider.sharedMesh) {
-                    if (Application.isEditor && !Application.isPlaying) {
-                        DestroyImmediate(meshCollider.sharedMesh, true);
-                    } else {
-#if UNITY_EDITOR
-                        if (string.IsNullOrEmpty(AssetDatabase.GetAssetPath(meshCollider.sharedMesh.GetInstanceID())))
-#endif
-                            Destroy(meshCollider.sharedMesh);
-                    }
-                }
-
-                if (!ReferenceEquals(collisionMesh, null) && collisionMesh.vertexCount > 0) {
-                    meshCollider.sharedMesh = collisionMesh;
+                if (mesh.vertexCount > 0 && withCollision) {
+                    meshCollider.sharedMesh = mesh;
                     meshCollider.enabled = true;
                 } else {
                     meshCollider.sharedMesh = null;
                     meshCollider.enabled = false;
                 }
             }
+            
+            ClearOldMesh();
 
             Utils.Profiler.EndSample();
             return hasVisualMesh;
@@ -185,30 +207,42 @@ namespace Digger.Modules.Core.Sources
         public void SaveMeshesAsAssets(DiggerSystem digger, int lod)
         {
             var sameMeshes = meshCollider && filter && meshCollider.sharedMesh == filter.sharedMesh;
-
+            
             if (filter && filter.sharedMesh) {
                 filter.sharedMesh.name = $"{gameObject.name}_{lod}_mesh";
-                var mesh = EditorUtils.CreateOrUpdateMeshAsset(filter.sharedMesh, Path.Combine(digger.MeshesPathData, $"{gameObject.name}_{lod}_mesh.asset"));
-                filter.sharedMesh = null;
-                filter.sharedMesh = mesh;
-                if (sameMeshes)
-                {
-                    meshCollider.sharedMesh = null;
-                    meshCollider.sharedMesh = mesh;
-                    meshCollider.enabled = false;
-                    meshCollider.enabled = true;
-                }
+                EditorUtils.CreateOrUpdateMeshAsset(filter.sharedMesh, Path.Combine(digger.MeshesPathData, $"{gameObject.name}_{lod}_mesh.asset"));
             }
-
             if (meshCollider && meshCollider.sharedMesh && !sameMeshes)
             {
                 meshCollider.sharedMesh.name = $"{gameObject.name}_{lod}_collisionMesh";
-                var mesh = EditorUtils.CreateOrUpdateMeshAsset(meshCollider.sharedMesh, Path.Combine(digger.MeshesPathData, $"{gameObject.name}_{lod}_collisionMesh.asset"));
-                meshCollider.sharedMesh = null;
-                meshCollider.sharedMesh = mesh;
-                meshCollider.enabled = false;
-                meshCollider.enabled = true;
+                EditorUtils.CreateOrUpdateMeshAsset(meshCollider.sharedMesh, Path.Combine(digger.MeshesPathData, $"{gameObject.name}_{lod}_collisionMesh.asset"));
             }
+            
+            
+
+            // if (filter && filter.sharedMesh) {
+            //     filter.sharedMesh.name = $"{gameObject.name}_{lod}_mesh";
+            //     var mesh = EditorUtils.CreateOrUpdateMeshAsset(filter.sharedMesh, Path.Combine(digger.MeshesPathData, $"{gameObject.name}_{lod}_mesh.asset"));
+            //     filter.sharedMesh = null;
+            //     filter.sharedMesh = mesh;
+            //     if (sameMeshes)
+            //     {
+            //         meshCollider.sharedMesh = null;
+            //         meshCollider.sharedMesh = mesh;
+            //         meshCollider.enabled = false;
+            //         meshCollider.enabled = true;
+            //     }
+            // }
+            //
+            // if (meshCollider && meshCollider.sharedMesh && !sameMeshes)
+            // {
+            //     meshCollider.sharedMesh.name = $"{gameObject.name}_{lod}_collisionMesh";
+            //     var mesh = EditorUtils.CreateOrUpdateMeshAsset(meshCollider.sharedMesh, Path.Combine(digger.MeshesPathData, $"{gameObject.name}_{lod}_collisionMesh.asset"));
+            //     meshCollider.sharedMesh = null;
+            //     meshCollider.sharedMesh = mesh;
+            //     meshCollider.enabled = false;
+            //     meshCollider.enabled = true;
+            // }
         }
 #endif
     }

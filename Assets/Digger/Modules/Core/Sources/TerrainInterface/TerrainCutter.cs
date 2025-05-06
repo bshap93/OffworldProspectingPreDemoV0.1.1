@@ -17,6 +17,7 @@ namespace Digger.Modules.Core.Sources.TerrainInterface
         private bool mustApply;
         private bool mustPersist;
         private TerrainData terrainData;
+        private TerrainCollider terrainCollider;
         private bool needsSync;
         private int holesResolution;
         private int voxResolution;
@@ -81,6 +82,7 @@ namespace Digger.Modules.Core.Sources.TerrainInterface
         public void Refresh()
         {
             terrainData = digger.Terrain.terrainData;
+            terrainCollider = digger.Terrain.GetComponent<TerrainCollider>();
             terrainData.enableHolesTextureCompression = false;
             holesResolution = terrainData.holesResolution;
             voxResolution = digger.ResolutionMult;
@@ -217,6 +219,8 @@ namespace Digger.Modules.Core.Sources.TerrainInterface
                 }
 
                 terrainData.SyncTexture(TerrainData.HolesTextureName);
+                terrainCollider.enabled = false;
+                terrainCollider.enabled = true;
             }
 
             Utils.Profiler.EndSample();
@@ -345,7 +349,6 @@ namespace Digger.Modules.Core.Sources.TerrainInterface
 
         public void Clear()
         {
-#if UNITY_EDITOR
             Utils.Profiler.BeginSample("[Dig] Cutter.Clear");
             Refresh();
             undoRecords.Clear();
@@ -359,7 +362,6 @@ namespace Digger.Modules.Core.Sources.TerrainInterface
 
             digger.Terrain.terrainData.SetHoles(0, 0, holes);
             Utils.Profiler.EndSample();
-#endif
         }
     }
 }

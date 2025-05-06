@@ -32,14 +32,14 @@ namespace Digger.Modules.Core.Sources.Operations
 
         public VoxelModificationJob Do(VoxelChunk chunk)
         {
-            var inputVoxels = new NativeArray<Voxel>(0, Allocator.TempJob);
+            var inputVoxels = new NativeArray<Voxel>(0, Allocator.Persistent);
             var inputSizeVox = new int3(0, 0, 0);
             var inputOriginVox = new int3(0, 0, 0);
 
             if (Params.Brush == BrushType.Custom && Params.CustomBrush && Params.CustomBrush.InputVoxels != null)
             {
                 inputVoxels.Dispose();
-                inputVoxels = new NativeArray<Voxel>(Params.CustomBrush.InputVoxels, Allocator.TempJob);
+                inputVoxels = new NativeArray<Voxel>(Params.CustomBrush.InputVoxels, Allocator.Persistent);
                 inputSizeVox = Params.CustomBrush.InputSizeVox;
                 inputOriginVox = Utils.UnityToVoxelPosition(Params.Position, chunk.HeightmapScale) - chunk.AbsoluteVoxelPosition - (int3)math.round(Params.CustomBrush.InputOriginVox * Params.Size);
             }
@@ -50,10 +50,10 @@ namespace Digger.Modules.Core.Sources.Operations
                 SizeVox2 = chunk.SizeVox * chunk.SizeVox,
                 HeightmapScale = chunk.HeightmapScale,
                 ChunkAltitude = chunk.WorldPosition.y,
-                Voxels = new NativeArray<Voxel>(chunk.VoxelArray, Allocator.TempJob),
-                Heights = new NativeArray<float>(chunk.HeightArray, Allocator.TempJob),
-                Holes = new NativeArray<int>(chunk.HolesArray, Allocator.TempJob),
-                NewHolesConcurrentCounter = new NativeArray<int>(1, Allocator.TempJob),
+                Voxels = new NativeArray<Voxel>(chunk.VoxelArray, Allocator.Persistent),
+                Heights = new NativeArray<float>(chunk.HeightArray, Allocator.Persistent),
+                Holes = new NativeArray<int>(chunk.HolesArray, Allocator.Persistent),
+                NewHolesConcurrentCounter = new NativeArray<int>(1, Allocator.Persistent),
                 Brush = Params.Brush,
                 Action = Params.Action,
                 Intensity = Params.Opacity,

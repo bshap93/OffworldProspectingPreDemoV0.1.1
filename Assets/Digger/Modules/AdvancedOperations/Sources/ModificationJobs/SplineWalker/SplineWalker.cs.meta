@@ -3,8 +3,8 @@ guid: 6425352f41934ac29aab6f26bc357ceb
 timeCreated: 1642251709
 AssetOrigin:
   serializedVersion: 1
-  productId: 219990
-  packageName: Digger - Advanced Operations
-  packageVersion: 1.0
+  productId: 149753
+  packageName: Digger PRO - Voxel enhanced terrains
+  packageVersion: 7.1
   assetPath: Assets/Digger/Modules/AdvancedOperations/Sources/ModificationJobs/SplineWalker/SplineWalker.cs
-  uploadId: 495786
+  uploadId: 752960

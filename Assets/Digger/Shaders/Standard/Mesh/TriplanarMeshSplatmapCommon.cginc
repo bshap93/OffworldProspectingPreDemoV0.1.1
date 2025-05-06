@@ -42,6 +42,21 @@ float3 worldPos;
 half _BaryContrast;
 
 
+float3 AdjustedNormalTriplanar(float3 bary, float3 positionWS, float3 normal)
+{
+    float3 dx = ddx(positionWS);
+    float3 dy = ddy(positionWS);
+    float3 flatNormal = normalize(cross(dy, dx));
+    
+    // min of the barycentric coordinates is how close to an edge we are
+    float mb = min(bary.x, min(bary.y, bary.z));
+    mb = saturate(mb * _BaryContrast);
+    
+    // now blend the normal
+    return abs(lerp(normal.xyz, flatNormal, mb));
+}
+
+
 void SplatmapMix(Input IN,
                 half4 defaultAlpha03,
                 half4 splat_control03,
@@ -49,18 +64,7 @@ void SplatmapMix(Input IN,
                 inout fixed3 mixedNormal)
 {
     worldPos = IN.worldPos;
-    
-    half3 dx = ddx(worldPos);
-    half3 dy = ddy(worldPos);
-    half3 crossdxdy = cross(dy, dx);
-    half3 flatNormal = normalize(crossdxdy == 0 ? IN.vertNormal : crossdxdy);
-    
-    // min of the barycentric coordinates is how close to an edge we are
-    half mb = min(IN.bary.x, min(IN.bary.y, IN.bary.z));
-    mb = saturate(mb * _BaryContrast);
-    
-    // now blend the normal
-    half3 normal = abs(lerp(IN.vertNormal, flatNormal, mb));
+    half3 normal = AdjustedNormalTriplanar(IN.bary, worldPos, IN.vertNormal);
     
     mixedDiffuse = 0.0f;
     mixedNormal = 0.0f;

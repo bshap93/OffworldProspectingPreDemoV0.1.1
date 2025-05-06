@@ -3,8 +3,8 @@ guid: eb10bddb74e5419fb3f4e0ab002581ec
 timeCreated: 1642512655
 AssetOrigin:
   serializedVersion: 1
-  productId: 219990
-  packageName: Digger - Advanced Operations
-  packageVersion: 1.0
+  productId: 149753
+  packageName: Digger PRO - Voxel enhanced terrains
+  packageVersion: 7.1
   assetPath: Assets/Digger/Modules/AdvancedOperations/Sources/Editor/DiggerAdvancedOperationsDefines.cs
-  uploadId: 495786
+  uploadId: 752960

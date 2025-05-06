@@ -1,14 +1,10 @@
 fileFormatVersion: 2
 guid: 885510da87c4427ea0b45f679234d96a
-TextScriptImporter:
-  externalObjects: {}
-  userData: 
-  assetBundleName: 
-  assetBundleVariant: 
+timeCreated: 1643233831
 AssetOrigin:
   serializedVersion: 1
-  productId: 219990
-  packageName: Digger - Advanced Operations
-  packageVersion: 1.0
+  productId: 149753
+  packageName: Digger PRO - Voxel enhanced terrains
+  packageVersion: 7.1
   assetPath: Assets/Digger/Documentation.txt
-  uploadId: 495786
+  uploadId: 752960

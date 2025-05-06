@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Digger.Modules.Core.Sources.Polygonizers;
@@ -22,7 +20,7 @@ namespace Digger.Modules.Core.Sources
 {
     public class DiggerSystem : MonoBehaviour
     {
-        public const int DiggerVersion = 60040;
+        public const int DiggerVersion = 70010;
         public const string VoxelFileExtension = "vox3";
         private const string VersionFileExtension = "ver";
         private const int UndoStackSize = 15;
@@ -30,18 +28,18 @@ namespace Digger.Modules.Core.Sources
         private Dictionary<Vector3i, Chunk> chunks;
         private HashSet<VoxelChunk> chunksToPersist;
 
-        private readonly Dictionary<Vector3i, Chunk> builtChunks = new Dictionary<Vector3i, Chunk>(new Vector3iComparer());
-        private readonly Dictionary<Vector3i, Chunk> missingBuiltChunks = new Dictionary<Vector3i, Chunk>(new Vector3iComparer());
-        private readonly Dictionary<Vector3i, Chunk> chunksPendingForMeshBuild = new Dictionary<Vector3i, Chunk>(new Vector3iComparer());
+        private readonly Dictionary<Vector3i, Chunk> builtChunks = new(new Vector3iComparer());
+        private readonly Dictionary<Vector3i, Chunk> missingBuiltChunks = new(new Vector3iComparer());
+        private readonly Dictionary<Vector3i, Chunk> chunksPendingForMeshBuild = new(new Vector3iComparer());
+        private readonly HashSet<int3> surfaceChunkPositionsOnHoles = new();
 
         private bool disablePersistence;
         private Bounds bounds;
         private bool needRecordUndo;
-        private Stopwatch stopwatch = new Stopwatch();
         private HeightsFeeder heightsFeeder;
         private NormalsFeeder normalsFeeder;
         private AlphamapsFeeder alphamapsFeeder;
-        private IPolygonizer polygonizer;
+        private APolygonizerProvider polygonizerProvider;
 
         [SerializeField] private DiggerMaster master;
         [SerializeField] private string guid;
@@ -51,6 +49,8 @@ namespace Digger.Modules.Core.Sources
         [SerializeField] private TerrainCutter cutter;
 
         [SerializeField] private Vector3 heightmapScale;
+        [SerializeField] private int2 alphamapsSize;
+        [SerializeField] private Vector2 uvScale;
         [SerializeField] private Vector3 holeMapScale;
 
         [SerializeField] public Terrain Terrain;
@@ -71,12 +71,14 @@ namespace Digger.Modules.Core.Sources
         public HeightsFeeder HeightsFeeder => heightsFeeder;
         public NormalsFeeder NormalsFeeder => normalsFeeder;
         public AlphamapsFeeder AlphamapsFeeder => alphamapsFeeder;
-        public IPolygonizer Polygonizer => polygonizer;
+        public APolygonizerProvider PolygonizerProvider => polygonizerProvider;
 
         public Vector3 HeightmapScale => heightmapScale;
+        public int2 AlphamapsSize => alphamapsSize;
+        public Vector2 UVScale => uvScale;
         public Vector3 HoleMapScale => holeMapScale;
 
-        public Vector3 CutMargin => new Vector3(Math.Max(2f, 2.1f * holeMapScale.x),
+        public Vector3 CutMargin => new(Math.Max(2f, 2.1f * holeMapScale.x),
             Math.Max(2f, 2.1f * holeMapScale.y),
             Math.Max(2f, 2.1f * holeMapScale.z));
 
@@ -91,6 +93,7 @@ namespace Digger.Modules.Core.Sources
         public float ScreenRelativeTransitionHeightLod1 => master.ScreenRelativeTransitionHeightLod1;
         public int ColliderLodIndex => master.ColliderLodIndex;
         public bool CreateLODs => master.CreateLODs;
+        public int LODCount => master.CreateLODs ? 3 : 1;
         private int Layer => master.Layer;
         private string Tag => master.ChunksTag;
         public bool EnableOcclusionCulling => master.EnableOcclusionCulling;
@@ -125,7 +128,7 @@ namespace Digger.Modules.Core.Sources
 
         private string ComputeBasePathData()
         {
-            if (!master) master = FindObjectOfType<DiggerMaster>();
+            if (!master) master = FindFirstObjectByType<DiggerMaster>();
             return Path.Combine(master.SceneDataPath, BaseFolder);
         }
 
@@ -159,7 +162,7 @@ namespace Digger.Modules.Core.Sources
                                      normalsFeeder != null &&
                                      alphamapsFeeder != null &&
                                      chunksToPersist != null &&
-                                     polygonizer != null;
+                                     polygonizerProvider != null;
 
         public Bounds Bounds => bounds;
 
@@ -435,7 +438,7 @@ namespace Digger.Modules.Core.Sources
                 return;
             }
 
-            master = FindObjectOfType<DiggerMaster>();
+            master = FindFirstObjectByType<DiggerMaster>();
             if (!master) {
                 Debug.LogError("A DiggerMaster is required in the scene.");
                 return;
@@ -462,6 +465,9 @@ namespace Digger.Modules.Core.Sources
             } else {
                 heightmapScale.y = master.VoxelHeight;
             }
+            
+            alphamapsSize = new int2(terrainData.alphamapWidth, terrainData.alphamapHeight);
+            uvScale = new Vector2(1f / terrainData.size.x, 1f / terrainData.size.z);
 
             holeMapScale =
                 new Vector3(terrainData.size.x / terrainData.holesResolution, 1f, terrainData.size.z / terrainData.holesResolution);
@@ -510,8 +516,8 @@ namespace Digger.Modules.Core.Sources
             normalsFeeder = new NormalsFeeder(this, master.ResolutionMult);
             alphamapsFeeder = new AlphamapsFeeder(this);
 
-            var polygonizerProvider = master.GetComponent<APolygonizerProvider>();
-            polygonizer = polygonizerProvider ? polygonizerProvider.NewPolygonizer(this) : new MarchingCubesPolygonizer();
+            polygonizerProvider = master.GetComponent<APolygonizerProvider>();
+            if (polygonizerProvider) polygonizerProvider.Init();
 
             chunksToPersist = new HashSet<VoxelChunk>();
             var children = transform.Cast<Transform>().ToList();
@@ -569,29 +575,25 @@ namespace Digger.Modules.Core.Sources
             return chunks.TryGetValue(position, out chunk);
         }
 
-        public bool Modify<T>(IOperation<T> operation) where T : struct, IJobParallelFor
+        public async Awaitable<bool> ModifyAsync<T>(IOperation<T> operation) where T : struct, IJobParallelFor
         {
             var area = operation.GetAreaToModify(this);
             if (!area.NeedsModification)
                 return false;
 
-            var enumerator = Modify(operation, false, area, true);
-            while (enumerator.MoveNext()) {
-            }
+            await Modify(operation, area, true);
 
             ApplyModify();
             return true;
         }
 
-        public bool ModifyWithoutMeshes<T>(IOperation<T> operation) where T : struct, IJobParallelFor
+        public async Awaitable<bool> ModifyAsyncWithoutMeshes<T>(IOperation<T> operation) where T : struct, IJobParallelFor
         {
             var area = operation.GetAreaToModify(this);
             if (!area.NeedsModification)
                 return false;
 
-            var enumerator = Modify(operation, false, area, false);
-            while (enumerator.MoveNext()) {
-            }
+            await Modify(operation, area, false);
 
             foreach (var builtChunk in builtChunks.Values) {
                 builtChunk.ResetVoxelArrayBeforeOperation();
@@ -601,19 +603,13 @@ namespace Digger.Modules.Core.Sources
             return true;
         }
 
-        public void BuildPendingMeshes()
+        public void BuildPendingMeshesAsync()
         {
-            foreach (var builtChunk in chunksPendingForMeshBuild.Values) {
-                Utils.Profiler.BeginSample("BuildPendingMeshes.BuildVisualMesh");
-                builtChunk.BuildVisualMesh();
-                Utils.Profiler.EndSample();
-            }
-
-
-            foreach (var builtChunk in chunksPendingForMeshBuild.Values) {
-                Utils.Profiler.BeginSample("BuildPendingMeshes.CompleteBakePhysicMesh");
-                builtChunk.CompleteBakePhysicMesh();
-                Utils.Profiler.EndSample();
+            for (int lodIndex = 0; lodIndex < LODCount; ++lodIndex) {
+                var lod = ChunkLODGroup.IndexToLod(lodIndex);
+                foreach (var builtChunk in chunksPendingForMeshBuild.Values) {
+                    builtChunk.BuildVisualMesh(lod);
+                }
             }
 
             foreach (var builtChunk in chunksPendingForMeshBuild.Values) {
@@ -625,117 +621,108 @@ namespace Digger.Modules.Core.Sources
             chunksPendingForMeshBuild.Clear();
         }
 
-        public IEnumerator ModifyAsync<T>(IOperation<T> operation) where T : struct, IJobParallelFor
-        {
-            var area = operation.GetAreaToModify(this);
-            return Modify(operation, true, area, true);
-        }
-
-        private IEnumerator Modify<T>(IOperation<T> operation,
-            bool runAsync, ModificationArea area, bool buildMeshes) where T : struct, IJobParallelFor
+        private async Awaitable Modify<T>(IOperation<T> operation, ModificationArea area, bool buildMeshes) where T : struct, IJobParallelFor
         {
             if (!area.NeedsModification)
-                yield break;
+                return;
 
             needRecordUndo = true;
-            stopwatch.Restart();
+            var isPlaying = Application.isPlaying;
 
-            Utils.Profiler.BeginSample("DiggerSystem.DoOperation");
             for (var x = area.Min.x; x <= area.Max.x; ++x) {
                 for (var z = area.Min.z; z <= area.Max.z; ++z) {
                     for (var y = area.Min.y; y <= area.Max.y; ++y) {
                         var cp = new Vector3i(x, y, z);
-                        if (builtChunks.ContainsKey(cp))
-                            continue;
-                        GetOrCreateChunk(cp, out var chunk);
-                        builtChunks.Add(cp, chunk);
-                        chunk.DoOperation(operation);
+                        if (!builtChunks.TryGetValue(cp, out var chunk))
+                        {
+                            GetOrCreateChunk(cp, out chunk);
+                            builtChunks.Add(cp, chunk);
+                        }
+                        chunk.LazyLoad();
+                        chunk.PrepareOperationJob(operation);
                     }
                 }
             }
-            Utils.Profiler.EndSample();
-            Utils.Profiler.BeginSample("DiggerSystem.CompleteOperation");
-            CompleteChunksBuildStep(builtChunk => builtChunk.CompleteOperation(operation));
-            Utils.Profiler.EndSample();
-            
-            Utils.Profiler.BeginSample("DiggerSystem.GetSurfaceChunksOnHoles");
+
+            if (isPlaying) await Awaitable.BackgroundThreadAsync();
+            foreach (var builtChunk in builtChunks.Values)
+            {
+                builtChunk.ScheduleOperationJob(operation);
+            }
+            foreach (var builtChunk in builtChunks.Values)
+            {
+                builtChunk.CompleteOperation(operation);
+            }
+
             foreach (var builtChunk in builtChunks.Values) {
                 builtChunk.GetSurfaceChunksOnHoles();
             }
-            Utils.Profiler.EndSample();
-            Utils.Profiler.BeginSample("DiggerSystem.CompleteGetSurfaceChunksOnHoles");
+            surfaceChunkPositionsOnHoles.Clear();
+            foreach (var builtChunk in builtChunks.Values) {
+                surfaceChunkPositionsOnHoles.UnionWith(builtChunk.CompleteGetSurfaceChunksOnHoles());
+            }
             missingBuiltChunks.Clear();
-            CompleteChunksBuildStep(builtChunk => {
-                var surfaceChunksYOnHoles = builtChunk.CompleteGetSurfaceChunksOnHoles();
-                foreach (var chunkY in surfaceChunksYOnHoles) {
-                    var chunkPosition = new Vector3i(builtChunk.ChunkPosition.x, chunkY, builtChunk.ChunkPosition.z);
-                    if (!builtChunks.ContainsKey(chunkPosition) && !missingBuiltChunks.ContainsKey(chunkPosition)) {
-                        GetOrCreateChunk(chunkPosition, out var chunk);
-                        chunk.LazyLoad();
-                        missingBuiltChunks.Add(chunkPosition, chunk);
-                    }
+            
+            await Awaitable.MainThreadAsync();
+            foreach (var chunkPos in surfaceChunkPositionsOnHoles) {
+                var chunkPosition = new Vector3i(chunkPos.x, chunkPos.y, chunkPos.z);
+                if (!builtChunks.ContainsKey(chunkPosition) && !missingBuiltChunks.ContainsKey(chunkPosition)) {
+                    GetOrCreateChunk(chunkPosition, out var chunk);
+                    chunk.LazyLoad();
+                    missingBuiltChunks.Add(chunkPosition, chunk);
                 }
-            });
-            Utils.Profiler.EndSample();
-
+            }
+            if (isPlaying) await Awaitable.BackgroundThreadAsync();
+            
             foreach(var missingBuiltChunkPosition in missingBuiltChunks.Values) {
                 builtChunks.Add(missingBuiltChunkPosition.ChunkPosition, missingBuiltChunkPosition);
             }
-
-
-            Utils.Profiler.BeginSample("DiggerSystem.UpdateVoxelsOnSurface");
             foreach (var builtChunk in builtChunks.Values) {
                 builtChunk.UpdateVoxelsOnSurface();
             }
-            Utils.Profiler.EndSample();
-            Utils.Profiler.BeginSample("DiggerSystem.CompleteUpdateVoxelsOnSurface");
-            CompleteChunksBuildStep(builtChunk => builtChunk.CompleteUpdateVoxelsOnSurface());
-            Utils.Profiler.EndSample();
+            foreach (var builtChunk in builtChunks.Values)
+            {
+                builtChunk.CompleteUpdateVoxelsOnSurface();
+            }
 
             if (buildMeshes) {
-                foreach (var builtChunk in builtChunks.Values) {
-                    Utils.Profiler.BeginSample("DiggerSystem.BuildVisualMesh");
-                    builtChunk.BuildVisualMesh();
-                    Utils.Profiler.EndSample();
-                    if (runAsync && stopwatch.ElapsedMilliseconds > 4) {
-                        stopwatch.Stop();
-                        yield return null; // Continue on next frame
-                        stopwatch.Restart();
+                for (var lodIndex = 0; lodIndex < LODCount; ++lodIndex)
+                {
+                    if (isPlaying) await Awaitable.BackgroundThreadAsync();
+                    var lod = ChunkLODGroup.IndexToLod(lodIndex);
+                    foreach (var builtChunk in builtChunks.Values)
+                    {
+                        builtChunk.BuildVisualMesh(lod);
+                    }
+                    
+                    foreach (var builtChunk in builtChunks.Values)
+                    {
+                        builtChunk.CompleteBuildVisualMeshJob();
+                    }
+
+                    await Awaitable.MainThreadAsync();
+                    foreach (var builtChunk in builtChunks.Values)
+                    {
+                        builtChunk.CompleteBuildVisualMesh(lod, lodIndex);
+                    }
+                    if (isPlaying) await Awaitable.BackgroundThreadAsync();
+                    
+                    foreach (var builtChunk in builtChunks.Values)
+                    {
+                        builtChunk.BakePhysicMesh();
+                    }
+                    foreach (var builtChunk in builtChunks.Values)
+                    {
+                        builtChunk.CompleteBakePhysicMesh();
                     }
                 }
-
-                Utils.Profiler.BeginSample("DiggerSystem.CompleteBakePhysicMesh");
-                CompleteChunksBuildStep(builtChunk => builtChunk.CompleteBakePhysicMesh());
-                Utils.Profiler.EndSample();
             } else {
                 foreach (var builtChunk in builtChunks) {
                     if (!chunksPendingForMeshBuild.ContainsKey(builtChunk.Key))
                         chunksPendingForMeshBuild.Add(builtChunk.Key, builtChunk.Value);
                 }
             }
-
-            stopwatch.Stop();
-            if (runAsync && stopwatch.ElapsedMilliseconds > 1) {
-                yield return null; // Skip one frame
-            }
-        }
-
-        private void CompleteChunksBuildStep(Action<Chunk> completionStep)
-        {
-            var allJobsDone = false;
-            while (!allJobsDone) {
-                allJobsDone = true;
-                foreach (var builtChunk in builtChunks.Values) {
-                    if (!builtChunk.HasAnyJobRunning()) 
-                        continue;
-                    if (!builtChunk.ShouldCompleteCurrentJob()) {
-                        allJobsDone = false;
-                        continue;
-                    }
-                    
-                    completionStep(builtChunk);
-                }
-            }
+            await Awaitable.MainThreadAsync();
         }
 
         public void ApplyModify()
@@ -1118,6 +1105,21 @@ namespace Digger.Modules.Core.Sources
             Undo.ClearAll();
             Utils.Profiler.EndSample();
 #endif
+        }
+        
+        public void ClearAtRuntime()
+        {
+            if (cutter != null) {
+                cutter.Clear();
+            }
+
+            if (chunks != null) {
+                foreach (var chunk in chunks) {
+                    Destroy(chunk.Value.gameObject);
+                }
+                chunks.Clear();
+            }
+            chunksToPersist.Clear();
         }
 
         public void CreateDirs()

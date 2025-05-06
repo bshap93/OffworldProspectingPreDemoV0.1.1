@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Digger.Modules.Core.Sources;
+using UnityEngine;
 
 namespace Digger.Modules.Runtime.Sources
 {
@@ -26,7 +27,7 @@ namespace Digger.Modules.Runtime.Sources
 
         public static void DeleteDataPersistedAtRuntime(this DiggerSystem digger)
         {
-            if (Directory.Exists(digger.PersistentRuntimePathData)) {
+            if (!Application.isEditor && Directory.Exists(digger.PersistentRuntimePathData)) {
                 Directory.Delete(digger.PersistentRuntimePathData, true);
             }
         }

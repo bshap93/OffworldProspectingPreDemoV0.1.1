@@ -45,7 +45,7 @@ namespace Digger.Modules.Core.Editor.Operations
 
         public void OnEnable()
         {
-            diggerSystems = Object.FindObjectsOfType<DiggerSystem>();
+            diggerSystems = Object.FindObjectsByType<DiggerSystem>(FindObjectsSortMode.None);
         }
 
         public void OnDisable()
@@ -56,7 +56,7 @@ namespace Digger.Modules.Core.Editor.Operations
 
         public void OnInspectorGUI()
         {
-            var diggerSystem = Object.FindObjectOfType<DiggerSystem>();
+            var diggerSystem = Object.FindFirstObjectByType<DiggerSystem>();
             if (!diggerSystem)
                 return;
 
@@ -73,7 +73,7 @@ namespace Digger.Modules.Core.Editor.Operations
         {
         }
 
-        public void OnScene(UnityEditor.Editor editor, SceneView sceneview)
+        public async Awaitable OnScene(UnityEditor.Editor editor, SceneView sceneview)
         {
             var e = Event.current;
             HandleShortcuts(editor);
@@ -140,12 +140,10 @@ namespace Digger.Modules.Core.Editor.Operations
 
                     basicOperation.Params = parameters;
                     foreach (var diggerSystem in diggerSystems) {
-                        diggerSystem.Modify(basicOperation);
+                        await diggerSystem.ModifyAsync(basicOperation);
                     }
                 }
             }
-
-            HandleUtility.Repaint();
         }
 
         private void UpdateReticlePosition(Vector3 position)

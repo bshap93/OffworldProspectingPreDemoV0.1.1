@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
-public class README : MonoBehaviour
+namespace Digger
 {
+    public class README : MonoBehaviour
+    {
+    }
 }

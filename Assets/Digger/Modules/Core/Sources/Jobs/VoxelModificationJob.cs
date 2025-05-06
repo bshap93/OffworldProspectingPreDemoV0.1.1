@@ -86,7 +86,7 @@ namespace Digger.Modules.Core.Sources.Jobs
             {
                 case ActionType.Add:
                 case ActionType.Dig:
-                    var intensityWeight = math.max(0.5f, math.abs(terrainHeightValue) * 0.1f);
+                    var intensityWeight = math.max(0.5f, math.abs(terrainHeightValue) * 0.5f);
                     voxel = ApplyDigAdd(index, Action == ActionType.Dig, distance, intensityWeight);
                     break;
                 case ActionType.Paint:

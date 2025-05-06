@@ -6,19 +6,18 @@ using UnityEngine;
 
 namespace Digger.Modules.Core.Sources.Jobs
 {
-    public class NativeCollectionsPool : ScriptableObject, IDisposable
+    public class NativeCollectionsPool : IDisposable
     {
         private static NativeCollectionsPool instance;
 
         public static NativeCollectionsPool Instance {
             get {
                 if (instance == null)
-                    instance = CreateInstance<NativeCollectionsPool>();
+                    instance = new NativeCollectionsPool();
                 return instance;
             }
         }
 
-        private PolyOut? polyOut;
         private NativeArray<int>? mcEdgeTable;
         private NativeArray<int>? mcTriTable;
         private NativeArray<float3>? mcCorners;
@@ -30,11 +29,6 @@ namespace Digger.Modules.Core.Sources.Jobs
 
         public void Dispose()
         {
-            if (polyOut.HasValue) {
-                polyOut.Value.Dispose();
-                polyOut = null;
-            }
-
             if (mcEdgeTable.HasValue) {
                 mcEdgeTable.Value.Dispose();
                 mcEdgeTable = null;
@@ -49,15 +43,6 @@ namespace Digger.Modules.Core.Sources.Jobs
                 mcCorners.Value.Dispose();
                 mcCorners = null;
             }
-        }
-
-        public PolyOut GetPolyOut()
-        {
-            if (!polyOut.HasValue) {
-                polyOut = PolyOut.New();
-            }
-
-            return polyOut.Value;
         }
 
         public NativeArray<int> GetMCEdgeTable()

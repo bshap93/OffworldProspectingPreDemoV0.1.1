@@ -305,7 +305,7 @@ namespace Domains.Gameplay.Tools
                     return false;
                 }
 
-                var safeOpacity = ClampFloat(opacity, 0.1f, 1000f);
+                var safeOpacity = ClampFloat(opacity, 0.1f, 255f);
                 var safeRadius = ClampFloat(radius, 0.1f, 10f);
                 var safeHeight = ClampFloat(height, 0.1f, 1000f);
 
@@ -313,16 +313,6 @@ namespace Domains.Gameplay.Tools
                     UnityEngine.Debug.Log($"SafeModify: position={safePosition}, texture={textureIndex}, " +
                                           $"opacity={safeOpacity}, radius={safeRadius}, height={safeHeight}, " +
                                           $"brush={brushType}, action={actionType}, smooth={smooth}");
-
-                if (!IsValidVector3(safePosition) ||
-                    !IsValidFloat(safeRadius) ||
-                    !IsValidFloat(safeOpacity) ||
-                    !IsValidFloat(safeHeight))
-                {
-                    UnityEngine.Debug.LogError(
-                        $"[SafeModify] BANISHED:  p={safePosition} r={safeRadius} o={safeOpacity} h={safeHeight}");
-                    return false; // do not call Digger if ANY field is bad
-                }
 
                 // Call Digger's modify with safe parameters
                 try

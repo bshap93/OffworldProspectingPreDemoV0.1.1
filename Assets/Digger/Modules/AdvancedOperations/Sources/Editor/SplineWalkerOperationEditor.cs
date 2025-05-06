@@ -37,9 +37,9 @@ namespace Digger.Modules.AdvancedOperations.Sources.Editor
 
         public void OnEnable()
         {
-            splineMaster = Object.FindObjectOfType<SplineMaster>();
+            splineMaster = Object.FindFirstObjectByType<SplineMaster>();
             if (!splineMaster) {
-                var diggerMaster = Object.FindObjectOfType<DiggerMaster>();
+                var diggerMaster = Object.FindFirstObjectByType<DiggerMaster>();
                 if (!diggerMaster) {
                     throw new Exception("DiggerMaster must be present in the scene to use SplineWalkerOperationEditor");
                 }
@@ -47,7 +47,7 @@ namespace Digger.Modules.AdvancedOperations.Sources.Editor
                 splineMaster = diggerMaster.gameObject.AddComponent<SplineMaster>();
             }
 
-            diggerSystems = Object.FindObjectsOfType<DiggerSystem>();
+            diggerSystems = Object.FindObjectsByType<DiggerSystem>(FindObjectsSortMode.None);
             splineWalker = new SplineWalker(diggerSystems);
             splineEditor = new BezierSplineEditor();
 
@@ -101,11 +101,11 @@ namespace Digger.Modules.AdvancedOperations.Sources.Editor
             EditorGUILayout.EndVertical();
 
             if (splineMaster.Spline && operationEditor != null && GUILayout.Button("Perform operation along the spline", GUILayout.Height(40))) {
-                Walk();
+                Walk().GetAwaiter().GetResult();
             }
         }
 
-        private void Walk()
+        private async Awaitable Walk()
         {
             if (!Application.isPlaying) {
                 foreach (var diggerSystem in diggerSystems) {
@@ -115,10 +115,10 @@ namespace Digger.Modules.AdvancedOperations.Sources.Editor
             
             switch (operationEditor) {
                 case AddOperationEditor editor:
-                    splineWalker.WalkAlongSpline(splineMaster.Spline, step, editor.OperationAt);
+                    await splineWalker.WalkAlongSpline(splineMaster.Spline, step, editor.OperationAt);
                     break;
                 case DigOperationEditor editor:
-                    splineWalker.WalkAlongSpline(splineMaster.Spline, step, editor.OperationAt);
+                    await splineWalker.WalkAlongSpline(splineMaster.Spline, step, editor.OperationAt);
                     break;
             }
             
@@ -145,7 +145,7 @@ namespace Digger.Modules.AdvancedOperations.Sources.Editor
             }
         }
 
-        public void OnScene(UnityEditor.Editor editor, SceneView sceneview)
+        public async Awaitable OnScene(UnityEditor.Editor editor, SceneView sceneview)
         {
         }
     }
