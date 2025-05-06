@@ -331,13 +331,35 @@ namespace Domains.Player.Scripts
         {
             if (pickaxeTool == null) return;
 
-            // Calculate new effects
+            // Calculate new effects - ADD SAFETY CHECKS
             var newEffectRadius = pickaxeTool.effectRadius * multiplier;
             var newWidth = pickaxeMiningToolWidth * multiplier;
             var newOpacity = pickaxeToolEffectOpacity * secondaryMultiplier;
 
-            // Clamp width
-            newWidth = Mathf.Clamp(newWidth, 1f, 2f);
+            // Validate values to prevent NaN or infinity values
+            if (float.IsNaN(newEffectRadius) || float.IsInfinity(newEffectRadius))
+            {
+                UnityEngine.Debug.LogError(
+                    $"Invalid effect radius after upgrade: {newEffectRadius}. Using safe value.");
+                newEffectRadius = 0.5f; // Safe default
+            }
+
+            if (float.IsNaN(newOpacity) || float.IsInfinity(newOpacity))
+            {
+                UnityEngine.Debug.LogError($"Invalid opacity after upgrade: {newOpacity}. Using safe value.");
+                newOpacity = 10f; // Safe default
+            }
+
+            if (float.IsNaN(newWidth) || float.IsInfinity(newWidth))
+            {
+                UnityEngine.Debug.LogError($"Invalid width after upgrade: {newWidth}. Using safe value.");
+                newWidth = 1f; // Safe default
+            }
+
+            // Clamp values to reasonable ranges
+            newEffectRadius = Mathf.Clamp(newEffectRadius, 0.1f, 5f);
+            newOpacity = Mathf.Clamp(newOpacity, 1f, 200f);
+            newWidth = Mathf.Clamp(newWidth, 0.1f, 3f);
 
             // Apply effects
             pickaxeTool.SetDiggerUsingToolEffectSize(newEffectRadius, newOpacity);
@@ -360,7 +382,8 @@ namespace Domains.Player.Scripts
                 ES3.Save("PickaxeMaterialLevel", pickaxeMaterialLevel, "UpgradeSave.es3");
             }
 
-            UnityEngine.Debug.Log($"Pickaxe mining size changed to: {pickaxeToolEffectRadius}");
+            UnityEngine.Debug.Log(
+                $"Pickaxe mining size changed to: {pickaxeToolEffectRadius}, opacity: {pickaxeToolEffectOpacity}, width: {pickaxeMiningToolWidth}");
         }
 
         private void ApplyAdditionUpgrade(string upgradeType, float addition)

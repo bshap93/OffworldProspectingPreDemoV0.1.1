@@ -43,6 +43,7 @@ namespace Domains.Scene.MainMenu
             ES3.DeleteFile("GameSave.es3");
             ES3.DeleteFile("Pickables.es3");
             ES3.DeleteFile("Progression.es3");
+            ES3.DeleteFile("UpgradeSave.es3");
         }
 
         public static bool HasGameSave()

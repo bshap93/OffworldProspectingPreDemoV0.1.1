@@ -2,6 +2,7 @@
 using System.Collections;
 using Digger.Modules.Core.Sources;
 using Digger.Modules.Runtime.Sources;
+using Domains.Debug;
 using Domains.Gameplay.Mining.Scripts;
 using Domains.Player.Events;
 using Domains.Player.Scripts;
@@ -31,35 +32,92 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
         private MMFeedbacks pickaxeBehavior;
 
         public Material currentMaterial;
+        private readonly float defaultEffectOpacity = 10f;
+
+        // Backup default values to restore if needed
+        private readonly float defaultEffectRadius = 0.8f;
+        private readonly float defaultFirstHitOpacity = 1f;
+        private readonly float defaultFirstHitRadius = 0.1f;
+        private readonly float defaultStalagmiteHeight = 100f;
 
         [Header("Hit Number Logic")] [SerializeField]
         private readonly float hitThresholdDistance = 0.5f; // adjust as needed
 
+        private readonly float maxEffectOpacity = 100f;
+
+        // Maximum safe values
+        private readonly float maxEffectRadius = 2f;
+        private readonly float maxStalagmiteHeight = 200f;
+
         // Track active coroutine to prevent multiple digs happening at once
         private Coroutine activeDigCoroutine;
+
+        // Flag to force validation in Update
+        private bool forceValidation = true;
 
         // Flag to prevent race conditions
         private bool isDigging;
 
         private Vector3 lastHitPosition;
+
+        // Logger reference
+        private DiggerDebugLogger logger;
         private MeshRenderer meshRenderer;
         private int terrainHitCount;
+        private float validationTimer;
 
         private void Awake()
         {
+            // Find or create logger
+            logger = DiggerDebugLogger.Instance;
+            if (logger == null)
+            {
+                var loggerObject = new GameObject("DiggerDebugLogger");
+                logger = loggerObject.AddComponent<DiggerDebugLogger>();
+            }
+
+            logger.LogMessage("PickaxeTool.Awake - initializing");
+
             digger = FindFirstObjectByType<DiggerMasterRuntime>();
             playerInteraction = FindFirstObjectByType<PlayerInteraction>();
             meshRenderer = GetComponent<MeshRenderer>();
+
+            // Initialize values to prevent NaN
+            firstHitEffectOpacity = ClampFloat(firstHitEffectOpacity, 1f, 50f);
+            firstHitEffectRadius = ClampFloat(firstHitEffectRadius, 0.1f, 5f);
+            effectOpacity = ClampFloat(effectOpacity, 1f, 150f);
+            effectRadius = ClampFloat(effectRadius, 0.1f, 5f);
+
+            logger.LogMessage(
+                $"PickaxeTool initialized with parameters: firstHitOpacity={firstHitEffectOpacity}, firstHitRadius={firstHitEffectRadius}, mainOpacity={effectOpacity}, mainRadius={effectRadius}");
+        }
+
+        private void Update()
+        {
+            // Validate parameters periodically or when forced
+            validationTimer += Time.deltaTime;
+            if (validationTimer > 1f || forceValidation)
+            {
+                ValidateAllParameters();
+                validationTimer = 0f;
+                forceValidation = false;
+            }
         }
 
         private void OnEnable()
         {
             this.MMEventStartListening();
+
+            // Force validation whenever tool is enabled
+            forceValidation = true;
+            ValidateAllParameters();
+
             // Reapply current material when enabled
             if (currentMaterial != null)
             {
                 SetCurrentMaterial(currentMaterial);
-                UnityEngine.Debug.Log($"{GetType().Name} enabled - reapplied material: {currentMaterial.name}");
+                if (debugLogging)
+                    UnityEngine.Debug.Log($"{GetType().Name} enabled - reapplied material: {currentMaterial.name}");
             }
 
             // Reset state when tool is enabled
@@ -70,6 +128,8 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
                 StopCoroutine(activeDigCoroutine);
                 activeDigCoroutine = null;
             }
+
+            if (debugLogging) UnityEngine.Debug.Log("PickaxeTool enabled and reset");
         }
 
         private void OnDisable()
@@ -84,12 +144,106 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
             }
 
             isDigging = false;
+
+            logger?.LogMessage("PickaxeTool disabled and reset");
         }
 
         public void OnMMEvent(UpgradeEvent eventType)
         {
             if (eventType.EventType == UpgradeEventType.PickaxeMiningSizeSet)
+            {
+                if (debugLogging)
+                    UnityEngine.Debug.Log(
+                        $"Received PickaxeMiningSizeSet event: {eventType.EffectValue}, {eventType.EffectValue2}");
+
+                // Apply the upgrade but then force validation
                 SetDiggerUsingToolEffectSize(eventType.EffectValue, eventType.EffectValue2);
+                forceValidation = true;
+                ValidateAllParameters();
+            }
+        }
+
+        // Add this method to PickaxeTool.cs to ensure all parameters are valid before every dig operation
+        private bool EnsureDigParametersValid()
+        {
+            // Check core references
+            if (digger == null || playerInteraction == null || mainCamera == null)
+            {
+                UnityEngine.Debug.LogError("Missing core references for digging operation");
+                return false;
+            }
+
+            // Validate effect parameters
+            if (!IsValidFloat(effectRadius) || !IsValidFloat(effectOpacity) || !IsValidFloat(stalagmiteHeight))
+            {
+                UnityEngine.Debug.LogError(
+                    $"Invalid effect parameters: radius={effectRadius}, opacity={effectOpacity}, height={stalagmiteHeight}");
+
+                // Auto-fix the parameters
+                effectRadius = ClampFloat(effectRadius, minEffectRadius, maxEffectRadius);
+                effectOpacity = ClampFloat(effectOpacity, minEffectOpacity, maxEffectOpacity);
+                stalagmiteHeight = ClampFloat(stalagmiteHeight, 1f, 200f);
+
+                return effectRadius > 0 && effectOpacity > 0 && stalagmiteHeight > 0;
+            }
+
+            return true;
+        }
+
+        private void ValidateAllParameters()
+        {
+            var hadInvalidValue = false;
+
+            // Check main effect parameters
+            if (!IsValidFloat(effectRadius))
+            {
+                UnityEngine.Debug.LogError($"Invalid effect radius detected: {effectRadius}. Resetting to default.");
+                effectRadius = defaultEffectRadius;
+                hadInvalidValue = true;
+            }
+
+            if (!IsValidFloat(effectOpacity))
+            {
+                UnityEngine.Debug.LogError($"Invalid effect opacity detected: {effectOpacity}. Resetting to default.");
+                effectOpacity = defaultEffectOpacity;
+                hadInvalidValue = true;
+            }
+
+            if (!IsValidFloat(firstHitEffectRadius))
+            {
+                UnityEngine.Debug.LogError(
+                    $"Invalid first hit radius detected: {firstHitEffectRadius}. Resetting to default.");
+                firstHitEffectRadius = defaultFirstHitRadius;
+                hadInvalidValue = true;
+            }
+
+            if (!IsValidFloat(firstHitEffectOpacity))
+            {
+                UnityEngine.Debug.LogError(
+                    $"Invalid first hit opacity detected: {firstHitEffectOpacity}. Resetting to default.");
+                firstHitEffectOpacity = defaultFirstHitOpacity;
+                hadInvalidValue = true;
+            }
+
+            if (!IsValidFloat(stalagmiteHeight))
+            {
+                UnityEngine.Debug.LogError(
+                    $"Invalid stalagmite height detected: {stalagmiteHeight}. Resetting to default.");
+                stalagmiteHeight = defaultStalagmiteHeight;
+                hadInvalidValue = true;
+            }
+
+            // Clamp to safe ranges regardless
+            effectRadius = Mathf.Clamp(effectRadius, 0.1f, maxEffectRadius);
+            effectOpacity = Mathf.Clamp(effectOpacity, 1f, maxEffectOpacity);
+            firstHitEffectRadius = Mathf.Clamp(firstHitEffectRadius, 0.05f, maxEffectRadius / 2f);
+            firstHitEffectOpacity = Mathf.Clamp(firstHitEffectOpacity, 0.5f, maxEffectOpacity / 2f);
+            stalagmiteHeight = Mathf.Clamp(stalagmiteHeight, 1f, maxStalagmiteHeight);
+
+            if (hadInvalidValue)
+                UnityEngine.Debug.Log($"After validation: radius={effectRadius}, opacity={effectOpacity}, " +
+                                      $"firstHitRadius={firstHitEffectRadius}, firstHitOpacity={firstHitEffectOpacity}, " +
+                                      $"height={stalagmiteHeight}");
         }
 
         public void SetCurrentMaterial(Material material)
@@ -101,6 +255,16 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
 
         public override void UseTool(RaycastHit hit)
         {
+            // Validate hit before processing
+            if (!IsValidVector3(hit.point) || !IsValidVector3(hit.normal))
+            {
+                logger?.LogError($"Invalid hit data: point={hit.point}, normal={hit.normal}");
+                return;
+            }
+
+            logger?.LogMessage("UseTool called with valid hit");
+            logger?.LogVector3("Hit point", hit.point);
+
             lastHit = hit;
             PerformToolAction();
         }
@@ -109,32 +273,88 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
         {
             // Prevent multiple simultaneous digging operations
             if (isDigging)
+            {
+                logger?.LogMessage("Already digging, skipping action");
                 return;
+            }
 
             try
             {
                 // Check cooldown
                 if (Time.time < lastDigTime + miningCooldown)
+                {
+                    logger?.LogMessage("Tool on cooldown, skipping action");
                     return;
+                }
 
                 // Update last dig time
                 lastDigTime = Time.time;
 
                 // Validate core references
                 if (playerInteraction == null || digger == null)
+                {
+                    logger?.LogError("Missing references: playerInteraction or digger is null");
                     return;
+                }
+
+                // Validate camera
+                if (mainCamera == null)
+                {
+                    logger?.LogError("Main camera reference is null");
+                    return;
+                }
+
+                // Sanitize camera direction
+                var cameraPosition = SanitizeVector3(mainCamera.transform.position);
+                var cameraDirection = SanitizeVector3(mainCamera.transform.forward);
+
+                logger?.LogVector3("Camera position", cameraPosition);
+                logger?.LogVector3("Camera direction", cameraDirection);
+
+                if (!IsValidVector3(cameraDirection))
+                {
+                    logger?.LogError("Invalid camera direction after sanitization");
+                    return;
+                }
 
                 // Confirm we have a valid ray hit
                 var notPlayerMask = ~playerInteraction.playerLayerMask;
-                if (!Physics.Raycast(mainCamera.transform.position, mainCamera.transform.forward, out var hit,
-                        diggerUsingRange, notPlayerMask))
+                RaycastHit hit;
+
+                logger?.LogMessage(
+                    $"Performing raycast: origin={cameraPosition}, direction={cameraDirection}, range={diggerUsingRange}");
+
+                if (!Physics.Raycast(cameraPosition, cameraDirection, out hit, diggerUsingRange, notPlayerMask))
+                {
+                    logger?.LogMessage("No valid raycast hit found");
                     return;
+                }
 
                 // Cache hit for external access
                 lastHit = hit;
 
-                // Get texture index from hit
-                var detectedTextureIndex = terrainLayerDetector.GetTextureIndex(lastHit, out _);
+                logger?.LogVector3("Hit position", hit.point);
+                logger?.LogVector3("Hit normal", hit.normal);
+
+                // Validate hit has a collider
+                if (hit.collider == null)
+                {
+                    logger?.LogError("Hit collider is null");
+                    return;
+                }
+
+                // Get texture index from hit - use a safe default if it fails
+                var detectedTextureIndex = 0;
+                try
+                {
+                    detectedTextureIndex = terrainLayerDetector.GetTextureIndex(lastHit, out _);
+                    logger?.LogMessage($"Detected texture index: {detectedTextureIndex}");
+                }
+                catch (Exception ex)
+                {
+                    logger?.LogError("Failed to get texture index", ex);
+                    // Continue with the default value
+                }
 
                 // Check if we're hitting a minable object
                 var isMinableObject = CanInteractWithObject(lastHit.collider.gameObject);
@@ -143,114 +363,270 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
                 var isTerrain = detectedTextureIndex >= 0;
                 var isValidTerrain = CanInteractWithTextureIndex(detectedTextureIndex);
 
+                logger?.LogMessage(
+                    $"Hit info - isMinableObject: {isMinableObject}, isTerrain: {isTerrain}, isValidTerrain: {isValidTerrain}");
+
                 // Exit early if we're not hitting anything valid
                 if (!isMinableObject && (!isTerrain || !isValidTerrain))
+                {
+                    logger?.LogMessage("Not hitting valid target, exiting");
                     return;
+                }
 
                 // Handle object interaction first (ore, rocks, etc.)
                 if (isMinableObject) HandleObjectInteraction(hit);
 
                 // Exit if not a valid terrain texture
                 if (!isValidTerrain)
+                {
+                    logger?.LogMessage("Not valid terrain texture, exiting");
                     return;
+                }
 
                 // Get the actual texture index based on depth and overrides
-                var textureIndex = GetTerrainLayerBasedOnDepthAndOverrides(detectedTextureIndex, lastHit.point.y);
+                int textureIndex;
+                try
+                {
+                    textureIndex = GetTerrainLayerBasedOnDepthAndOverrides(detectedTextureIndex, lastHit.point.y);
+                    logger?.LogMessage($"Final texture index after processing: {textureIndex}");
+                }
+                catch (Exception ex)
+                {
+                    logger?.LogError("Failed to process terrain layer", ex);
+                    textureIndex = 0; // Use a safe default
+                }
 
                 // Handle terrain digging
                 HandleTerrainDigging(hit, textureIndex);
             }
             catch (Exception ex)
             {
-                UnityEngine.Debug.LogError($"Pickaxe error: {ex.Message}\n{ex.StackTrace}");
+                logger?.LogError("Pickaxe error in PerformToolAction", ex);
                 // Reset state on error
                 isDigging = false;
+                if (activeDigCoroutine != null)
+                {
+                    StopCoroutine(activeDigCoroutine);
+                    activeDigCoroutine = null;
+                }
             }
         }
 
         private void HandleObjectInteraction(RaycastHit hit)
         {
-            // Call IInteractable if implemented
-            hit.collider.GetComponent<IInteractable>()?.Interact();
-
-            // Handle minable objects
-            var minable = hit.collider.GetComponent<IMinable>();
-            if (minable != null)
+            try
             {
-                if (minable.GetCurrentMinableHardness() <= hardnessCanBreak)
+                logger?.LogMessage("HandleObjectInteraction started");
+
+                // Call IInteractable if implemented
+                var interactable = hit.collider.GetComponent<IInteractable>();
+                if (interactable != null)
                 {
-                    minable.MinableMineHit();
-                    moveToolDespiteFailHitFeedbacks?.PlayFeedbacks();
+                    interactable.Interact();
+                    logger?.LogMessage("Called Interact() on interactable object");
                 }
-                else
+
+                // Handle minable objects
+                var minable = hit.collider.GetComponent<IMinable>();
+                if (minable != null)
                 {
-                    minable.MinableFailHit(hit.point);
-                    moveToolDespiteFailHitFeedbacks?.PlayFeedbacks();
+                    var objectHardness = minable.GetCurrentMinableHardness();
+                    logger?.LogMessage(
+                        $"Mining object with hardness {objectHardness} vs tool hardness {hardnessCanBreak}");
+
+                    if (objectHardness <= hardnessCanBreak)
+                    {
+                        minable.MinableMineHit();
+                        moveToolDespiteFailHitFeedbacks?.PlayFeedbacks();
+                        logger?.LogMessage("Successfully mined object");
+                    }
+                    else
+                    {
+                        minable.MinableFailHit(hit.point);
+                        moveToolDespiteFailHitFeedbacks?.PlayFeedbacks();
+                        logger?.LogMessage("Failed to mine object - hardness too high");
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                logger?.LogError("Error in HandleObjectInteraction", ex);
             }
         }
 
+
+// Replace the current HandleTerrainDigging method in PickaxeTool.cs with this improved version
         private void HandleTerrainDigging(RaycastHit hit, int textureIndex)
         {
-            // Distance check: is this close enough to the last hit?
-            if (terrainHitCount > 0 && Vector3.Distance(hit.point, lastHitPosition) > hitThresholdDistance)
-                terrainHitCount = 0;
-
-            // Store current hit
-            lastHitPosition = hit.point;
-            terrainHitCount++;
-
-            // First hit is different - smaller impression
-            if (terrainHitCount == 1)
+            try
             {
-                var digPositionFirst = hit.point + mainCamera.transform.forward * 0.3f;
+                // Force validation of all parameters
+                ValidateAllParameters();
 
-                // Set digging flag
-                isDigging = true;
+                // Additional safety check
+                if (!EnsureDigParametersValid())
+                {
+                    UnityEngine.Debug.LogError("Dig parameters invalid and could not be repaired");
+                    return;
+                }
 
-                // Start dig coroutine and track it
-                activeDigCoroutine = StartCoroutine(Dig(digPositionFirst, textureIndex, firstHitEffectOpacity,
-                    firstHitEffectRadius, BrushType.Stalagmite));
+                // Validate hit point and normal
+                if (!IsValidVector3(hit.point) || !IsValidVector3(hit.normal))
+                {
+                    UnityEngine.Debug.LogError($"Invalid hit data: point={hit.point}, normal={hit.normal}");
+                    return;
+                }
 
-                // Trigger debris effect for first hit
-                TriggerDebrisEffect(debrisEffectFirstHitPrefab, hit);
+                // Distance check for hit count
+                if (terrainHitCount > 0 && Vector3.Distance(hit.point, lastHitPosition) > hitThresholdDistance)
+                    terrainHitCount = 0;
 
-                // Play first hit feedback
-                firstHitFeedbacks?.PlayFeedbacks(hit.point);
+                // Update hit tracking
+                lastHitPosition = hit.point;
+                terrainHitCount++;
 
-                return;
+                // Check if already digging - abort if so
+                if (isDigging)
+                {
+                    UnityEngine.Debug.Log("Already digging, ignoring new dig request");
+                    return;
+                }
+
+                // First hit - smaller impression
+                if (terrainHitCount == 1)
+                {
+                    // Calculate dig position with safety checks
+                    var cameraForward = SanitizeVector3(mainCamera.transform.forward);
+                    var digPositionFirst = hit.point + cameraForward * 0.3f;
+
+                    // Make safe copies of parameters that can't be modified during the coroutine
+                    var safeRadius = ClampFloat(firstHitEffectRadius, 0.1f, 2f);
+                    var safeOpacity = ClampFloat(firstHitEffectOpacity, 1f, 50f);
+
+                    // Set digging flag
+                    isDigging = true;
+
+                    // Cancel any existing coroutine
+                    if (activeDigCoroutine != null) StopCoroutine(activeDigCoroutine);
+
+                    // Start new coroutine
+                    activeDigCoroutine = StartCoroutine(Dig(
+                        digPositionFirst,
+                        textureIndex,
+                        safeOpacity,
+                        safeRadius,
+                        BrushType.Stalagmite));
+
+                    // Effects
+                    TriggerDebrisEffect(debrisEffectFirstHitPrefab, hit);
+                    firstHitFeedbacks?.PlayFeedbacks(hit.point);
+                    return;
+                }
+
+                // Second hit breaks the terrain
+                if (terrainHitCount >= 2)
+                {
+                    // Reset hit count
+                    terrainHitCount = 0;
+
+                    // Calculate dig position with safety
+                    var cameraForward = SanitizeVector3(mainCamera.transform.forward);
+                    var digPosition = hit.point + cameraForward * 0.3f;
+
+                    // Safe copies of parameters
+                    var safeRadius = ClampFloat(effectRadius, 0.1f, 5f);
+                    var safeOpacity = ClampFloat(effectOpacity, 1f, 200f);
+
+                    // Set digging flag
+                    isDigging = true;
+
+                    // Cancel any existing coroutine
+                    if (activeDigCoroutine != null) StopCoroutine(activeDigCoroutine);
+
+                    // Start new coroutine
+                    activeDigCoroutine = StartCoroutine(Dig(
+                        digPosition,
+                        textureIndex,
+                        safeOpacity,
+                        safeRadius));
+
+                    // Effects
+                    TriggerDebrisEffect(debrisEffectSecondHitPrefab, hit);
+                    secondHitFeedbacks?.PlayFeedbacks(hit.point);
+                }
             }
-
-            // Second hit breaks the terrain
-            if (terrainHitCount >= 2)
+            catch (Exception ex)
             {
-                UnityEngine.Debug.Log("Second hit - Breaking terrain");
-
-                // Trigger second hit debris effect
-                TriggerDebrisEffect(debrisEffectSecondHitPrefab, hit);
-
-                // Play second hit feedback
-                secondHitFeedbacks?.PlayFeedbacks(hit.point);
-
-                // Reset hit count
+                UnityEngine.Debug.LogError($"Error in HandleTerrainDigging: {ex.Message}\n{ex.StackTrace}");
+                // Reset state on error
+                isDigging = false;
                 terrainHitCount = 0;
-
-                var digPosition = hit.point + mainCamera.transform.forward * 0.3f;
-
-                // Set digging flag
-                isDigging = true;
-
-                // Start full dig coroutine and track it
-                activeDigCoroutine = StartCoroutine(Dig(digPosition, textureIndex, effectOpacity, effectRadius));
+                if (activeDigCoroutine != null)
+                {
+                    StopCoroutine(activeDigCoroutine);
+                    activeDigCoroutine = null;
+                }
             }
         }
 
-        // Fixed dig coroutine with proper cleanup
+// Add this method to your PickaxeTool class
+        private void ValidateDigParameters(ref float radiusParam, ref float opacityParam, ref float heightParam)
+        {
+            // Check for NaN or infinity values
+            if (float.IsNaN(radiusParam) || float.IsInfinity(radiusParam))
+            {
+                UnityEngine.Debug.LogError($"Invalid radius parameter detected: {radiusParam}. Using safe value.");
+                radiusParam = 0.5f; // Safe default
+            }
+
+            if (float.IsNaN(opacityParam) || float.IsInfinity(opacityParam))
+            {
+                UnityEngine.Debug.LogError($"Invalid opacity parameter detected: {opacityParam}. Using safe value.");
+                opacityParam = 10f; // Safe default
+            }
+
+            if (float.IsNaN(heightParam) || float.IsInfinity(heightParam))
+            {
+                UnityEngine.Debug.LogError($"Invalid height parameter detected: {heightParam}. Using safe value.");
+                heightParam = 100f; // Safe default
+            }
+
+            // Clamp to reasonable ranges
+            radiusParam = Mathf.Clamp(radiusParam, 0.1f, 5f);
+            opacityParam = Mathf.Clamp(opacityParam, 1f, 200f);
+            heightParam = Mathf.Clamp(heightParam, 0.1f, 200f);
+
+            if (debugLogging)
+                UnityEngine.Debug.Log(
+                    $"Validated dig parameters: radius={radiusParam}, opacity={opacityParam}, height={heightParam}");
+        }
+
+// Modify your Dig coroutine to validate parameters before passing to SafeModify
         private IEnumerator Dig(Vector3 digPosition, int textureIndex,
             float effectOpacityLoc, float effectRadiusLoc, BrushType brushLoc = BrushType.Sphere)
         {
-            // Wait for delay
+            if (debugLogging)
+                UnityEngine.Debug.Log(
+                    $"Starting dig at position {digPosition}, texture {textureIndex}, opacity {effectOpacityLoc}, radius {effectRadiusLoc}");
+
+            // Create safe copies that can't be modified elsewhere
+            var radius = effectRadiusLoc;
+            var opacity = effectOpacityLoc;
+            var height = stalagmiteHeight;
+
+            // Make sure none of these values can be NaN or infinity
+            if (!IsValidFloat(radius)) radius = defaultEffectRadius;
+            if (!IsValidFloat(opacity)) opacity = defaultEffectOpacity;
+            if (!IsValidFloat(height)) height = defaultStalagmiteHeight;
+
+            // Clamp to safe ranges
+            radius = Mathf.Clamp(radius, 0.1f, maxEffectRadius);
+            opacity = Mathf.Clamp(opacity, 1f, maxEffectOpacity);
+            height = Mathf.Clamp(height, 1f, maxStalagmiteHeight);
+
+            // Wait for delay - outside the try-catch
             yield return new WaitForSeconds(delayBeforeDigging);
+
             try
             {
                 // Check if digger reference is still valid
@@ -261,52 +637,58 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
                     yield break;
                 }
 
-                // Perform the actual digging operation
-                try
+                // Double-check all values for safety
+                if (!IsValidVector3(digPosition))
                 {
-                    if (EditAsynchronously)
-                        // Use the async buffered method with proper parameters
-                        digger.ModifyAsyncBuffured(
-                            digPosition,
-                            brushLoc,
-                            Action,
-                            textureIndex,
-                            effectOpacityLoc,
-                            effectRadiusLoc,
-                            stalagmiteHeight,
-                            true
-                        );
-                    else
-                        // Use the synchronous method
-                        digger.Modify(
-                            digPosition,
-                            brushLoc,
-                            Action,
-                            textureIndex,
-                            effectOpacityLoc,
-                            effectRadiusLoc,
-                            stalagmiteHeight,
-                            true
-                        );
+                    UnityEngine.Debug.LogError($"Invalid dig position before modify: {digPosition}");
+                    isDigging = false;
+                    yield break;
                 }
-                catch (Exception ex)
+
+                // One final check before digging
+                if (!IsValidFloat(radius) || !IsValidFloat(opacity) || !IsValidFloat(height))
                 {
-                    UnityEngine.Debug.LogError($"Dig operation error: {ex.Message}\n{ex.StackTrace}");
+                    UnityEngine.Debug.LogError(
+                        $"Invalid parameters detected right before digging: radius={radius}, opacity={opacity}, height={height}");
+                    isDigging = false;
+                    yield break;
+                }
+
+                if (debugLogging)
+                    UnityEngine.Debug.Log($"Final dig parameters: radius={radius}, opacity={opacity}, height={height}");
+
+                // Use the safe modify method to ensure no NaN values reach the Digger system
+                var success = SafeModify(
+                    digPosition,
+                    brushLoc,
+                    Action,
+                    textureIndex,
+                    opacity,
+                    radius,
+                    height
+                );
+
+                if (success)
+                {
+                    if (debugLogging) UnityEngine.Debug.Log("Dig operation executed successfully");
+                }
+                else
+                {
+                    UnityEngine.Debug.LogError("Dig operation failed");
                 }
             }
             catch (Exception ex)
             {
                 UnityEngine.Debug.LogError($"Dig coroutine error: {ex.Message}\n{ex.StackTrace}");
             }
-            finally
-            {
-                // Always reset the digging flag when done
-                isDigging = false;
-                activeDigCoroutine = null;
-            }
 
-            // Wait a frame to ensure digging operation had time to process
+            // Wait a frame to ensure digging operation had time to process - outside the try-catch
             yield return null;
+
+            // Finally block equivalent - always executes
+            isDigging = false;
+            activeDigCoroutine = null;
+            if (debugLogging) UnityEngine.Debug.Log("Dig operation complete, reset state");
         }
     }
 }
