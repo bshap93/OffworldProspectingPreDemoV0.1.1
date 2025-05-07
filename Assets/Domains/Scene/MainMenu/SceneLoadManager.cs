@@ -1,3 +1,4 @@
+using Domains.Scene.StaticScripts;
 using MoreMountains.Tools;
 using UnityEngine;
 
@@ -25,10 +26,16 @@ namespace Domains.Scene.MainMenu
             {
                 case MainMenuEventType.NewGameTriggered:
                     ClearAllSaveFilesOnly();
+                    GameLoadFlags.IsNewGame = true;
                     LoadScene(sceneToLoad);
                     break;
                 case MainMenuEventType.ContinueGameTriggered:
-                    if (HasGameSave()) LoadScene(sceneToLoad);
+                    if (HasGameSave())
+                    {
+                        GameLoadFlags.IsNewGame = false; // Add this
+
+                        LoadScene(sceneToLoad);
+                    }
 
 
                     break;

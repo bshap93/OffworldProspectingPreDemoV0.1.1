@@ -18,9 +18,20 @@ MonoBehaviour:
   m_PlatformId: 4e3c793746204150860bf175a9a41a05
   m_PlatformBuildProfile:
     rid: 5267126999710695424
-  m_OverrideGlobalSceneList: 0
-  m_Scenes: []
-  m_ScriptingDefines: []
+  m_OverrideGlobalSceneList: 1
+  m_Scenes:
+  - m_enabled: 1
+    m_path: Assets/Scenes/MainScene08Peristent.unity
+  - m_enabled: 1
+    m_path: Assets/Scenes/MainMenuPersistent.unity
+  - m_enabled: 1
+    m_path: Assets/Scenes/Facility01.unity
+  - m_enabled: 1
+    m_path: Assets/Scenes/EndSplash.unity
+  - m_enabled: 1
+    m_path: Assets/ThirdParty/Feel/MMTools/Core/MMSceneLoading/LoadingScreens/LoadingScreen.unity
+  m_ScriptingDefines:
+  - MOREMOUNTAINS_NICEVIBRATIONS_INSTALLED
   m_PlayerSettingsYaml:
     m_Settings:
     - line: '| PlayerSettings:'
