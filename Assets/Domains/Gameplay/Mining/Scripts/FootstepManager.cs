@@ -1,21 +1,20 @@
-﻿using Domains.Scripts_that_Need_Sorting;
+﻿using Domains.Player.Scripts;
 using Lightbug.CharacterControllerPro.Core;
 using MoreMountains.Feedbacks;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Domains.Gameplay.Mining.Scripts
 {
     internal class FootstepManager : MonoBehaviour
     {
         [Header("Footsteps")] [SerializeField] private MMFeedbacks terrainFootstepFeedbacks;
+        [SerializeField] private MMFeedbacks rockFootstepFeedbacks;
 
         [SerializeField] private MMFeedbacks chunkFootstepFeedbacks;
         [SerializeField] private MMFeedbacks defaultFootstepFeedbacks;
         [SerializeField] private float baseStepInterval = 0.5f;
 
-        [FormerlySerializedAs("DownTextureDetector")]
-        public TerrainLayerDetector downTerrainLayerDetector;
+        [SerializeField] private PlayerInteraction playerInteraction;
 
         [SerializeField] private CharacterActor characterActor;
 
@@ -30,6 +29,9 @@ namespace Domains.Gameplay.Mining.Scripts
         {
             if (characterActor == null)
                 characterActor = FindFirstObjectByType<CharacterActor>();
+
+            if (playerInteraction == null)
+                playerInteraction = FindFirstObjectByType<PlayerInteraction>();
         }
 
         private void Update()
@@ -75,17 +77,37 @@ namespace Domains.Gameplay.Mining.Scripts
 
         private void PlayFootstepFeedback()
         {
-            switch (downTerrainLayerDetector.textureIndex)
+            var textureIndex = playerInteraction?.GetGroundTextureIndex() ?? -1;
+
+            UnityEngine.Debug.Log("Footstep texture index: " + textureIndex);
+
+            switch (textureIndex)
             {
-                case 1: // Chunk terrain from Digger
+                case 11:
+                case 1:
+                case 13:
+                case 14:
                     chunkFootstepFeedbacks?.PlayFeedbacks();
                     break;
 
-                case >= 0: // Terrain (index 0, 2, 3, etc.)
+
+                case 0:
+                case 12:
+                case 15:
+                case 5:
                     terrainFootstepFeedbacks?.PlayFeedbacks();
                     break;
 
-                case -1: // Meshes, non-terrain
+                case 2:
+                case 3:
+                case 4:
+                case 6:
+                case 7:
+                case 8:
+                case 9:
+                    rockFootstepFeedbacks?.PlayFeedbacks();
+                    break;
+
                 default:
                     defaultFootstepFeedbacks?.PlayFeedbacks();
                     break;

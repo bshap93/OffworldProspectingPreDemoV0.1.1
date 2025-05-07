@@ -20,6 +20,7 @@ public class PersistentDiggerMasterHelper : MonoBehaviour
         if (GameLoadFlags.IsNewGame)
         {
             diggerMasterRuntime.DeleteAllPersistedData();
+            // diggerMasterRuntime.ClearScene();
             GameLoadFlags.IsNewGame = false; // Clear the flag to avoid repeating
         }
     }

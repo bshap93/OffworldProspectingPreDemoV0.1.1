@@ -99,6 +99,18 @@ namespace Domains.Player.Scripts
                 playerCamera.transform.TransformDirection(Vector3.forward) * interactionDistance);
         }
 
+        public int GetGroundTextureIndex()
+        {
+            var origin = transform.position + Vector3.up * 0.1f;
+            if (Physics.Raycast(origin, Vector3.down, out var hit, 2f, terrainLayer & ~playerLayerMask))
+            {
+                forwardTerrainLayerDetector?.UpdateFromHit(hit);
+                return forwardTerrainLayerDetector?.textureIndex ?? -1;
+            }
+
+            return -1;
+        }
+
 
         // New method to update texture information
         private void UpdateTextureInformation()
