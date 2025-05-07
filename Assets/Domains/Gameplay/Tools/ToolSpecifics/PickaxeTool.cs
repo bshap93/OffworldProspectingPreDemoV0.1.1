@@ -6,6 +6,7 @@ using Domains.Debug;
 using Domains.Gameplay.Mining.Scripts;
 using Domains.Player.Events;
 using Domains.Player.Scripts;
+using Domains.Scripts_that_Need_Sorting;
 using MoreMountains.Feedbacks;
 using MoreMountains.Tools;
 using UnityEngine;
@@ -63,6 +64,7 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
         // Logger reference
         private DiggerDebugLogger logger;
         private MeshRenderer meshRenderer;
+        private TerrainController terrainController;
         private int terrainHitCount;
         private float validationTimer;
 
@@ -81,6 +83,9 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
             digger = FindFirstObjectByType<DiggerMasterRuntime>();
             playerInteraction = FindFirstObjectByType<PlayerInteraction>();
             meshRenderer = GetComponent<MeshRenderer>();
+
+            terrainController = FindFirstObjectByType<TerrainController>();
+            if (terrainController == null) logger.LogError("TerrainController not found in scene");
 
             // Initialize values to prevent NaN
             firstHitEffectOpacity = ClampFloat(firstHitEffectOpacity, 1f, 50f);
@@ -541,6 +546,8 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
                     // Safe copies of parameters
                     var safeRadius = ClampFloat(effectRadius, 0.1f, 5f);
                     var safeOpacity = ClampFloat(effectOpacity, 1f, 200f);
+
+                    var debrisMaterial = terrainController.GetTerrainPrefab(textureIndex);
 
                     // Set digging flag
                     isDigging = true;

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -16,7 +17,8 @@ namespace Domains.Scene.Terrain.Scripts
     public class TerrainDigParticlePrefab
     {
         public int terrainLayerIndex;
-        public GameObject prefab;
+        [FormerlySerializedAs("prefab")] public GameObject primaryPrefab;
+        [CanBeNull] public GameObject secondaryPrefab;
     }
 
     [Serializable]
@@ -36,14 +38,6 @@ namespace Domains.Scene.Terrain.Scripts
         public List<DefaultLayerAboveDepth> defaultLayerAboveDepths;
 
         [Header("Dig Particle Prefabs")] public List<TerrainDigParticlePrefab> terrainDigParticlePrefabs;
-
-        public int GetDefaultLayerIndex(float playerDepth)
-        {
-            foreach (var defaultLayer in defaultLayerAboveDepths)
-                if (playerDepth >= defaultLayer.playerDepth)
-                    return defaultLayer.defaultLayerIndex;
-
-            return -1; // or some other default value
-        }
+        public GameObject defaultDigParticlePrefab;
     }
 }

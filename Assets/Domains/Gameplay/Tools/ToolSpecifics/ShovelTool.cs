@@ -127,7 +127,7 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
             foreach (var terDigPrefab in TerrainController.Instance.terrainBehavior.terrainDigParticlePrefabs)
                 if (terDigPrefab.terrainLayerIndex == detectedTextureIndex)
                 {
-                    prefabToUse = terDigPrefab.prefab;
+                    prefabToUse = terDigPrefab.primaryPrefab;
                     break;
                 }
 

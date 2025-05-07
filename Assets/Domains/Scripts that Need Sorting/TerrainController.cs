@@ -13,5 +13,22 @@ namespace Domains.Scripts_that_Need_Sorting
         {
             if (Instance == null) Instance = this;
         }
+
+
+        public GameObject GetTerrainPrefab(int textureIndex)
+        {
+            if (terrainBehavior == null)
+            {
+                UnityEngine.Debug.LogError("TerrainBehavior is not assigned.");
+                return null;
+            }
+
+            foreach (var terrain in terrainBehavior.terrainDigParticlePrefabs)
+                if (terrain.terrainLayerIndex == textureIndex)
+                    return terrain.primaryPrefab;
+
+
+            return terrainBehavior.defaultDigParticlePrefab;
+        }
     }
 }
