@@ -26,7 +26,6 @@ namespace Domains.Player.Progression
         private const string GameSaveHasProgressedKeyName = "GameSaveHasProgressed";
         public static HashSet<string> CollectedObjectives = new();
         public static bool TutorialFinished = true;
-        public static bool IsInitialized { get; private set; } 
 
 
         private string _collectedObjectiveSave;
@@ -34,6 +33,7 @@ namespace Domains.Player.Progression
         private Dictionary<string, bool> _progressionObjectivesWasCollected;
 
         private string _savePath;
+        public static bool IsInitialized { get; }
 
 
         private void Start()
@@ -86,7 +86,9 @@ namespace Domains.Player.Progression
 
         private void LoadProgression()
         {
+            if (!HasProgressionData()) return;
             LoadBooleanFlags();
+
             LoadProgressionObjectivesState();
 
             if (CollectedObjectives.Count > 0)
