@@ -44,10 +44,10 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
         [Header("Hit Number Logic")] [SerializeField]
         private readonly float hitThresholdDistance = 0.5f; // adjust as needed
 
-        private readonly float maxEffectOpacity = 100f;
+        private new readonly float maxEffectOpacity = 100f;
 
         // Maximum safe values
-        private readonly float maxEffectRadius = 2f;
+        private new readonly float maxEffectRadius = 2f;
         private readonly float maxStalagmiteHeight = 200f;
 
         // Track active coroutine to prevent multiple digs happening at once

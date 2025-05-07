@@ -42,8 +42,8 @@ namespace Domains.Scripts_that_Need_Sorting
             isOpen = true;
             if (OpenDoorFeedbacks != null) OpenDoorFeedbacks.PlayFeedbacks();
 
-            RDoor.transform.DORotate(originalRotationR.eulerAngles + new Vector3(0, -90, 0), 1);
-            LDoor.transform.DORotate(originalRotationL.eulerAngles + new Vector3(0, 90, 0), 1);
+            RDoor.transform.DORotate(originalRotationR.eulerAngles + new Vector3(0, 90, 0), 1);
+            LDoor.transform.DORotate(originalRotationL.eulerAngles + new Vector3(0, -90, 0), 1);
         }
 
         public void CloseDoors()

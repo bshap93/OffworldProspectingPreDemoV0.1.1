@@ -79,7 +79,6 @@ namespace Domains.Gameplay.Mining.Scripts
         {
             var textureIndex = playerInteraction?.GetGroundTextureIndex() ?? -1;
 
-            UnityEngine.Debug.Log("Footstep texture index: " + textureIndex);
 
             switch (textureIndex)
             {
