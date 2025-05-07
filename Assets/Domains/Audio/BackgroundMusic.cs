@@ -1,4 +1,5 @@
-﻿using MoreMountains.Tools;
+﻿using Domains.UI_Global.Events;
+using MoreMountains.Tools;
 using UnityEngine;
 
 namespace Domains.Audio
@@ -6,8 +7,7 @@ namespace Domains.Audio
     /// <summary>
     ///     Add this class to a GameObject to have it play a background music when instanciated.
     /// </summary>
-    [AddComponentMenu("TopDown Engine/Sound/Background Music")]
-    public class BackgroundMusic : MonoBehaviour
+    public class BackgroundMusic : MonoBehaviour, MMEventListener<AudioEvent>
     {
         /// the background music
         [Tooltip("the audio clip to use as background music")]
@@ -39,6 +39,37 @@ namespace Domains.Audio
             options.Volume = volume;
 
             MMSoundManagerSoundPlayEvent.Trigger(SoundClip, options);
+        }
+
+        private void OnEnable()
+        {
+            this.MMEventStartListening();
+        }
+
+        private void OnDisable()
+        {
+            this.MMEventStopListening();
+        }
+
+        public void OnMMEvent(AudioEvent eventType)
+        {
+            if (eventType.EventType == AudioEventType.ChangeVolume)
+                SetVolume(eventType.Value);
+            else if (eventType.EventType == AudioEventType.Mute)
+                SetVolume(0f);
+            else if (eventType.EventType == AudioEventType.Unmute) SetVolume(volume);
+        }
+
+
+        public void SetVolume(float newVolume)
+        {
+            if (newVolume < 0f || newVolume > 1f)
+            {
+                UnityEngine.Debug.LogError("Volume must be between 0 and 1");
+                return;
+            }
+
+            volume = newVolume;
         }
     }
 }
