@@ -1,4 +1,5 @@
-﻿using Domains.UI_Global.Events;
+﻿using Domains.Gameplay.Managers.Scripts;
+using Domains.UI_Global.Events;
 using MoreMountains.Tools;
 using UnityEngine;
 
@@ -9,9 +10,8 @@ namespace Domains.Audio
     /// </summary>
     public class BackgroundMusic : MonoBehaviour, MMEventListener<AudioEvent>
     {
-        /// the background music
-        [Tooltip("the audio clip to use as background music")]
-        public AudioClip SoundClip;
+        public AudioClip[] SoundClips;
+
 
         /// whether or not the music should loop
         [Tooltip("whether or not the music should loop")]
@@ -25,20 +25,48 @@ namespace Domains.Audio
         [Tooltip("Volume of the background music")] [Range(0f, 1f)]
         public float volume = 1f;
 
+        private AudioSource _audioSource;
+        private int _currentClipIndex;
+
+        private bool wasPaused;
+
 
         /// <summary>
         ///     Gets the AudioSource associated to that GameObject, and asks the GameManager to play it.
         /// </summary>
         protected virtual void Start()
         {
-            var options = MMSoundManagerPlayOptions.Default;
-            options.ID = ID;
-            options.Loop = Loop;
-            options.Location = Vector3.zero;
-            options.MmSoundManagerTrack = MMSoundManager.MMSoundManagerTracks.Music;
-            options.Volume = volume;
+            // var options = MMSoundManagerPlayOptions.Default;
+            // options.ID = ID;
+            // options.Loop = Loop;
+            // options.Location = Vector3.zero;
+            // options.MmSoundManagerTrack = MMSoundManager.MMSoundManagerTracks.Music;
+            // options.Volume = volume;
+            //
+            // MMSoundManagerSoundPlayEvent.Trigger(SoundClip, options);
+            _audioSource = gameObject.AddComponent<AudioSource>();
+            _audioSource.loop = false;
+            _audioSource.volume = volume;
+            _audioSource.playOnAwake = false;
 
-            MMSoundManagerSoundPlayEvent.Trigger(SoundClip, options);
+            if (SoundClips != null && SoundClips.Length > 0) PlayNextClip();
+        }
+
+        private void Update()
+        {
+            if (_audioSource == null) return;
+
+            if (PauseManager.Instance != null && PauseManager.Instance.IsPaused())
+            {
+                wasPaused = true;
+                return;
+            }
+
+            // Don't trigger next clip if the audio was just paused
+            if (!_audioSource.isPlaying && !wasPaused && Loop && SoundClips.Length > 0) PlayNextClip();
+
+            // Reset pause flag once playback resumes
+            if (_audioSource.isPlaying) wasPaused = false;
         }
 
         private void OnEnable()
@@ -58,6 +86,14 @@ namespace Domains.Audio
             else if (eventType.EventType == AudioEventType.Mute)
                 SetVolume(0f);
             else if (eventType.EventType == AudioEventType.Unmute) SetVolume(volume);
+        }
+
+        private void PlayNextClip()
+        {
+            _audioSource.clip = SoundClips[_currentClipIndex];
+            _audioSource.Play();
+
+            _currentClipIndex = (_currentClipIndex + 1) % SoundClips.Length;
         }
 
 
