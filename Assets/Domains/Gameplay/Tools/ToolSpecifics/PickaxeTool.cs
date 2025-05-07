@@ -547,7 +547,12 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
                     var safeRadius = ClampFloat(effectRadius, 0.1f, 5f);
                     var safeOpacity = ClampFloat(effectOpacity, 1f, 200f);
 
-                    var debrisMaterial = terrainController.GetTerrainPrefab(textureIndex);
+                    var debrisEffectPrefab = terrainController.GetTerrainPrefab(textureIndex);
+
+                    if (debrisEffectPrefab != null)
+                        debrisEffectSecondHitPrefab = debrisEffectPrefab;
+                    else
+                        UnityEngine.Debug.LogWarning($"No debris effect prefab found for texture index {textureIndex}");
 
                     // Set digging flag
                     isDigging = true;
