@@ -25,7 +25,7 @@ MonoBehaviour:
   initialPickaxeToolEffectRadius: 0.4
   initialJetPackSpeedMultiplier: 1.22
   SkipTutorial: 0
-  shovelMiningToolWidth: 0.64
+  shovelMiningToolWidth: 0.5
   pickaxeMiningToolWidth: 0.64
   initialShovelToolEffectOpacity: 150
   pickaxeMiningToolEffectOpacity: 75
