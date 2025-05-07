@@ -207,7 +207,7 @@ namespace Domains.Player.Scripts
             }
             else
             {
-                UnityEngine.Debug.LogError($"❌ No saved fuel data found at {saveFilePath}");
+                UnityEngine.Debug.Log($"❌ No saved fuel data found at {saveFilePath}");
 
                 ResetPlayerFuel();
                 fuelBarUpdater.Initialize();

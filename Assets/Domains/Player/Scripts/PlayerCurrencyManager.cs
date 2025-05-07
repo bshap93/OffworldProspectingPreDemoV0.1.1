@@ -159,7 +159,7 @@ namespace Domains.Player.Scripts
             }
             else
             {
-                UnityEngine.Debug.LogError($"No saved currency data found at {saveFilePath}");
+                UnityEngine.Debug.Log($"No saved currency data found at {saveFilePath}");
                 ResetPlayerCurrency();
                 currencyBarUpdater.Initialize();
             }

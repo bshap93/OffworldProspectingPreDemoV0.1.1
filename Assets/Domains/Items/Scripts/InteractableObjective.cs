@@ -32,7 +32,6 @@ namespace Domains.Items.Scripts
                 compassProPOI.ToggleIndicatorVisibility(false);
 
 
-                UnityEngine.Debug.Log("POI visibility set to always hidden");
             }
 
 

@@ -103,10 +103,7 @@ namespace Domains.Items.Scripts
                 else
                     UnityEngine.Debug.LogWarning($"BioContainer {uniqueID} has no creatureDissolver assigned");
             }
-            else
-            {
-                UnityEngine.Debug.Log($"BioContainer {uniqueID} not previously collected.");
-            }
+
         }
     }
 }

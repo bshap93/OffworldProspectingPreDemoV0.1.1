@@ -184,7 +184,7 @@ namespace Domains.Player.Scripts
             }
             else
             {
-                UnityEngine.Debug.LogError($"No saved health data found at {saveFilePath}");
+                UnityEngine.Debug.Log($"No saved health data found at {saveFilePath}");
                 ResetPlayerHealth();
                 healthBarUpdater.Initialize();
             }
