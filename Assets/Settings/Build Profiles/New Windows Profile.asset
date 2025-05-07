@@ -21,9 +21,9 @@ MonoBehaviour:
   m_OverrideGlobalSceneList: 1
   m_Scenes:
   - m_enabled: 1
-    m_path: Assets/Scenes/MainScene08Peristent.unity
-  - m_enabled: 1
     m_path: Assets/Scenes/MainMenuPersistent.unity
+  - m_enabled: 1
+    m_path: Assets/Scenes/MainScene08Persistent.unity
   - m_enabled: 1
     m_path: Assets/Scenes/Facility01.unity
   - m_enabled: 1

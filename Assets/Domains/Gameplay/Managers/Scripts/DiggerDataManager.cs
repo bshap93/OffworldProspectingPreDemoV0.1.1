@@ -7,89 +7,92 @@ using MoreMountains.Tools;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class DiggerDataManager : MonoBehaviour, MMEventListener<DiggerEvent>
+namespace Domains.Gameplay.Managers.Scripts
 {
-    public DiggerMasterRuntime diggerMasterRuntime;
-
-    public MMFeedbacks deleteAllDataFeedbacks;
-    public MMFeedbacks saveDataFeedbacks;
-
-    public DiggerSystem[] diggerSystems;
-
-    public bool autoSave = true;
-    [FormerlySerializedAs("doNotPersist")] public bool forceDeleteOnQuit;
-    public static DiggerDataManager Instance { get; private set; }
-
-    private void Awake()
+    public class DiggerDataManager : MonoBehaviour, MMEventListener<DiggerEvent>
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
+        public DiggerMasterRuntime diggerMasterRuntime;
 
-        Instance = this;
+        public MMFeedbacks deleteAllDataFeedbacks;
+        public MMFeedbacks saveDataFeedbacks;
 
-        if (diggerMasterRuntime == null)
+        public DiggerSystem[] diggerSystems;
+
+        public bool autoSave = true;
+        [FormerlySerializedAs("doNotPersist")] public bool forceDeleteOnQuit;
+        public static DiggerDataManager Instance { get; private set; }
+
+        private void Awake()
         {
-            diggerMasterRuntime = FindFirstObjectByType<DiggerMasterRuntime>();
+            if (Instance != null && Instance != this)
+            {
+                Destroy(gameObject);
+                return;
+            }
+
+            Instance = this;
+
             if (diggerMasterRuntime == null)
-                Debug.LogError("DiggerDataManager: No DiggerMasterRuntime found in scene!");
+            {
+                diggerMasterRuntime = FindFirstObjectByType<DiggerMasterRuntime>();
+                if (diggerMasterRuntime == null)
+                    UnityEngine.Debug.LogError("DiggerDataManager: No DiggerMasterRuntime found in scene!");
+            }
         }
-    }
 
 
-    private void OnEnable()
-    {
-        this.MMEventStartListening();
-    }
-
-    private void OnDisable()
-    {
-        this.MMEventStopListening();
-    }
-
-    private void OnApplicationQuit()
-    {
-        if (forceDeleteOnQuit) DeleteAllDiggerData();
-
-        if (autoSave) SaveDiggerData();
-    }
-
-    public void OnMMEvent(DiggerEvent eventType)
-    {
-        switch (eventType.EventType)
+        private void OnEnable()
         {
-            case DiggerEventType.Persist:
-                SaveDiggerData();
-                break;
-            case DiggerEventType.Delete:
-                DeleteAllDiggerData();
-                break;
+            this.MMEventStartListening();
         }
-    }
 
-
-    public void SaveDiggerData()
-    {
-        saveDataFeedbacks?.PlayFeedbacks();
-        diggerMasterRuntime.PersistAll();
-
-        Debug.Log("Digger data saved.");
-    }
-
-    public void DeleteAllDiggerData()
-    {
-        deleteAllDataFeedbacks?.PlayFeedbacks();
-        if (diggerMasterRuntime == null)
+        private void OnDisable()
         {
-            Debug.Log("DiggerDataManager: No DiggerMasterRuntime found in scene!");
-            return;
+            this.MMEventStopListening();
         }
 
-        diggerMasterRuntime.DeleteAllPersistedData();
-        AlertEvent.Trigger(AlertReason.DeletingDiggerData, "Digger data deleted.");
+        private void OnApplicationQuit()
+        {
+            if (forceDeleteOnQuit) DeleteAllDiggerData();
 
-        Debug.Log("Digger data deleted.");
+            if (autoSave) SaveDiggerData();
+        }
+
+        public void OnMMEvent(DiggerEvent eventType)
+        {
+            switch (eventType.EventType)
+            {
+                case DiggerEventType.Persist:
+                    SaveDiggerData();
+                    break;
+                case DiggerEventType.Delete:
+                    DeleteAllDiggerData();
+                    break;
+            }
+        }
+
+
+        public void SaveDiggerData()
+        {
+            saveDataFeedbacks?.PlayFeedbacks();
+            diggerMasterRuntime.PersistAll();
+
+            UnityEngine.Debug.Log("Digger data saved.");
+        }
+
+        public void DeleteAllDiggerData()
+        {
+            deleteAllDataFeedbacks?.PlayFeedbacks();
+            if (diggerMasterRuntime == null)
+            {
+                UnityEngine.Debug.Log("DiggerDataManager: No DiggerMasterRuntime found in scene!");
+                return;
+            }
+
+            diggerMasterRuntime.DeleteAllPersistedData();
+            AlertEvent.Trigger(AlertReason.DeletingDiggerData, "Digger data deleted.");
+
+            UnityEngine.Debug.Log("Digger data deleted.");
+        }
     }
 }
