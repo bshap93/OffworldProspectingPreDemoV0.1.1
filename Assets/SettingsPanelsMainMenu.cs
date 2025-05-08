@@ -41,6 +41,11 @@ public class SettingsPanelsMainMenu : MonoBehaviour, MMEventListener<MainMenuEve
         MainMenuEvent.Trigger(MainMenuEventType.SettingsCloseTriggered);
     }
 
+    public void TriggerOpen()
+    {
+        MainMenuEvent.Trigger(MainMenuEventType.SettingsOpenTriggered);
+    }
+
 
     private void OpenSettingsPanel()
     {
