@@ -1,4 +1,5 @@
 using Domains.Scene.Terrain.Scripts;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Domains.Scripts_that_Need_Sorting
@@ -29,6 +30,23 @@ namespace Domains.Scripts_that_Need_Sorting
 
 
             return terrainBehavior.defaultDigParticlePrefab;
+        }
+
+        [CanBeNull]
+        public GameObject GetSecondaryTerrainPrefab(int textureName)
+        {
+            if (terrainBehavior == null)
+            {
+                UnityEngine.Debug.LogError("TerrainBehavior is not assigned.");
+                return null;
+            }
+
+            foreach (var terrain in terrainBehavior.terrainDigParticlePrefabs)
+                if (terrain.terrainLayerIndex == textureName)
+                    return terrain.secondaryPrefab;
+
+
+            return null;
         }
     }
 }
