@@ -682,7 +682,7 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
                     yield break;
 
 // after SafeModify you KNOW parameters are finite.
-                UnityEngine.Debug.Log($"DIG {Time.frameCount}: p={digPosition} r={radius} o={opacity}");
+                // UnityEngine.Debug.Log($"DIG {Time.frameCount}: p={digPosition} r={radius} o={opacity}");
             }
             catch (Exception ex)
             {

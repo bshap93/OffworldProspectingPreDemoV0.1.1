@@ -309,10 +309,6 @@ namespace Domains.Gameplay.Tools
                 var safeRadius = ClampFloat(radius, 0.1f, 10f);
                 var safeHeight = ClampFloat(height, 0.1f, 1000f);
 
-                if (debugLogging)
-                    UnityEngine.Debug.Log($"SafeModify: position={safePosition}, texture={textureIndex}, " +
-                                          $"opacity={safeOpacity}, radius={safeRadius}, height={safeHeight}, " +
-                                          $"brush={brushType}, action={actionType}, smooth={smooth}");
 
                 // Call Digger's modify with safe parameters
                 try
