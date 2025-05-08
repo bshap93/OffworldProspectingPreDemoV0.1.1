@@ -108,8 +108,9 @@ namespace Domains.Gameplay.Mining.Scripts
                     rockFootstepFeedbacks?.PlayFeedbacks();
                     break;
                 case 5:
-                    terrainFootstepFeedbacks?.PlayFeedbacks();
-                    HealthEvent.Trigger(HealthEventType.ConsumeHealth, 4f);
+                    lavaFootstepFeedbacks?.PlayFeedbacks();
+                    HealthEvent.Trigger(HealthEventType.ConsumeHealth,
+                        4f, HealthEventReason.LavaDamage);
                     break;
 
 

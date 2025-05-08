@@ -89,7 +89,7 @@ namespace Domains.Scripts_that_Need_Sorting
         {
             if (delay > 0f)
                 // Optional: Play a feedback or sound here
-                playerDeathManager.deathFeedbacks?.PlayFeedbacks();
+                playerDeathManager.manualResetDeathFeedbacks?.PlayFeedbacks();
 
             yield return new WaitForSeconds(delay);
             // Trigger your logic here

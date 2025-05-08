@@ -14,6 +14,13 @@ namespace Domains.Player.Events
         SetCurrentHealth
     }
 
+    [Serializable]
+    public enum HealthEventReason
+    {
+        FallDamage,
+        LavaDamage
+    }
+
     public struct HealthEvent
     {
         private static HealthEvent e;
@@ -21,11 +28,14 @@ namespace Domains.Player.Events
         public HealthEventType EventType;
         public float ByValue;
 
+        public HealthEventReason? Reason;
+
         public static void Trigger(HealthEventType healthEventType,
-            float byValue)
+            float byValue, HealthEventReason? reason = null)
         {
             e.EventType = healthEventType;
             e.ByValue = byValue;
+            e.Reason = reason;
             MMEventManager.TriggerEvent(e);
         }
     }

@@ -565,7 +565,7 @@ namespace Domains.Gameplay.Mining.Scripts
 
                 // Call the damage event
                 UnityEngine.Debug.Log("Fall damage applied: " + damage);
-                HealthEvent.Trigger(HealthEventType.ConsumeHealth, damage);
+                HealthEvent.Trigger(HealthEventType.ConsumeHealth, damage, HealthEventReason.FallDamage);
 
                 CameraEvent.Trigger(CameraEventType.CameraShake, 0.5f, 0.5f);
             }

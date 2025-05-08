@@ -24,10 +24,14 @@ namespace Domains.Player.Scripts
 
         public float healthPenaltyMultiplier = 0.2f;
 
-        [Header("Feedbacks")] public MMFeedbacks deathFeedbacks;
+
+        [Header("Death Feedbacks")] public MMFeedbacks fallDeathFeedbacks;
+        public MMFeedbacks lavaDeathFeedbacks;
+        public MMFeedbacks manualResetDeathFeedbacks;
 
         public MMFeedbacks outOfFuelFeedbacks;
-        public MMFeedbacks revivalFeedbacks;
+
+        [Header("Revival Feedbacks")] public MMFeedbacks revivalFeedbacks;
 
         [FormerlySerializedAs("_sceneRestarter")] [SerializeField]
         private MMSceneRestarter sceneRestarter;
@@ -57,9 +61,29 @@ namespace Domains.Player.Scripts
             if (eventType.EventType == PlayerStatusEventType.Died)
             {
                 SetPostDeathStats();
-                deathFeedbacks?.PlayFeedbacks();
-                AlertEvent.Trigger(AlertReason.Died, "You passed out!",
-                    "You're charged 400 credits for your rescue.");
+                if (eventType.Reason != null)
+                {
+                    switch (eventType.Reason)
+                    {
+                        case HealthEventReason.FallDamage:
+                            fallDeathFeedbacks?.PlayFeedbacks();
+                            AlertEvent.Trigger(AlertReason.Died,
+                                "You fell and passed out! You're charged 400 credits for your rescue.",
+                                "Fall Emergency");
+                            break;
+                        case HealthEventReason.LavaDamage:
+                            lavaDeathFeedbacks?.PlayFeedbacks();
+                            AlertEvent.Trigger(AlertReason.Died,
+                                "You walked into lava! You're charged 400 credits for your rescue.", "Lava Emergency");
+                            break;
+                    }
+                }
+                else
+                {
+                    fallDeathFeedbacks?.PlayFeedbacks();
+                    AlertEvent.Trigger(AlertReason.Died, "You passed out!",
+                        "You're charged 400 credits for your rescue.");
+                }
 
                 StartCoroutine(TriggerRevivalFeedbacks());
             }

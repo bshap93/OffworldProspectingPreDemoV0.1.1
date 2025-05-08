@@ -29,7 +29,8 @@ namespace Domains.Player.Scripts
         public static float InitialCharacterHealth;
         public HealthBarUpdater healthBarUpdater;
 
-        public MMFeedbacks hurtFeedbacks;
+        public MMFeedbacks lavaDamageFeedbacks;
+        public MMFeedbacks fallDamageFeedbacks;
 
 
         public bool immuneToDamage;
@@ -84,7 +85,7 @@ namespace Domains.Player.Scripts
             switch (eventType.EventType)
             {
                 case HealthEventType.ConsumeHealth:
-                    ConsumeHealth(eventType.ByValue);
+                    ConsumeHealth(eventType.ByValue, eventType.Reason);
                     break;
                 case HealthEventType.RecoverHealth:
                     RecoverHealth(eventType.ByValue);
@@ -114,18 +115,37 @@ namespace Domains.Player.Scripts
             healthBarUpdater.Initialize();
         }
 
-        public void ConsumeHealth(float healthToConsume)
+        public void ConsumeHealth(float healthToConsume, HealthEventReason? reason = null)
         {
             if (immuneToDamage) return;
             if (HealthPoints - healthToConsume <= 0)
             {
                 HealthPoints = 0;
-                PlayerStatusEvent.Trigger(PlayerStatusEventType.Died);
+                PlayerStatusEvent.Trigger(PlayerStatusEventType.Died, reason);
             }
             else
             {
-                hurtFeedbacks?.PlayFeedbacks();
-                HealthPoints -= healthToConsume;
+                if (reason == null)
+                {
+                    HealthPoints -= healthToConsume;
+                }
+                else
+                {
+                    switch (reason)
+                    {
+                        case HealthEventReason.FallDamage:
+                            fallDamageFeedbacks?.PlayFeedbacks();
+                            break;
+                        case HealthEventReason.LavaDamage:
+                            lavaDamageFeedbacks?.PlayFeedbacks();
+                            break;
+                        default:
+                            UnityEngine.Debug.LogWarning($"Unknown HealthEventReason: {reason}");
+                            break;
+                    }
+
+                    HealthPoints -= healthToConsume;
+                }
             }
 
             // SavePlayerHealth();
