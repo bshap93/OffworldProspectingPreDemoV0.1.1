@@ -1,4 +1,5 @@
-﻿using Domains.Gameplay.Mining.Scripts;
+﻿using System.Collections;
+using Domains.Gameplay.Mining.Scripts;
 using Domains.Player.Events;
 using Domains.Player.Scripts;
 using Domains.SaveLoad;
@@ -98,6 +99,15 @@ namespace Domains.Input.Scripts
 
             HealthEvent.Trigger(HealthEventType.RecoverHealth, 100);
             CurrencyEvent.Trigger(CurrencyEventType.RemoveCurrency, amtToHeal);
+
+            // Add a small delay and then trigger a SetCurrentHealth to force UI refresh
+            StartCoroutine(ForceUIRefreshAfterDelay());
+        }
+
+        private IEnumerator ForceUIRefreshAfterDelay()
+        {
+            yield return new WaitForSeconds(0.1f);
+            HealthEvent.Trigger(HealthEventType.SetCurrentHealth, PlayerHealthManager.HealthPoints);
         }
     }
 }

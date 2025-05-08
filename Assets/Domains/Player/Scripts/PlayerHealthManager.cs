@@ -118,6 +118,39 @@ namespace Domains.Player.Scripts
         public void ConsumeHealth(float healthToConsume, HealthEventReason? reason = null)
         {
             if (immuneToDamage) return;
+
+            // Store the previous health
+            var previousHealth = HealthPoints;
+
+            // if (HealthPoints - healthToConsume <= 0)
+            // {
+            //     HealthPoints = 0;
+            //     PlayerStatusEvent.Trigger(PlayerStatusEventType.Died, reason);
+            // }
+            // else
+            // {
+            //     if (reason == null)
+            //     {
+            //         HealthPoints -= healthToConsume;
+            //     }
+            //     else
+            //     {
+            //         switch (reason)
+            //         {
+            //             case HealthEventReason.FallDamage:
+            //                 fallDamageFeedbacks?.PlayFeedbacks();
+            //                 break;
+            //             case HealthEventReason.LavaDamage:
+            //                 lavaDamageFeedbacks?.PlayFeedbacks();
+            //                 break;
+            //             default:
+            //                 UnityEngine.Debug.LogWarning($"Unknown HealthEventReason: {reason}");
+            //                 break;
+            //         }
+            //
+            //         HealthPoints -= healthToConsume;
+            //     }
+            // }
             if (HealthPoints - healthToConsume <= 0)
             {
                 HealthPoints = 0;
@@ -147,6 +180,11 @@ namespace Domains.Player.Scripts
                     HealthPoints -= healthToConsume;
                 }
             }
+
+            // Make sure the UI gets updated by triggering a SetCurrentHealth event if health changed
+            if (!Mathf.Approximately(previousHealth, HealthPoints))
+                HealthEvent.Trigger(HealthEventType.SetCurrentHealth, HealthPoints);
+
 
             // SavePlayerHealth();
         }
