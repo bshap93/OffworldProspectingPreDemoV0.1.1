@@ -2,50 +2,53 @@ using Domains.Scene.MainMenu;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class MainMenuButton : MonoBehaviour
+namespace Domains.UI_Global.Scripts
 {
-    [SerializeField] private MainMenuButtonType buttonType;
-
-    public bool asksForConfirmation;
-    [SerializeField] private Button button;
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private void Start()
+    public class MainMenuButton : MonoBehaviour
     {
-        if (buttonType == MainMenuButtonType.ContinueGame)
-            if (SceneLoadManager.HasGameSave() == false)
-                button.SetEnabled(false);
-    }
+        [SerializeField] private MainMenuButtonType buttonType;
 
-    public void OnClick()
-    {
-        switch (buttonType)
+        public bool asksForConfirmation;
+        [SerializeField] private Button button;
+
+        // Start is called once before the first execution of Update after the MonoBehaviour is created
+        private void Start()
         {
-            case MainMenuButtonType.NewGame:
-                Debug.Log("New Game Button Clicked");
-                if (asksForConfirmation)
-                    // Show confirmation dialog
-                    MainMenuEvent.Trigger(MainMenuEventType.NewGameAttempted);
-                else
-                    MainMenuEvent.Trigger(MainMenuEventType.NewGameTriggered);
-                break;
-            case MainMenuButtonType.ContinueGame:
-                MainMenuEvent.Trigger(MainMenuEventType.ContinueGameTriggered);
-                break;
-            case MainMenuButtonType.Settings:
-                MainMenuEvent.Trigger(MainMenuEventType.SettingsOpenTriggered);
-                break;
-            case MainMenuButtonType.QuitGame:
-                MainMenuEvent.Trigger(MainMenuEventType.QuitGameTriggered);
-                break;
+            if (buttonType == MainMenuButtonType.ContinueGame)
+                if (SceneLoadManager.HasGameSave() == false)
+                    button.SetEnabled(false);
         }
-    }
 
-    private enum MainMenuButtonType
-    {
-        NewGame,
-        ContinueGame,
-        Settings,
-        QuitGame
+        public void OnClick()
+        {
+            switch (buttonType)
+            {
+                case MainMenuButtonType.NewGame:
+                    UnityEngine.Debug.Log("New Game Button Clicked");
+                    if (asksForConfirmation)
+                        // Show confirmation dialog
+                        MainMenuEvent.Trigger(MainMenuEventType.NewGameAttempted);
+                    else
+                        MainMenuEvent.Trigger(MainMenuEventType.NewGameTriggered);
+                    break;
+                case MainMenuButtonType.ContinueGame:
+                    MainMenuEvent.Trigger(MainMenuEventType.ContinueGameTriggered);
+                    break;
+                case MainMenuButtonType.Settings:
+                    MainMenuEvent.Trigger(MainMenuEventType.SettingsOpenTriggered);
+                    break;
+                case MainMenuButtonType.QuitGame:
+                    MainMenuEvent.Trigger(MainMenuEventType.QuitGameTriggered);
+                    break;
+            }
+        }
+
+        private enum MainMenuButtonType
+        {
+            NewGame,
+            ContinueGame,
+            Settings,
+            QuitGame
+        }
     }
 }
