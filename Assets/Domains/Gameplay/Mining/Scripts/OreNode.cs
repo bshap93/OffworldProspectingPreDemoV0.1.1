@@ -1,5 +1,4 @@
 using System.Collections;
-using Domains.Items;
 using Domains.Items.Inventory;
 using Domains.Items.Scripts;
 using Domains.Player.Events;
@@ -136,9 +135,7 @@ namespace Domains.Gameplay.Mining.Scripts
         }
 
         public void ShowMineablePrompt()
-        {
-            UnityEngine.Debug.Log("Show mineable prompt");
-        }
+        { }
 
 
         private IEnumerator InitializeAfterDestructableManager()
