@@ -1,4 +1,5 @@
 ﻿using System;
+using Domains.Effects.Scripts;
 using Domains.Gameplay.Mining.Scripts;
 using Domains.Items.Scripts;
 using UnityEditor;

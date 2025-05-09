@@ -283,7 +283,6 @@ GameObject:
   - component: {fileID: 2939244022849197673}
   - component: {fileID: -6475825427056405351}
   - component: {fileID: -82563081381324768}
-  - component: {fileID: 270165380492317122}
   - component: {fileID: 2094913649629230687}
   - component: {fileID: 5230605583622077937}
   - component: {fileID: 3705255342868777126}
@@ -397,7 +396,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 380f9b65545dc3b488923b80b2b83bb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uniqueID: 
+  uniqueID: 0fced863-11ae-45db-8b18-a90cb1081ad7
   itemType: {fileID: 11400000, guid: 0586b7fb6a837854d959dc2fbfcd8ba2, type: 2}
   quantity: 1
   OnItemPicked:
@@ -407,7 +406,7 @@ MonoBehaviour:
   pickedMmFeedbacks: {fileID: 6991868795587982878}
   notPickable: 0
   interactablePrompt: {fileID: 0}
-  dissolver: {fileID: 270165380492317122}
+  dissolver: {fileID: 0}
   IsObjective: 0
 --- !u!65 &-82563081381324768
 BoxCollider:
@@ -430,79 +429,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.0000001, y: 1.0000006, z: 1.0000002}
   m_Center: {x: -0.000000097788885, y: 0.5000003, z: -0.0000003054739}
---- !u!114 &270165380492317122
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8879301513546030910}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b719996c4202324191c171b7f44a3c8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  manualControl: 0
-  updateValues: 1
-  MaterialsDissolveValue: 1
-  MaterialsInvertedDissolveValue: 0
-  curveSettings: 1
-  dissolveCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  materializeCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  duration: 2
-  initialState: 1
-  currentState: 1
-  keywordsFlags: 0
-  useAutomaticKeywords: 0
-  materials:
-  - {fileID: 2100000, guid: 0c21615ecf1a3eb45a8edb5774d2f37a, type: 2}
-  materialsInverted: []
 --- !u!114 &2094913649629230687
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -747,7 +673,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9eb18bd15cc5eb54dbddc9772eb732ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetID: 
+  targetID: b81d3d2e-c36b-4179-a6f0-3838feaa5d25
   onScanned:
     m_PersistentCalls:
       m_Calls: []

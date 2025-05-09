@@ -165,6 +165,7 @@ namespace Domains.Items.Scripts
             yield return new WaitForSeconds(dissolver.duration);
             // Destroy game object
             Destroy(gameObject);
+            dissolver.Materialize();
         }
     }
 }
