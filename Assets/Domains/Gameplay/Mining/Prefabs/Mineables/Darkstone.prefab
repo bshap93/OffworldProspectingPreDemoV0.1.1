@@ -729,7 +729,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   OreHardness: 0
-  UniqueID: 219af683-28f5-4102-a26d-2dd252f31500
+  UniqueID: 483e0ef5-8659-436a-b6a1-72373062430e
   failHitFeedbacks: {fileID: 2879248722755317898}
   failHitParticles: {fileID: 6835221663383594993, guid: 4dcc88f5d0e581d488cb4d6cf6aa94ac, type: 3}
   oreHitParticles: {fileID: 6835221663383594993, guid: 4dcc88f5d0e581d488cb4d6cf6aa94ac, type: 3}
@@ -746,11 +746,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9eb18bd15cc5eb54dbddc9772eb732ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetID: da6a6aca-ad74-4429-9c18-6b3f94c8ea98
+  targetID: 0db17e01-bfaa-4d09-90e1-ddee84aa7f88
   onScanned:
     m_PersistentCalls:
       m_Calls: []
-  targetDuration: 3
+  targetDuration: 5
 --- !u!114 &6415750033236011695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -890,13 +890,13 @@ MonoBehaviour:
   innerGlowColor: {r: 1, g: 1, b: 1, a: 1}
   innerGlowBlendMode: 0
   innerGlowVisibility: 0
-  targetFX: 0
-  targetFXTexture: {fileID: 2800000, guid: 2175e7b567174444cb43d771ef12f410, type: 3}
-  targetFXColor: {r: 1, g: 0.4304654, b: 0.38823533, a: 1}
+  targetFX: 1
+  targetFXTexture: {fileID: 2800000, guid: 165165bbca5162d4681a358d3c99d995, type: 3}
+  targetFXColor: {r: 1, g: 1, b: 1, a: 1}
   targetFXCenter: {fileID: 0}
   targetFXRotationSpeed: 0
-  targetFXInitialScale: 1
-  targetFXEndScale: 0.4
+  targetFXInitialScale: 4
+  targetFXEndScale: 1.5
   targetFXScaleToRenderBounds: 0
   targetFXUseEnclosingBounds: 0
   targetFXAlignToGround: 0
@@ -905,9 +905,9 @@ MonoBehaviour:
   targetFXGroundMaxDistance: 15
   targetFXGroundLayerMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 16384
   targetFXTransitionDuration: 0.5
-  targetFXStayDuration: 1.5
+  targetFXStayDuration: 3
   targetFXVisibility: 1
   iconFX: 0
   iconFXMesh: {fileID: 4300000, guid: 9bad58a629f5c4546bb9d148b6c43b7e, type: 3}
@@ -972,7 +972,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   minDistance: 0
-  maxDistance: 10
+  maxDistance: 4
   respectUI: 1
   volumeLayerMask:
     serializedVersion: 2

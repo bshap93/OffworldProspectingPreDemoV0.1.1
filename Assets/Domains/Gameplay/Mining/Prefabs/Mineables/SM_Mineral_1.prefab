@@ -815,7 +815,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   OreHardness: 0
-  UniqueID: 11e289b2-9a95-4355-af5e-d63c69be7c5b
+  UniqueID: 1de8a841-0869-4ae9-b4e7-b5c4d11e5028
   failHitFeedbacks: {fileID: 7234271836214855775}
   failHitParticles: {fileID: 6835221663383594993, guid: c14ae236c4c9aed41ba307d978ef96ee, type: 3}
   oreHitParticles: {fileID: 6835221663383594993, guid: c14ae236c4c9aed41ba307d978ef96ee, type: 3}
@@ -959,13 +959,13 @@ MonoBehaviour:
   innerGlowColor: {r: 1, g: 1, b: 1, a: 1}
   innerGlowBlendMode: 0
   innerGlowVisibility: 0
-  targetFX: 0
-  targetFXTexture: {fileID: 2800000, guid: 2175e7b567174444cb43d771ef12f410, type: 3}
-  targetFXColor: {r: 1, g: 0.4304654, b: 0.38823533, a: 1}
+  targetFX: 1
+  targetFXTexture: {fileID: 2800000, guid: a6b972fcecc631944853fa86f7af9b34, type: 3}
+  targetFXColor: {r: 1, g: 1, b: 1, a: 1}
   targetFXCenter: {fileID: 0}
   targetFXRotationSpeed: 0
-  targetFXInitialScale: 1
-  targetFXEndScale: 0.4
+  targetFXInitialScale: 4
+  targetFXEndScale: 1.5
   targetFXScaleToRenderBounds: 0
   targetFXUseEnclosingBounds: 0
   targetFXAlignToGround: 0
@@ -976,7 +976,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   targetFXTransitionDuration: 0.5
-  targetFXStayDuration: 1.5
+  targetFXStayDuration: 3
   targetFXVisibility: 1
   iconFX: 0
   iconFXMesh: {fileID: 4300000, guid: 9bad58a629f5c4546bb9d148b6c43b7e, type: 3}
@@ -1036,7 +1036,7 @@ MonoBehaviour:
   highlightOnHover: 1
   triggerMode: 1
   raycastCamera: {fileID: 0}
-  raycastSource: 0
+  raycastSource: 1
   raycastLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -1064,11 +1064,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9eb18bd15cc5eb54dbddc9772eb732ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetID: 2e990c81-75c6-4c93-8191-a3c6905c62f6
+  targetID: 8c8f85ad-f38c-4417-ab0a-f3e0085f0764
   onScanned:
     m_PersistentCalls:
       m_Calls: []
-  targetDuration: 3
+  targetDuration: 5
 --- !u!1 &6011545242273055068
 GameObject:
   m_ObjectHideFlags: 0
