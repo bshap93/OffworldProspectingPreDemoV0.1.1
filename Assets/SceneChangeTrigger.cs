@@ -1,5 +1,5 @@
 using System.Collections;
-using MoreMountains.Tools;
+using ThirdParty.Feel.MMTools.Core.MMSceneLoading.Scripts.Managers;
 using UnityEngine;
 
 public class SceneChangeTrigger : MonoBehaviour
