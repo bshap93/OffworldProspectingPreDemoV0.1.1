@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2486890103834068514}
   - component: {fileID: 4656143235868297820}
   - component: {fileID: 3951485799441492040}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SM_MetalNode_3b_Pieces_cell_5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -101,7 +101,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -118,7 +118,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 626788095265612345}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 0.02
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -147,7 +147,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3480225358655319098}
   - component: {fileID: 2678110990285133213}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: DecimatedIronABPieces
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -214,7 +214,7 @@ GameObject:
   m_Component:
   - component: {fileID: 30373586666662630}
   - component: {fileID: 552936943033145671}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: DisintegrateFB (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -490,7 +490,7 @@ GameObject:
   - component: {fileID: 6942400339877053648}
   - component: {fileID: 1631846904912288926}
   - component: {fileID: 1515009282268756062}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SM_MetalNode_3b_Pieces_cell_8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -578,7 +578,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -595,7 +595,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3656488808528174991}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 0.02
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -627,7 +627,7 @@ GameObject:
   - component: {fileID: 7071988435196633390}
   - component: {fileID: 6759551845405251190}
   - component: {fileID: 4492259176362191518}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SM_MetalNode_3b_Pieces_cell_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -715,7 +715,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -732,7 +732,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3710769355641364608}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 0.02
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -764,7 +764,7 @@ GameObject:
   - component: {fileID: 6212358792659264203}
   - component: {fileID: 6962227373175794362}
   - component: {fileID: 7794303640543225385}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SM_MetalNode_3b_Pieces_cell_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -852,7 +852,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -869,7 +869,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3925506098345134466}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 0.02
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -901,7 +901,7 @@ GameObject:
   - component: {fileID: 648542626088017687}
   - component: {fileID: 539648124899987270}
   - component: {fileID: 5613606532706251690}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SM_MetalNode_3b_Pieces_cell_6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -989,7 +989,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -1006,7 +1006,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4434878662767321378}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 0.02
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -1038,7 +1038,7 @@ GameObject:
   - component: {fileID: 4186428033730635816}
   - component: {fileID: 3095865428626558468}
   - component: {fileID: 1884876192803083948}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SM_MetalNode_3b_Pieces_cell_7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1126,7 +1126,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -1143,7 +1143,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6084264389185845069}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 0.02
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -1175,7 +1175,7 @@ GameObject:
   - component: {fileID: 7720124208225014775}
   - component: {fileID: 4394907648035279614}
   - component: {fileID: 952998077798873608}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SM_MetalNode_3b_Pieces_cell_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1263,7 +1263,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -1280,7 +1280,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6156174097579206532}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 0.02
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -1312,7 +1312,7 @@ GameObject:
   - component: {fileID: 6877835830858940270}
   - component: {fileID: 4037444941363536167}
   - component: {fileID: 2470299569157171446}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SM_MetalNode_3b_Pieces_cell_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1400,7 +1400,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -1417,7 +1417,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6950071884384455168}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 0.02
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}

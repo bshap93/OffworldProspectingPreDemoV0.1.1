@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4800899696735735527}
   - component: {fileID: 4010314800865693307}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: DisintegrateFB
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -282,7 +282,7 @@ GameObject:
   - component: {fileID: 4834859817285249677}
   - component: {fileID: 7665996094280644478}
   - component: {fileID: 9025106399375043034}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SM_Mineral_1_Piece_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -370,7 +370,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -387,7 +387,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 279487843766901970}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 0.02
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -419,7 +419,7 @@ GameObject:
   - component: {fileID: 7354241927717921757}
   - component: {fileID: 4947133615573173507}
   - component: {fileID: 5753394927038815602}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SM_Mineral_1_Piece_7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -507,7 +507,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -524,7 +524,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 460040112397610843}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 0.02
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -556,7 +556,7 @@ GameObject:
   - component: {fileID: 5997008688726157131}
   - component: {fileID: 2120211655607373648}
   - component: {fileID: 231244755780400676}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SM_Mineral_1_Piece_6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -644,7 +644,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -661,7 +661,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 866854192037334511}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 0.02
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -693,7 +693,7 @@ GameObject:
   - component: {fileID: 4412470088170470009}
   - component: {fileID: 3811927129858732857}
   - component: {fileID: 8017611452350805184}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SM_Mineral_1_Piece_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -781,7 +781,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -798,7 +798,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 929758562686896377}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 0.02
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -830,7 +830,7 @@ GameObject:
   - component: {fileID: 3230096301537009}
   - component: {fileID: 8609326788420886760}
   - component: {fileID: 5209745498502703835}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SM_Mineral_1_Piece_9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -918,7 +918,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -935,7 +935,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1724206589735083805}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 0.02
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -964,7 +964,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4370857847463893363}
   - component: {fileID: 6049347278879343748}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: GreenDecimatedCrystalP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1036,7 +1036,7 @@ GameObject:
   - component: {fileID: 6045642361135406252}
   - component: {fileID: 7619876737326383977}
   - component: {fileID: 4263389152178020531}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SM_Mineral_1_Piece_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1124,7 +1124,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -1141,7 +1141,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2990036733725995098}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 0.02
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -1173,7 +1173,7 @@ GameObject:
   - component: {fileID: 6292233801828104327}
   - component: {fileID: 6742021992924704147}
   - component: {fileID: 7931654429245176491}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SM_Mineral_1_Piece_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1261,7 +1261,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -1278,7 +1278,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4247866041873173221}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 0.02
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -1310,7 +1310,7 @@ GameObject:
   - component: {fileID: 5670130157452418677}
   - component: {fileID: 954161080653510346}
   - component: {fileID: 2444106346338689162}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SM_Mineral_1_Piece_8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1398,7 +1398,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -1415,7 +1415,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5242116221785336799}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 0.02
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -1447,7 +1447,7 @@ GameObject:
   - component: {fileID: 1889364110271512399}
   - component: {fileID: 6933896677426982863}
   - component: {fileID: 5722540195312073188}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SM_Mineral_1_Piece_5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1535,7 +1535,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -1552,7 +1552,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5678255796660411476}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 0.02
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6543693720488822289}
   - component: {fileID: 1543536356086400091}
   - component: {fileID: 2017236563505501774}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SM_Stone6_Pieces_9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -101,7 +101,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -150,7 +150,7 @@ GameObject:
   - component: {fileID: 3661410466823652459}
   - component: {fileID: 6188846912214016491}
   - component: {fileID: 4655264555514476108}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SM_Stone6_Pieces_13
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -238,7 +238,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -287,7 +287,7 @@ GameObject:
   - component: {fileID: 2054576816723593563}
   - component: {fileID: 5666916978687610862}
   - component: {fileID: 6552696954849613375}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SM_Stone6_Pieces_6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -375,7 +375,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -424,7 +424,7 @@ GameObject:
   - component: {fileID: 1435943481028281107}
   - component: {fileID: 3497247840484002535}
   - component: {fileID: 6111566844920932513}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SM_Stone6_Pieces_8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -512,7 +512,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -558,7 +558,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8864614249315404039}
   - component: {fileID: 4042057889848282364}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: DisintegrateFB
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -834,7 +834,7 @@ GameObject:
   - component: {fileID: 9049968335409509230}
   - component: {fileID: 1338255108484223278}
   - component: {fileID: 6038875019937668585}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SM_Stone6_Pieces_14
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -922,7 +922,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -971,7 +971,7 @@ GameObject:
   - component: {fileID: 8131674650724973539}
   - component: {fileID: 4413669261061337249}
   - component: {fileID: 6386739908317985879}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SM_Stone6_Pieces_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1059,7 +1059,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -1108,7 +1108,7 @@ GameObject:
   - component: {fileID: 4246230376634027347}
   - component: {fileID: 4655711235461033521}
   - component: {fileID: 5133011257380707864}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SM_Stone6_Pieces_7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1196,7 +1196,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -1242,7 +1242,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3523132954729950282}
   - component: {fileID: 3030787477994541351}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: DecimatedStonePieces
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1322,7 +1322,7 @@ GameObject:
   - component: {fileID: 4695024601345984573}
   - component: {fileID: 1349269445665667627}
   - component: {fileID: 1745002397877305658}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SM_Stone6_Pieces_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1410,7 +1410,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -1459,7 +1459,7 @@ GameObject:
   - component: {fileID: 5591227026586059652}
   - component: {fileID: 6313468245283936815}
   - component: {fileID: 1832548275799220660}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SM_Stone6_Pieces_5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1547,7 +1547,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -1596,7 +1596,7 @@ GameObject:
   - component: {fileID: 1898356127237397479}
   - component: {fileID: 9012545450806747443}
   - component: {fileID: 3062677974573723829}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SM_Stone6_Pieces_10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1684,7 +1684,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -1733,7 +1733,7 @@ GameObject:
   - component: {fileID: 7134444353051372534}
   - component: {fileID: 684598689906171208}
   - component: {fileID: 6856340150382714039}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SM_Stone6_Pieces_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1821,7 +1821,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -1870,7 +1870,7 @@ GameObject:
   - component: {fileID: 2550397843812890402}
   - component: {fileID: 5012945712091661547}
   - component: {fileID: 1300288808533180890}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SM_Stone6_Pieces_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1958,7 +1958,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -2007,7 +2007,7 @@ GameObject:
   - component: {fileID: 6680948278950971892}
   - component: {fileID: 7030863845472694226}
   - component: {fileID: 8160121956486423904}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SM_Stone6_Pieces_11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2095,7 +2095,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0

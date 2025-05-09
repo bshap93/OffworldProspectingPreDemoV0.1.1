@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2125225545794975814}
   - component: {fileID: 2860706005866076678}
   - component: {fileID: 5919974376489268325}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SM_MetalNode_5_Pieces_cell_7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -128,7 +128,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -147,7 +147,7 @@ GameObject:
   m_Component:
   - component: {fileID: 997396428316448856}
   - component: {fileID: 3647443023591763053}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: DisintegrateFB
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -423,7 +423,7 @@ GameObject:
   - component: {fileID: 5317263299866785269}
   - component: {fileID: 6364822551667543558}
   - component: {fileID: 6500730882298804791}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SM_MetalNode_5_Pieces_cell_5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -538,7 +538,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -560,7 +560,7 @@ GameObject:
   - component: {fileID: 344949277777645810}
   - component: {fileID: 5588818416726179333}
   - component: {fileID: 5222139108798803737}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SM_MetalNode_5_Pieces_cell_8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -675,7 +675,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -694,7 +694,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3944076697668029465}
   - component: {fileID: 9133182221741759722}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: DecimatedUraniumPieces
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -764,7 +764,7 @@ GameObject:
   - component: {fileID: 1504317961489407648}
   - component: {fileID: 1033817553834853700}
   - component: {fileID: 4797082042935072709}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SM_MetalNode_5_Pieces_cell_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -879,7 +879,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -901,7 +901,7 @@ GameObject:
   - component: {fileID: 3185549814841580680}
   - component: {fileID: 4085733578850957137}
   - component: {fileID: 1960704666548198584}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SM_MetalNode_5_Pieces_cell_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1016,7 +1016,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -1038,7 +1038,7 @@ GameObject:
   - component: {fileID: 6026581825851071449}
   - component: {fileID: 541988604004769361}
   - component: {fileID: 5519337714248829550}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SM_MetalNode_5_Pieces_cell_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1153,7 +1153,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -1175,7 +1175,7 @@ GameObject:
   - component: {fileID: 4464466360384402018}
   - component: {fileID: 1808851296064618239}
   - component: {fileID: 163977615199264345}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SM_MetalNode_5_Pieces_cell_6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1290,7 +1290,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -1312,7 +1312,7 @@ GameObject:
   - component: {fileID: 5430866113831824081}
   - component: {fileID: 3592119234442643341}
   - component: {fileID: 1701690311237360904}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SM_MetalNode_5_Pieces_cell_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1427,7 +1427,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
