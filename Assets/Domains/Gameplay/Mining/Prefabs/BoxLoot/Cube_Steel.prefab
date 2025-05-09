@@ -396,7 +396,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 380f9b65545dc3b488923b80b2b83bb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uniqueID: a7d83af2-80c9-4b6d-9d9a-d8fb27a9cbe4
+  uniqueID: 057cb8db-4240-4769-966f-e1ed1c217d38
   itemType: {fileID: 11400000, guid: 0586b7fb6a837854d959dc2fbfcd8ba2, type: 2}
   quantity: 1
   OnItemPicked:
@@ -569,7 +569,7 @@ MonoBehaviour:
   innerGlowBlendMode: 0
   innerGlowVisibility: 0
   targetFX: 1
-  targetFXTexture: {fileID: 2800000, guid: 95c4fc834cb46b249ad75077c19d5f8f, type: 3}
+  targetFXTexture: {fileID: 2800000, guid: 16abd81afced99846a1e9bbf172633d1, type: 3}
   targetFXColor: {r: 1, g: 1, b: 1, a: 1}
   targetFXCenter: {fileID: 0}
   targetFXRotationSpeed: 0
@@ -673,7 +673,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9eb18bd15cc5eb54dbddc9772eb732ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetID: 35f0d6bb-6015-4715-853f-0c26c6911e17
+  targetID: 4731265b-c71a-406b-b4c9-d85d764e694c
   onScanned:
     m_PersistentCalls:
       m_Calls: []
