@@ -1,4 +1,5 @@
 using System;
+using Domains.Debug;
 using Domains.Scene.MainMenu;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -108,6 +109,8 @@ namespace Domains.UI_Global.Scripts
                     {
                         _clickHandled = true;
                         _clickTime = Time.time;
+
+                        DataReset.ClearAllSaveData();
 
                         if (useEventSystem)
                             MainMenuEvent.Trigger(MainMenuEventType.NewGameTriggered);
