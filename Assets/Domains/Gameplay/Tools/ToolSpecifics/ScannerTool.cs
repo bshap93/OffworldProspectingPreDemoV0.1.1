@@ -21,7 +21,7 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
 
         [SerializeField] private LayerMask playerMask;
         [SerializeField] private float maxToolRange = 5f;
-        [SerializeField] private Camera mainCamera;
+        [SerializeField] private UnityEngine.Camera mainCamera;
         private RaycastHit lastHit;
 
         public ToolType ToolType => toolType;

@@ -3,6 +3,7 @@ using Domains.Gameplay.Equipment.Scripts;
 using Domains.Scripts_that_Need_Sorting;
 using HighlightPlus;
 using MoreMountains.Tools;
+using Plugins.Kronnect.HighlightPlus.Scripts;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -14,13 +15,13 @@ namespace Domains.Effects.Scripts
 
         public UnityEvent onScanned;
         [SerializeField] private float targetDuration = 3f;
+        private HighlightTrigger _myMyHighlightTrigger;
         private HighlightEffect highlightEffect;
-        private HighlightTrigger highlightTrigger;
 
         private void Awake()
         {
             highlightEffect = GetComponent<HighlightEffect>();
-            highlightTrigger = GetComponent<HighlightTrigger>();
+            _myMyHighlightTrigger = GetComponent<HighlightTrigger>();
         }
 
         private void Start()
@@ -31,7 +32,7 @@ namespace Domains.Effects.Scripts
                 return;
             }
 
-            if (highlightTrigger == null)
+            if (_myMyHighlightTrigger == null)
                 UnityEngine.Debug.LogError("HighlightTrigger component not found on this GameObject.");
 
 

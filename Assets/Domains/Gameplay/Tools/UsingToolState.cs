@@ -10,7 +10,7 @@ namespace Domains.Gameplay.Tools
 {
     public class UsingToolState : CharacterState
     {
-        public Camera mainCamera;
+        public UnityEngine.Camera mainCamera;
 
         [FormerlySerializedAs("textureDetector")] [SerializeField]
         private TerrainLayerDetector terrainLayerDetector;

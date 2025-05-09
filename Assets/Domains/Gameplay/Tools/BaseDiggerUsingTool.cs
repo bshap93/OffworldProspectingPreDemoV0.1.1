@@ -31,7 +31,7 @@ namespace Domains.Gameplay.Tools
         public float stalagmiteHeight = 100f;
 
         public BrushType brush = BrushType.Stalagmite;
-        public Camera mainCamera;
+        public UnityEngine.Camera mainCamera;
 
         [Header("Feedbacks")] [Tooltip("Feedbacks to play when the tool cannot interact with an object")]
         public MMFeedbacks cannotInteractFeedbacks;

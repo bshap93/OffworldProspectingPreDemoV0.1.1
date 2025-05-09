@@ -206,7 +206,8 @@ namespace Domains.Gameplay.Mining.Scripts
                                       playerInteraction.diggableLayers[textureIndex];
 
                 // Perform a raycast to detect non-terrain objects (e.g., OreNodes)
-                if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward,
+                if (Physics.Raycast(UnityEngine.Camera.main.transform.position,
+                        UnityEngine.Camera.main.transform.forward,
                         out var hit, 5f, ~playerInteraction.playerLayerMask))
                 {
                     var canUseOnObject = tool.CanInteractWithObject(hit.collider.gameObject);
