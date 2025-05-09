@@ -1,6 +1,5 @@
 using Domains.Gameplay.Equipment.Events;
 using Domains.Gameplay.Equipment.Scripts;
-using Domains.Items.Scripts;
 using Domains.Scripts_that_Need_Sorting;
 using HighlightPlus;
 using MoreMountains.Tools;
@@ -17,7 +16,6 @@ namespace Domains.Effects.Scripts
         [SerializeField] private float targetDuration = 3f;
         private HighlightEffect highlightEffect;
         private HighlightTrigger highlightTrigger;
-        private ItemInfoDisplay itemInfoDisplay;
 
         private void Awake()
         {
@@ -36,8 +34,6 @@ namespace Domains.Effects.Scripts
             if (highlightTrigger == null)
                 UnityEngine.Debug.LogError("HighlightTrigger component not found on this GameObject.");
 
-            if (itemInfoDisplay == null)
-                UnityEngine.Debug.LogError("ItemInfoDisplay component not found on this GameObject.");
 
             ConfigureForTerrainObjects();
 
