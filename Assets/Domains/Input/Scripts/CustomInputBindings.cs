@@ -13,7 +13,6 @@ namespace Domains.Input.Scripts
         private const KeyCode DeletionKey = KeyCode.Alpha0;
         private const KeyCode SaveDebugKey = KeyCode.F5;
         private const KeyCode PauseKey = KeyCode.Escape;
-        private const KeyCode QuestJournalKey = KeyCode.J;
         private const int MineMouseButton = 0;
         private const int GetMoreInfoPressed = 1;
 
