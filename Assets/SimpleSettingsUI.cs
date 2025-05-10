@@ -18,6 +18,7 @@ public class SimpleSettingsUI : MonoBehaviour
     [SerializeField] private HorizontalSelector windowModeSelector;
     [SerializeField] private HorizontalSelector antiAliasingSelector;
     [SerializeField] private HorizontalSelector shadowQualitySelector;
+    [SerializeField] private HorizontalSelector invertYAxisSelector;
 
     private void Start()
     {
@@ -36,6 +37,8 @@ public class SimpleSettingsUI : MonoBehaviour
             Debug.LogError("Required manager references are missing!");
             return;
         }
+        
+        
 
         // Setup UI elements
         SetupQualityDropdown();
