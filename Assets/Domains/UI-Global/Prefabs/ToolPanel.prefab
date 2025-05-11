@@ -287,8 +287,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scaleAnimation: {fileID: 3727115840369359109}
   sprRing: {fileID: 5935926051667605263}
-  unSelectedColor: {r: 0.1882353, g: 0.8, b: 0.6784314, a: 1}
-  selectedColor: {r: 1, g: 0.4304654, b: 0.38823533, a: 1}
+  unSelectedColor: {r: 0.6792453, g: 0.6792453, b: 0.6792453, a: 1}
+  selectedColor: {r: 0.1882353, g: 0.8, b: 0.6784314, a: 1}
 --- !u!1 &696629928638276234
 GameObject:
   m_ObjectHideFlags: 0
@@ -986,9 +986,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 098b4d124c2235d4dbae490260bbedb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickaxeCircle: {fileID: 0}
-  scannerCircle: {fileID: 0}
-  shovelCircle: {fileID: 0}
   pickaxeItem: {fileID: 8359322572079365455}
   scannerItem: {fileID: 4562415455975826000}
   shovelItem: {fileID: 6259711474494822740}
@@ -1501,8 +1498,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scaleAnimation: {fileID: 302198355017987103}
   sprRing: {fileID: 1407141594648418479}
-  unSelectedColor: {r: 0.1882353, g: 0.8, b: 0.6784314, a: 1}
-  selectedColor: {r: 1, g: 0.4304654, b: 0.38823533, a: 1}
+  unSelectedColor: {r: 0.6792453, g: 0.6792453, b: 0.6792453, a: 1}
+  selectedColor: {r: 0.1882353, g: 0.8, b: 0.6784314, a: 1}
 --- !u!1 &5209929894988057898
 GameObject:
   m_ObjectHideFlags: 0
@@ -2434,9 +2431,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scaleAnimation: {fileID: 9182634581230139871}
-  sprRing: {fileID: 0}
-  unSelectedColor: {r: 0.1882353, g: 0.8, b: 0.6784314, a: 1}
-  selectedColor: {r: 1, g: 0.4304654, b: 0.38823533, a: 1}
+  sprRing: {fileID: 2525526899117921340}
+  unSelectedColor: {r: 0.6792453, g: 0.6792453, b: 0.6792453, a: 1}
+  selectedColor: {r: 0.1882353, g: 0.8, b: 0.6784314, a: 1}
 --- !u!1 &8586047145035511151
 GameObject:
   m_ObjectHideFlags: 0
