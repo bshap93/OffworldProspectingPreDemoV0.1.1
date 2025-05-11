@@ -8,7 +8,7 @@ namespace Domains.Input.Scripts
     {
         [SerializeField] private SwitchManager invertYAxisToggle;
 
-        private void OnEnable()
+        private void Awake()
         {
             invertYAxisToggle.isOn = InputSettings.Instance.InvertYAxis;
         }
