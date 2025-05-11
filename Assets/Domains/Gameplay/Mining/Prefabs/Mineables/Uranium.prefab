@@ -913,7 +913,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   OreHardness: 0
-  UniqueID: 6db3886e-2299-4165-bd24-50cfbf382e3e
+  UniqueID: 9a11a085-c506-4cad-a938-74a51bd2046a
   failHitFeedbacks: {fileID: 5939243206290031498}
   failHitParticles: {fileID: 6835221663383594993, guid: b4fdebf16c953b245b30edeebb4ed72c, type: 3}
   oreHitParticles: {fileID: 6835221663383594993, guid: b4fdebf16c953b245b30edeebb4ed72c, type: 3}
@@ -1079,7 +1079,7 @@ MonoBehaviour:
   targetFXScaleToRenderBounds: 0
   targetFXUseEnclosingBounds: 0
   targetFXAlignToGround: 0
-  targetFXOffset: {x: 0, y: 1, z: 0}
+  targetFXOffset: {x: 0, y: 0.25, z: 0}
   targetFXFadePower: 32
   targetFXGroundMaxDistance: 15
   targetFXGroundLayerMask:
@@ -1156,6 +1156,9 @@ MonoBehaviour:
   volumeLayerMask:
     serializedVersion: 2
     m_Bits: 0
+  terrainOcclusionMask:
+    serializedVersion: 2
+    m_Bits: 0
   selectOnClick: 0
   selectedProfile: {fileID: 0}
   selectedAndHighlightedProfile: {fileID: 0}
@@ -1174,7 +1177,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9eb18bd15cc5eb54dbddc9772eb732ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetID: a6a0fa3c-34ed-462f-ad02-cdeed6f4c9dc
+  targetID: 276b9f97-abb6-43d4-8768-a2423f9d40e5
   onScanned:
     m_PersistentCalls:
       m_Calls: []

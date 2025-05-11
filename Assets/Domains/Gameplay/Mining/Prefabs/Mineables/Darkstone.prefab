@@ -900,7 +900,7 @@ MonoBehaviour:
   targetFXScaleToRenderBounds: 0
   targetFXUseEnclosingBounds: 0
   targetFXAlignToGround: 0
-  targetFXOffset: {x: 0, y: 1, z: 0}
+  targetFXOffset: {x: 0, y: 0.25, z: 0}
   targetFXFadePower: 32
   targetFXGroundMaxDistance: 15
   targetFXGroundLayerMask:
@@ -975,6 +975,9 @@ MonoBehaviour:
   maxDistance: 4
   respectUI: 1
   volumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  terrainOcclusionMask:
     serializedVersion: 2
     m_Bits: 0
   selectOnClick: 0

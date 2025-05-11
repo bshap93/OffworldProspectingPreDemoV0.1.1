@@ -128,7 +128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 380f9b65545dc3b488923b80b2b83bb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uniqueID: 2551ca27-6227-4c93-b967-254b7e7f5f65
+  uniqueID: c31a494a-66bd-4a76-b1ff-80dc3cda2df0
   itemType: {fileID: 11400000, guid: dad5d6fc21478914290421293e4d0469, type: 2}
   quantity: 1
   OnItemPicked:
@@ -310,7 +310,7 @@ MonoBehaviour:
   targetFXScaleToRenderBounds: 0
   targetFXUseEnclosingBounds: 0
   targetFXAlignToGround: 0
-  targetFXOffset: {x: 0, y: 1, z: 0}
+  targetFXOffset: {x: 0, y: 0.25, z: 0}
   targetFXFadePower: 32
   targetFXGroundMaxDistance: 15
   targetFXGroundLayerMask:
@@ -387,6 +387,9 @@ MonoBehaviour:
   volumeLayerMask:
     serializedVersion: 2
     m_Bits: 0
+  terrainOcclusionMask:
+    serializedVersion: 2
+    m_Bits: 0
   selectOnClick: 0
   selectedProfile: {fileID: 0}
   selectedAndHighlightedProfile: {fileID: 0}
@@ -405,7 +408,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9eb18bd15cc5eb54dbddc9772eb732ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetID: 4ed3461b-5a73-425c-9f4d-059a7f144098
+  targetID: 40b84c9f-b635-4058-b5be-ebe05c8e0ce3
   onScanned:
     m_PersistentCalls:
       m_Calls: []
