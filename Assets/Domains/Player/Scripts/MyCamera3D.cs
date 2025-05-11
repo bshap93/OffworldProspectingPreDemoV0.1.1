@@ -1,4 +1,5 @@
 using DG.Tweening;
+using Domains.Input.Scripts;
 using Domains.UI_Global.Events;
 using Lightbug.CharacterControllerPro.Core;
 using Lightbug.CharacterControllerPro.Implementation;
@@ -157,6 +158,9 @@ namespace Domains.Player.Scripts
             }
 
             var cameraAxes = inputHandlerSettings.InputHandler.GetVector2(axes);
+
+            // Add this block to apply Y-axis inversion
+            if (InputSettings.Instance.InvertYAxis) cameraAxes.y = -cameraAxes.y;
 
             if (updatePitch)
                 deltaPitch = -cameraAxes.y;
