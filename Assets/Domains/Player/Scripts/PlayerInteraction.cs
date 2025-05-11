@@ -41,6 +41,8 @@ namespace Domains.Player.Scripts
 
         private float _positionEventTimer;
 
+        private MyRewiredInputManager inputManager;
+
         private QuestJournal questJournal;
 
         private void Start()
@@ -60,6 +62,9 @@ namespace Domains.Player.Scripts
                 UnityEngine.Debug.LogWarning("QuestJournal not found in the scene. Cannot track quest information.");
 
             if (reticleController == null) reticleController = FindFirstObjectByType<ReticleController>();
+
+            // Get the input manager
+            inputManager = MyRewiredInputManager.Instance;
         }
 
         private void Update()
@@ -78,7 +83,7 @@ namespace Domains.Player.Scripts
                 PlayerPositionEvent.Trigger(PlayerPositionEventType.ReportDepth, transform.position);
             }
 
-            if (CustomInputBindings.IsInteractPressed()) // Press E to interact
+            if (inputManager.IsInteractPressed()) // Press E to interact
                 PerformInteraction();
 
             // if (CustomInputBindings.IsQuestJournalKeyPressed())
@@ -86,9 +91,9 @@ namespace Domains.Player.Scripts
             //     questJournal.ToggleJournalUI();
             // }
 
-            if (CustomInputBindings.IsPersistanceKeyPressed())
+            if (inputManager.IsPersistanceKeyPressed())
                 _diggerMasterRuntime.PersistAll();
-            else if (CustomInputBindings.IsDeletionKeyPressed()) _diggerMasterRuntime.DeleteAllPersistedData();
+            else if (inputManager.IsDeletionKeyPressed()) _diggerMasterRuntime.DeleteAllPersistedData();
         }
 
         private void OnDrawGizmos()

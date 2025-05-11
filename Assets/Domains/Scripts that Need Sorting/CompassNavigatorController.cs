@@ -11,6 +11,8 @@ namespace Domains.Scripts_that_Need_Sorting
         [SerializeField] private List<CompassProPOI> compassProPOIs = new();
         private CompassPro _compassPro;
 
+        private MyRewiredInputManager _inputManager;
+
         private bool hasUsedMoreInfo;
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -28,12 +30,17 @@ namespace Domains.Scripts_that_Need_Sorting
             {
                 UnityEngine.Debug.LogWarning("CompassPro component not found.");
             }
+
+            _inputManager = MyRewiredInputManager.Instance;
+
+            if (_inputManager == null)
+                UnityEngine.Debug.LogError("CompassNavigatorController: No MyRewiredInputManager found in the scene.");
         }
 
         // Update is called once per frame
         private void Update()
         {
-            if (CustomInputBindings.IsGetMoreInfoPressed())
+            if (_inputManager.IsGetMoreInfoPressed())
             {
                 if (_compassPro != null)
                 {

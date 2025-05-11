@@ -32,6 +32,8 @@ namespace Domains.Player.Scripts
 
         // Digger parameters
         protected DiggerMasterRuntime _diggerMasterRuntime;
+
+        private MyRewiredInputManager _inputManager;
         protected PlayerInteraction playerInteraction;
 
         protected override void Awake()
@@ -41,6 +43,9 @@ namespace Domains.Player.Scripts
             // Find references
             _diggerMasterRuntime = FindFirstObjectByType<DiggerMasterRuntime>();
             playerInteraction = FindFirstObjectByType<PlayerInteraction>();
+            _inputManager = MyRewiredInputManager.Instance;
+            if (_diggerMasterRuntime == null)
+                UnityEngine.Debug.LogError("DiggerMasterRuntime not found in the scene.");
         }
 
         public override bool CheckEnterTransition(CharacterState fromState)
@@ -56,7 +61,7 @@ namespace Domains.Player.Scripts
         public override void UpdateBehaviour(float dt)
         {
             // Check for mining input
-            if (CustomInputBindings.IsMineMouseButtonPressed())
+            if (_inputManager.IsMineMouseButtonPressed())
             {
                 // Perform the actual mining - call the concrete implementation
                 PerformMining();
@@ -125,7 +130,7 @@ namespace Domains.Player.Scripts
                 CharacterStateController.EnqueueTransition<MyNormalMovement>();
             }
 
-            if (!CustomInputBindings.IsMineMouseButtonPressed())
+            if (!_inputManager.IsMineMouseButtonPressed())
                 CharacterStateController.EnqueueTransition<MyNormalMovement>();
         }
     }

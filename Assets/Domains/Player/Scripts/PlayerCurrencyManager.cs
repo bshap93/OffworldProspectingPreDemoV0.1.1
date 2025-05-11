@@ -28,6 +28,8 @@ namespace Domains.Player.Scripts
 
         public CurrencyBarUpdater currencyBarUpdater;
 
+        private MyRewiredInputManager _inputManager;
+
         private string _savePath;
         private CharacterStatProfile characterStatProfile;
 
@@ -46,6 +48,11 @@ namespace Domains.Player.Scripts
                 InitialCurrencyAmount = characterStatProfile.InitialCurrency;
             else
                 UnityEngine.Debug.LogError("CharacterStatProfile not set in PlayerCurrencyManager");
+
+            _inputManager = MyRewiredInputManager.Instance;
+
+            if (_inputManager == null)
+                UnityEngine.Debug.LogError("PlayerCurrencyManager: No MyRewiredInputManager found in scene!");
         }
 
         private void Start()
@@ -63,7 +70,7 @@ namespace Domains.Player.Scripts
 
         private void Update()
         {
-            if (CustomInputBindings.IsSaveDebugKeyPressed()) // Press F5 to force save
+            if (_inputManager.IsSaveDebugKeyPressed()) // Press F5 to force save
             {
                 SavePlayerCurrency();
                 UnityEngine.Debug.Log("Player currency saved");

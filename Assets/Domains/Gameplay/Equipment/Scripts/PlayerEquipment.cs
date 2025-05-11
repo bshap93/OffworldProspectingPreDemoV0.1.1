@@ -33,6 +33,8 @@ namespace Domains.Gameplay.Equipment.Scripts
         [SerializeField] private float toolSwitchCooldown = 0.3f;
 
         public IToolAction CurrentToolComponent;
+
+        private MyRewiredInputManager inputManager;
         private float lastToolSwitchTime = -1f;
 
         private int numTools;
@@ -53,6 +55,11 @@ namespace Domains.Gameplay.Equipment.Scripts
             }
 
             EquipmentEvent.Trigger(currentToolType);
+
+            inputManager = MyRewiredInputManager.Instance;
+
+            if (inputManager == null)
+                UnityEngine.Debug.LogError("MyRewiredInputManager not found in the scene.");
         }
 
         private void Start()
@@ -64,10 +71,10 @@ namespace Domains.Gameplay.Equipment.Scripts
 
         private void Update()
         {
-            if (CustomInputBindings.IsChangingWeapons() && Time.time - lastToolSwitchTime > toolSwitchCooldown)
+            if (inputManager.IsChangingWeapons() && Time.time - lastToolSwitchTime > toolSwitchCooldown)
             {
                 if (PauseManager.Instance.IsPaused()) return;
-                var direction = CustomInputBindings.GetWeaponChangeDirection();
+                var direction = inputManager.GetWeaponChangeDirection();
                 currentToolIndex = (currentToolIndex + direction + numTools) % numTools;
                 SwitchTool(currentToolIndex);
                 lastToolSwitchTime = Time.time;

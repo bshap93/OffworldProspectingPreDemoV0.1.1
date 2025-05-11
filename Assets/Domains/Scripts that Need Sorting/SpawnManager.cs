@@ -16,6 +16,8 @@ namespace Domains.Scripts_that_Need_Sorting
         // In SpawnManager.cs
         [SerializeField] private PlayerDeathManager playerDeathManager; // Reference to death manager
         private readonly float requiredHoldDuration = 1f; // Change to desired duration in seconds
+
+        private MyRewiredInputManager _inputManager;
         private TeleportPlayer _player01TeleportPlayer;
         private CharacterActor characterActor;
 
@@ -35,12 +37,16 @@ namespace Domains.Scripts_that_Need_Sorting
 
             if (_player01TeleportPlayer == null)
                 UnityEngine.Debug.LogError("PositionAndRotationModifier component not found on SpawnManager.");
+
+            _inputManager = MyRewiredInputManager.Instance;
+            if (_inputManager == null)
+                UnityEngine.Debug.LogError("MyRewiredInputManager not found in the scene.");
         }
 
 
         private void Update()
         {
-            if (CustomInputBindings.IsResetHeld())
+            if (_inputManager.IsResetHeld())
             {
                 eKeyHoldTime += Time.deltaTime;
 

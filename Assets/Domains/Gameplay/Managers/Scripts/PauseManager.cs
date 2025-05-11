@@ -14,6 +14,7 @@ namespace Domains.Gameplay.Managers.Scripts
         [SerializeField] private AudioSource uiButtonAudioSource;
 
         private List<AudioSource> _audioSources = new();
+        private MyRewiredInputManager _inputManager;
 
         private bool _isPaused;
 
@@ -22,10 +23,15 @@ namespace Domains.Gameplay.Managers.Scripts
             Instance = this;
         }
 
+        private void Start()
+        {
+            _inputManager = MyRewiredInputManager.Instance;
+        }
+
 
         private void Update()
         {
-            if (CustomInputBindings.IsPausePressed() && !PlayerUIManager.Instance.uiIsOpen)
+            if (_inputManager.IsPausePressed() && !PlayerUIManager.Instance.uiIsOpen)
             {
                 _isPaused = !_isPaused;
                 Time.timeScale = _isPaused ? 0 : 1;
@@ -46,7 +52,7 @@ namespace Domains.Gameplay.Managers.Scripts
 
                 SceneEvent.Trigger(SceneEventType.TogglePauseScene);
             }
-            else if (CustomInputBindings.IsPausePressed())
+            else if (_inputManager.IsPausePressed())
             {
                 UIEvent.Trigger(UIEventType.CloseVendorConsole);
                 UIEvent.Trigger(UIEventType.CloseFuelConsole);

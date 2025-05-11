@@ -37,8 +37,7 @@ public class SimpleSettingsUI : MonoBehaviour
             Debug.LogError("Required manager references are missing!");
             return;
         }
-        
-        
+
 
         // Setup UI elements
         SetupQualityDropdown();
@@ -272,7 +271,7 @@ public class SimpleSettingsUI : MonoBehaviour
     public void CloseSettingsMenu()
     {
         // Find and use your existing settings panel close method
-        var settingsPanel = FindObjectOfType<SettingsPanelsMainMenu>();
+        var settingsPanel = FindFirstObjectByType<SettingsPanelsMainMenu>();
         if (settingsPanel != null) settingsPanel.TriggerClose();
     }
 }

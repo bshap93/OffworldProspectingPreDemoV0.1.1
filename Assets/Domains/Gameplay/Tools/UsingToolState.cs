@@ -10,7 +10,7 @@ namespace Domains.Gameplay.Tools
 {
     public class UsingToolState : CharacterState
     {
-        public UnityEngine.Camera mainCamera;
+        public Camera mainCamera;
 
         [FormerlySerializedAs("textureDetector")] [SerializeField]
         private TerrainLayerDetector terrainLayerDetector;
@@ -18,11 +18,21 @@ namespace Domains.Gameplay.Tools
         [SerializeField] private LayerMask playerMask;
         [SerializeField] private float maxToolRange = 5f;
 
+        private MyRewiredInputManager _inputManager;
+
+        protected override void Awake()
+        {
+            base.Awake();
+            _inputManager = MyRewiredInputManager.Instance;
+            if (_inputManager == null)
+                UnityEngine.Debug.LogError("MyRewiredInputManager not found in the scene.");
+        }
+
 
         public override void UpdateBehaviour(float dt)
         {
             // Check for tool usage input
-            if (CustomInputBindings.IsMineMouseButtonPressed())
+            if (_inputManager.IsMineMouseButtonPressed())
             {
                 var tool = PlayerEquipment.Instance.CurrentToolComponent;
                 if (tool == null) return;

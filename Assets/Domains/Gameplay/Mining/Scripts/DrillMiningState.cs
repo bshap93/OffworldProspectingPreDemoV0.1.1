@@ -33,6 +33,8 @@ namespace Domains.Gameplay.Mining.Scripts
         public bool editAsynchronously = true;
         private DiggerMasterRuntime _diggerMasterRuntime;
 
+        private MyRewiredInputManager _inputManager;
+
 
         protected override void Start()
         {
@@ -45,6 +47,11 @@ namespace Domains.Gameplay.Mining.Scripts
 
                 enabled = false;
             }
+
+            _inputManager = MyRewiredInputManager.Instance;
+
+            if (_inputManager == null)
+                UnityEngine.Debug.LogError("MyRewiredInputManager not found in the scene.");
         }
 
         // Write your transitions here
@@ -92,7 +99,7 @@ namespace Domains.Gameplay.Mining.Scripts
                 CharacterStateController.EnqueueTransition<MyNormalMovement>();
             }
 
-            if (!CustomInputBindings.IsMineMouseButtonPressed())
+            if (!_inputManager.IsMineMouseButtonPressed())
             {
                 UnityEngine.Debug.Log("Mining State will be exited");
                 CharacterStateController.EnqueueTransition<MyNormalMovement>();

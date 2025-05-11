@@ -37,6 +37,7 @@ namespace Domains.Items.Scripts
         private Dissolver dissolver;
 
         public bool IsObjective;
+        private MyRewiredInputManager _inputManager;
         private bool _interactionComplete;
 #pragma warning disable CS0414 // Field is assigned but its value is never used
         private bool _isBeingDestroyed;
@@ -65,6 +66,11 @@ namespace Domains.Items.Scripts
             if (_targetInventory == null) UnityEngine.Debug.LogWarning("No inventory found in scene");
 
             if (pickedMmFeedbacks != null) pickedMmFeedbacks.Initialization(gameObject);
+
+            // Initialize the input manager
+            _inputManager = MyRewiredInputManager.Instance;
+            if (_inputManager == null)
+                UnityEngine.Debug.LogError("ItemPicker: No MyRewiredInputManager found in the scene.");
         }
 
 
@@ -89,7 +95,7 @@ namespace Domains.Items.Scripts
         public void Interact()
         {
             // If interaction key is still held
-            if (CustomInputBindings.IsInteractPressed()) PickItem();
+            if (_inputManager.IsInteractPressed()) PickItem();
         }
 
         public void ShowInteractablePrompt()

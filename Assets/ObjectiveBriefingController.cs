@@ -32,16 +32,22 @@ public class ObjectiveBriefingController : MonoBehaviour, MMEventListener<UIEven
 
     private BriefingData currentBriefing;
 
+    private MyRewiredInputManager inputManager;
+
     private void Start()
     {
         canvasGroup = GetComponent<CanvasGroup>();
         if (canvasGroup == null)
             Debug.LogError("ObjectiveBriefingController: No CanvasGroup found on this GameObject.");
+
+        inputManager = MyRewiredInputManager.Instance;
+        if (inputManager == null)
+            Debug.LogError("ObjectiveBriefingController: No MyRewiredInputManager found in the scene.");
     }
 
     private void Update()
     {
-        if (CustomInputBindings.IsPausePressed())
+        if (inputManager.IsPausePressed())
         {
             HideObjectiveBriefing();
             onCloseButtonClicked?.Invoke();

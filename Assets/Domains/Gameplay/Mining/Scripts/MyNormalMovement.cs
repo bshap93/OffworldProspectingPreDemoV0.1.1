@@ -75,6 +75,8 @@ namespace Domains.Gameplay.Mining.Scripts
         [SerializeField]
         private float jetPackActivationDelay = 0.3f; // Time in seconds to hold before jetpack activates
 
+        private MyRewiredInputManager _inputManager;
+
         protected PlanarMovementParameters.PlanarMovementProperties currentMotion;
         protected float currentPlanarSpeedLimit;
 
@@ -133,6 +135,10 @@ namespace Domains.Gameplay.Mining.Scripts
                 playerInteraction = FindFirstObjectByType<PlayerInteraction>();
 
             jetPackBehavior = GetComponent<JetPackBehavior>();
+
+            _inputManager = MyRewiredInputManager.Instance;
+            if (_inputManager == null)
+                UnityEngine.Debug.LogError("MyRewiredInputManager not found in the scene.");
         }
 
         protected override void Start()
@@ -190,7 +196,7 @@ namespace Domains.Gameplay.Mining.Scripts
 
         public override void CheckExitTransition()
         {
-            if (CustomInputBindings.IsMineMouseButtonPressed() && !PlayerFuelManager.IsPlayerOutOfFuel())
+            if (_inputManager.IsMineMouseButtonPressed() && !PlayerFuelManager.IsPlayerOutOfFuel())
             {
                 if (playerInteraction == null)
                     return;
@@ -206,8 +212,8 @@ namespace Domains.Gameplay.Mining.Scripts
                                       playerInteraction.diggableLayers[textureIndex];
 
                 // Perform a raycast to detect non-terrain objects (e.g., OreNodes)
-                if (Physics.Raycast(UnityEngine.Camera.main.transform.position,
-                        UnityEngine.Camera.main.transform.forward,
+                if (Physics.Raycast(Camera.main.transform.position,
+                        Camera.main.transform.forward,
                         out var hit, 5f, ~playerInteraction.playerLayerMask))
                 {
                     var canUseOnObject = tool.CanInteractWithObject(hit.collider.gameObject);
