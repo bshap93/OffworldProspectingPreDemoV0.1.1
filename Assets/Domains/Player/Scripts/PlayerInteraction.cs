@@ -65,6 +65,9 @@ namespace Domains.Player.Scripts
 
             // Get the input manager
             inputManager = MyRewiredInputManager.Instance;
+            
+            if (inputManager == null)
+                UnityEngine.Debug.LogError("MyRewiredInputManager not found in the scene.");
         }
 
         private void Update()
