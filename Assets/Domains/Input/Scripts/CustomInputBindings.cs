@@ -18,20 +18,20 @@ namespace Domains.Input.Scripts
 
 
         // Methods to check input (abstraction layer)
-        public static bool IsInteractPressed()
-        {
-            return UnityEngine.Input.GetKeyDown(InteractKey);
-        }
-
-        public static bool IsGetMoreInfoPressed()
-        {
-            return UnityEngine.Input.GetMouseButton(GetMoreInfoPressed);
-        }
-
-        public static bool IsPausePressed()
-        {
-            return UnityEngine.Input.GetKeyDown(PauseKey);
-        }
+        // public static bool IsInteractPressed()
+        // {
+        //     return UnityEngine.Input.GetKeyDown(InteractKey);
+        // }
+        //
+        // public static bool IsGetMoreInfoPressed()
+        // {
+        //     return UnityEngine.Input.GetMouseButton(GetMoreInfoPressed);
+        // }
+        //
+        // public static bool IsPausePressed()
+        // {
+        //     return UnityEngine.Input.GetKeyDown(PauseKey);
+        // }
 
         public static bool IsSaveDebugKeyPressed()
         {
@@ -48,7 +48,6 @@ namespace Domains.Input.Scripts
         {
             return UnityEngine.Input.GetKeyDown(PersistanceKey);
         }
-
 
 
         public static bool IsDeletionKeyPressed()
@@ -71,7 +70,5 @@ namespace Domains.Input.Scripts
         {
             return UnityEngine.Input.mouseScrollDelta.y > 0 ? 1 : -1;
         }
-
-
     }
 }
