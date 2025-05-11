@@ -26,8 +26,7 @@ namespace Domains.Input.Scripts
                 case "Interact":
                     return ReInput.players.GetPlayer(playerId).GetButton("Interact");
                 case "Jet Pack":
-                    return false;
-                // return ReInput.players.GetPlayer(playerId).GetButton("JetPack");
+                    return ReInput.players.GetPlayer(playerId).GetButton("Jump");
                 case "Dash":
                     return false;
                 // return ReInput.players.GetPlayer(playerId).GetButton("Dash");

@@ -488,41 +488,28 @@ namespace Domains.Gameplay.Mining.Scripts
 
         protected virtual void ProcessJetPack(float dt)
         {
-            // Track how long the jetpack button has been held
-            if (CharacterActions.jetPack.value)
+            // Check directly if jetpack should be activated
+            if (jetPackBehavior.ShouldActivateJetpack())
             {
-                jetPackBehavior.UpdateHoldTime(dt);
-
-                // Only activate jetpack if button has been held long enough
-                if (jetPackBehavior.GetHoldTime() >= jetPackActivationDelay)
+                if (PlayerFuelManager.IsPlayerOutOfFuel())
                 {
-                    if (PlayerFuelManager.IsPlayerOutOfFuel())
-                    {
-                        PlayerStatusEvent.Trigger(PlayerStatusEventType.OutOfFuel);
-                        return;
-                    }
-
-                    CharacterActor.VerticalVelocity = jetPackBehavior.ApplyJetpackLift(
-                        CharacterActor.VerticalVelocity,
-                        CharacterActor.Up,
-                        targetHeight,
-                        jetPackDuration,
-                        jetPackSpeedMultiplier
-                    );
-
-                    jetPackBehavior.TryTriggerJetPackEffect();
-                    jetPackFeedbacks?.PlayFeedbacks();
-
-                    // jetPackBehavior.JetPackBehaviorMethod();
-                    jetPackFeedbacks?.PlayFeedbacks();
+                    PlayerStatusEvent.Trigger(PlayerStatusEventType.OutOfFuel);
+                    return;
                 }
-            }
-            else
-            {
-                // Reset the hold timer when button is released
-                jetPackBehavior.ResetHoldTime();
+
+                CharacterActor.VerticalVelocity = jetPackBehavior.ApplyJetpackLift(
+                    CharacterActor.VerticalVelocity,
+                    CharacterActor.Up,
+                    targetHeight,
+                    jetPackDuration,
+                    jetPackSpeedMultiplier
+                );
+
+                jetPackBehavior.TryTriggerJetPackEffect();
+                jetPackFeedbacks?.PlayFeedbacks();
             }
 
+            // No need to call ResetHoldTime here as that's handled in JetPackBehavior.Update
             CharacterActor.SetYaw(CharacterActor.PlanarVelocity);
         }
 

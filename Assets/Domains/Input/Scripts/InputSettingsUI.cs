@@ -1,13 +1,14 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using Domains.Input.Events;
+using Michsky.UI.Shift;
+using UnityEngine;
 
 namespace Domains.Input.Scripts
 {
     public class InputSettingsUI : MonoBehaviour
     {
-        [SerializeField] private Toggle invertYAxisToggle;
-        [SerializeField] private Slider mouseSensitivitySlider;
-        [SerializeField] private Slider controllerSensitivitySlider;
+        [SerializeField] private SwitchManager invertYAxisToggle;
+        [SerializeField] private SliderManager mouseSensitivitySlider;
+        [SerializeField] private SliderManager controllerSensitivitySlider;
 
         private MyRewiredInputManager inputManager;
 
@@ -20,13 +21,14 @@ namespace Domains.Input.Scripts
         private void LoadSettings()
         {
             invertYAxisToggle.isOn = inputManager.InvertYAxis;
-            mouseSensitivitySlider.value = inputManager.MouseSensitivity;
-            controllerSensitivitySlider.value = inputManager.ControllerSensitivity;
+            mouseSensitivitySlider.mainSlider.value = inputManager.MouseSensitivity;
+            controllerSensitivitySlider.mainSlider.value = inputManager.ControllerSensitivity;
         }
 
         public void OnInvertYAxisChanged(bool value)
         {
             inputManager.InvertYAxis = value;
+            InputSettingsEvent.Trigger(InputSettingsEventType.InvertYAxis, value);
         }
 
         public void OnMouseSensitivityChanged(float value)

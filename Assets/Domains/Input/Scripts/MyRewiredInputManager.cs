@@ -1,10 +1,12 @@
+using Domains.Input.Events;
+using MoreMountains.Tools;
 using Rewired;
 using UnityEngine;
 
 namespace Domains.Input.Scripts
 {
     [DefaultExecutionOrder(-100)] // Execute early in the update cycle
-    public class MyRewiredInputManager : MonoBehaviour
+    public class MyRewiredInputManager : MonoBehaviour, MMEventListener<InputSettingsEvent>
     {
         private static MyRewiredInputManager _instance;
         [SerializeField] private int playerCount = 1;
@@ -77,6 +79,26 @@ namespace Domains.Input.Scripts
 
             // Load user preferences if saved
             LoadInputSettings();
+        }
+
+        private void OnEnable()
+        {
+            this.MMEventStartListening();
+        }
+
+        private void OnDisable()
+        {
+            this.MMEventStopListening();
+        }
+
+        public void OnMMEvent(InputSettingsEvent eventType)
+        {
+            switch (eventType.EventType)
+            {
+                case InputSettingsEventType.InvertYAxis:
+                    InvertYAxis = eventType.BoolValue ?? InvertYAxis;
+                    break;
+            }
         }
 
         private void LoadInputSettings()

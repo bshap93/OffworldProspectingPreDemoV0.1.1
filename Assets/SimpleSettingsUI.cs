@@ -18,7 +18,6 @@ public class SimpleSettingsUI : MonoBehaviour
     [SerializeField] private HorizontalSelector windowModeSelector;
     [SerializeField] private HorizontalSelector antiAliasingSelector;
     [SerializeField] private HorizontalSelector shadowQualitySelector;
-    [SerializeField] private HorizontalSelector invertYAxisSelector;
 
     private void Start()
     {
