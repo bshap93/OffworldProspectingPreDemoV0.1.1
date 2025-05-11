@@ -73,6 +73,12 @@ namespace Domains.UI_Global.Scripts
                 case UIEventType.CloseBriefing:
                     uiIsOpen = false;
                     break;
+                case UIEventType.ShowInfoPanel:
+                    uiIsOpen = true;
+                    break;
+                case UIEventType.HideInfoPanel:
+                    uiIsOpen = false;
+                    break;
             }
         }
     }

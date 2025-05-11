@@ -207,7 +207,7 @@ namespace Domains.Player.Scripts
                 healthButton.HideInteractablePrompt();
 
             foreach (var infoPanel in FindObjectsByType<InfoPanelActivator>(FindObjectsSortMode.None))
-                infoPanel.HideInteractablePrompt();
+                infoPanel.HideInfoPanel();
         }
 
         /// <summary>

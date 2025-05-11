@@ -18,8 +18,11 @@ namespace Domains.Input.Scripts
 
         public MMFeedbacks activationFeedback;
 
+        public float scaleFactor = 1f;
 
         public Color PromptTextColor = Color.white;
+
+        public float ShowPromptDelay;
 
         [FormerlySerializedAs("PromptKeyText")]
         public string PromptKeyStr = "E";
@@ -33,6 +36,7 @@ namespace Domains.Input.Scripts
                 var promptPosition = transform.position + promptTransformOffset;
                 var promptRotation = Quaternion.Euler(promptRotationOffset);
                 _buttonPrompt = Instantiate(ButtonPromptPrefab, promptPosition, promptRotation, transform);
+                _buttonPrompt.transform.localScale *= scaleFactor;
                 _buttonPrompt.Initialization();
                 _buttonPrompt.Hide();
             }

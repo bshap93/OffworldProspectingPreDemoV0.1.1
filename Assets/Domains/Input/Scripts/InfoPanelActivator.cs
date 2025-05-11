@@ -1,11 +1,11 @@
-﻿using System.Collections;
-using Domains.Gameplay.Mining.Scripts;
+﻿using Domains.UI_Global.Events;
 using MoreMountains.Feedbacks;
+using MoreMountains.Tools;
 using UnityEngine;
 
 namespace Domains.Input.Scripts
 {
-    public class InfoPanelActivator : MonoBehaviour, IInteractable
+    public class InfoPanelActivator : MonoBehaviour, MMEventListener<UIEvent>
     {
         [Tooltip("Prefab to show when the object is looked at.")]
         public GameObject infoPanelPrefab;
@@ -15,23 +15,48 @@ namespace Domains.Input.Scripts
         [Tooltip("Optional offset from center of screen (Canvas space).")]
         public Vector2 screenOffset = Vector2.zero;
 
-        [Header("Timeout Settings")] [Tooltip("Time in seconds before the panel auto-hides. Set to 0 for no timeout.")]
-        public float panelTimeout = 5f;
-
         [Header("Feedbacks")] public MMFeedbacks hidePanelFeedbacks;
 
         public MMFeedbacks showPanelFeedbacks;
-        private Coroutine _hideTimerCoroutine;
+        // private Coroutine _hideTimerCoroutine;
 
         private GameObject _infoPanelInstance;
+
+        private bool _isPanelVisible;
+
+        private void OnEnable()
+        {
+            this.MMEventStartListening();
+        }
 
         private void OnDisable()
         {
             // Make sure to clean up when disabled
             HideInfoPanel();
+            this.MMEventStopListening();
         }
 
-        public void ShowInteractablePrompt()
+
+        public void OnMMEvent(UIEvent eventType)
+        {
+            if (eventType.EventType == UIEventType.HideInfoPanel) HideInfoPanel();
+        }
+
+
+        public void ToggleInfoPanel()
+        {
+            if (!_isPanelVisible)
+            {
+                UnityEngine.Debug.Log("InfoPanel is not instantiated yet.");
+                ShowInfoPanel();
+            }
+            else
+            {
+                HideInfoPanel();
+            }
+        }
+
+        public void ShowInfoPanel()
         {
             if (infoPanelPrefab == null) return;
 
@@ -47,64 +72,24 @@ namespace Domains.Input.Scripts
             }
 
             _infoPanelInstance.SetActive(true);
+            _isPanelVisible = true;
+            UIEvent.Trigger(UIEventType.ShowInfoPanel);
             showPanelFeedbacks?.PlayFeedbacks();
 
             var rectTransform = _infoPanelInstance.GetComponent<RectTransform>();
             if (rectTransform != null)
                 rectTransform.anchoredPosition = screenOffset;
-
-            // Start or restart the timeout timer
-            StartPanelTimeout();
         }
 
-        public void HideInteractablePrompt()
-        {
-            HideInfoPanel();
-        }
-
-        public void Interact()
-        {
-            // Optional: leave empty or implement any interaction behavior
-        }
-
-        public void ShowInfoPanel()
-        {
-            ShowInteractablePrompt(); // Fixed the recursive call
-        }
 
         public void HideInfoPanel()
         {
-            // Cancel any existing timeout
-            if (_hideTimerCoroutine != null)
-            {
-                StopCoroutine(_hideTimerCoroutine);
-                _hideTimerCoroutine = null;
-            }
-
             if (_infoPanelInstance != null && _infoPanelInstance.activeSelf)
             {
                 _infoPanelInstance.SetActive(false);
+                _isPanelVisible = false;
                 hidePanelFeedbacks?.PlayFeedbacks();
             }
-        }
-
-        private void StartPanelTimeout()
-        {
-            // Only start timeout if a positive value is set
-            if (panelTimeout <= 0) return;
-
-            // Cancel any existing timeout
-            if (_hideTimerCoroutine != null) StopCoroutine(_hideTimerCoroutine);
-
-            // Start a new timeout
-            _hideTimerCoroutine = StartCoroutine(HideAfterTimeout());
-        }
-
-        private IEnumerator HideAfterTimeout()
-        {
-            yield return new WaitForSeconds(panelTimeout);
-            HideInfoPanel();
-            _hideTimerCoroutine = null;
         }
     }
 }

@@ -52,6 +52,7 @@ namespace Domains.Gameplay.Managers.Scripts
                 UIEvent.Trigger(UIEventType.CloseFuelConsole);
                 UIEvent.Trigger(UIEventType.CloseUI);
                 UIEvent.Trigger(UIEventType.CloseBriefing);
+                UIEvent.Trigger(UIEventType.HideInfoPanel);
             }
         }
 

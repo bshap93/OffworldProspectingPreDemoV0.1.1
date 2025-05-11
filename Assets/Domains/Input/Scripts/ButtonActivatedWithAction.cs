@@ -49,7 +49,7 @@ namespace Domains.Input.Scripts
 
         public void Interact()
         {
-            if (_infoPanelActivator != null) _infoPanelActivator.Interact();
+            if (_infoPanelActivator != null) _infoPanelActivator.ShowInfoPanel();
             ActivateButton();
         }
 
