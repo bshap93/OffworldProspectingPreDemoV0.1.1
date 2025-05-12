@@ -4,6 +4,7 @@ using Digger.Modules.Runtime.Sources;
 using Domains.Player.Scripts;
 using Domains.Scripts_that_Need_Sorting;
 using MoreMountains.Feedbacks;
+using MoreMountains.Tools;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -20,6 +21,10 @@ namespace Domains.Gameplay.Tools
         public float maxEffectOpacity = 150f;
         [SerializeField] protected float miningCooldown = 1f; // seconds between digs
 
+        [SerializeField] protected MMProgressBar cooldownProgressBar;
+        [SerializeField] protected CanvasGroup cooldownCanvasGroup;
+
+
         [Header("Tool Settings")]
         [Tooltip("Feedbacks to play when the tool is used")]
         [FormerlySerializedAs("moveShovelDespiteFailHitFeedbacks")]
@@ -31,7 +36,7 @@ namespace Domains.Gameplay.Tools
         public float stalagmiteHeight = 100f;
 
         public BrushType brush = BrushType.Stalagmite;
-        public UnityEngine.Camera mainCamera;
+        public Camera mainCamera;
 
         [Header("Feedbacks")] [Tooltip("Feedbacks to play when the tool cannot interact with an object")]
         public MMFeedbacks cannotInteractFeedbacks;
@@ -52,6 +57,7 @@ namespace Domains.Gameplay.Tools
 
         protected readonly ActionType Action = ActionType.Dig;
         protected readonly bool EditAsynchronously = true;
+        protected Coroutine CooldownCoroutine;
 
         private float currentDepth;
 

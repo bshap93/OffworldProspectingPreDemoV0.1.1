@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections;
+using System.Linq;
 using Digger.Modules.Runtime.Sources;
 using Domains.Gameplay.Mining.Scripts;
 using Domains.Player.Camera;
@@ -76,6 +77,8 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
 
         public override void PerformToolAction()
         {
+            if (Time.time < lastDigTime + miningCooldown)
+                return;
             var detectedTextureIndex = terrainLayerDetector.GetTextureIndex(lastHit, out _);
 
 // Reject early if not in allowed textures (raw index)
@@ -85,10 +88,11 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
             var textureIndex = GetTerrainLayerBasedOnDepthAndOverrides(detectedTextureIndex, lastHit.point.y);
 
 
-            if (Time.time < lastDigTime + miningCooldown)
-                return;
-
             lastDigTime = Time.time;
+            if (CooldownCoroutine != null)
+                StopCoroutine(CooldownCoroutine);
+
+            CooldownCoroutine = StartCoroutine(ShowCooldownBarCoroutine(miningCooldown));
 
             if (playerInteraction == null || digger == null)
                 return;
@@ -155,7 +159,27 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
             else
                 digger.Modify(digPosition, brush, Action, textureIndex, effectOpacity, effectRadius);
 
-            // FuelEvent.Trigger(FuelEventType.ConsumeFuel, 2f, PlayerFuelManager.MaxFuelPoints);
+
+        }
+
+        private IEnumerator ShowCooldownBarCoroutine(float duration)
+        {
+            if (cooldownProgressBar == null) yield break;
+
+            var elapsed = 0f;
+            cooldownCanvasGroup.alpha = 1f;
+            cooldownProgressBar.UpdateBar01(0f); // ← show full immediately
+
+
+            while (elapsed < duration)
+            {
+                cooldownProgressBar.UpdateBar01(elapsed / duration);
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+
+            cooldownProgressBar.UpdateBar01(1f);
+            cooldownCanvasGroup.alpha = 0f;
         }
     }
 }
