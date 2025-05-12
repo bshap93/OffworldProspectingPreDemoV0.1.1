@@ -50,7 +50,7 @@ namespace Domains.Debug
                 // Append to file
                 File.AppendAllText(logFilePath, formattedMessage + "\n");
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 // Avoid recursion in case of file write errors
             }
@@ -64,7 +64,7 @@ namespace Domains.Debug
                 var formattedMessage = $"[{DateTime.Now}] [CUSTOM] {message}";
                 File.AppendAllText(logFilePath, formattedMessage + "\n");
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 // Avoid recursion in case of file write errors
             }

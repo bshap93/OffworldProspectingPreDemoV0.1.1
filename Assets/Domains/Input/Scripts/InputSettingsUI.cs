@@ -10,7 +10,7 @@ namespace Domains.Input.Scripts
 
         private void Awake()
         {
-            invertYAxisToggle.isOn = InputSettings.Instance.InvertYAxis;
+            if (InputSettings.Instance != null) invertYAxisToggle.isOn = InputSettings.Instance.InvertYAxis;
         }
 
         public void OnInvertYAxisChanged(bool value)

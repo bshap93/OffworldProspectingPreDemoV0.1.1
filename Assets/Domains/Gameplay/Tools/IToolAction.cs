@@ -17,5 +17,7 @@ namespace Domains.Gameplay.Tools
         bool CanInteractWithObject(GameObject target);
 
         int GetCurrentTextureIndex();
+
+        void HideCooldownBar();
     }
 }

@@ -18,7 +18,8 @@ namespace Domains.Gameplay.Mining.Events
         public ToolIteration ToolIteration;
 
 
-        public static void Trigger(ToolEventType eventType, ToolType toolType, ToolIteration toolIteration)
+        public static void Trigger(ToolEventType eventType, ToolType toolType, ToolIteration toolIteration
+        )
         {
             _e.EventType = eventType;
             _e.ToolType = toolType;

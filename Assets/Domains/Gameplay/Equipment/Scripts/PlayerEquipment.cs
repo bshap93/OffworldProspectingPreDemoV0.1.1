@@ -78,6 +78,8 @@ namespace Domains.Gameplay.Equipment.Scripts
         {
             if (CurrentToolComponent == null)
                 UnityEngine.Debug.LogWarning($"Tool at index {index} is missing an IToolAction component.");
+
+            if (CurrentToolComponent != null) CurrentToolComponent.HideCooldownBar(); // 🔧 ADD THIS
             currentToolIndex = index;
 
             var tool = Tools[index];

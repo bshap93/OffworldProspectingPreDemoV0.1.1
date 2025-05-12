@@ -1,4 +1,5 @@
-﻿using Domains.Gameplay.Equipment.Events;
+﻿using System;
+using Domains.Gameplay.Equipment.Events;
 using Domains.Gameplay.Equipment.Scripts;
 using Domains.Scripts_that_Need_Sorting;
 using HighlightPlus;
@@ -21,7 +22,7 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
 
         [SerializeField] private LayerMask playerMask;
         [SerializeField] private float maxToolRange = 5f;
-        [SerializeField] private UnityEngine.Camera mainCamera;
+        [SerializeField] private Camera mainCamera;
         private RaycastHit lastHit;
 
         public ToolType ToolType => toolType;
@@ -64,12 +65,21 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
                 // Get terrain texture index at hit point
                 Terrain terrain;
                 var textureIndex = terrainLayerDetector.GetTextureIndex(hit, out terrain);
-
+                throw new NotImplementedException();
 
                 return textureIndex;
             }
 
             return -1;
+        }
+
+        public void HideCooldownBar()
+        {
+            // if (cooldownBar != null)
+            // {
+            //     cooldownBar.gameObject.SetActive(false);
+            //     cooldownBar.UpdateBar01(0f);
+            // } 
         }
     }
 }

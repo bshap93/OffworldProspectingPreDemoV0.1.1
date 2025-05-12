@@ -30,6 +30,13 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
         {
             digger = FindFirstObjectByType<DiggerMasterRuntime>();
             playerInteraction = FindFirstObjectByType<PlayerInteraction>();
+            // cooldownBar.gameObject.SetActive(false);
+            // cooldownBar.UpdateBar01(0f); // Ensure it's visually empty
+        }
+
+        private void Start()
+        {
+            HideCooldownBar();
         }
 
         private void OnEnable()
@@ -54,6 +61,7 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
             if (eventType.EventType == UpgradeEventType.ShovelMiningSizeSet)
                 SetDiggerUsingToolEffectSize(eventType.EffectValue, eventType.EffectValue2);
         }
+
 
         public void SetCurrentMaterial(Material material)
         {
@@ -154,6 +162,11 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
                     stalagmiteHeight);
             else
                 digger.Modify(digPosition, brush, Action, textureIndex, effectOpacity, effectRadius);
+
+            if (CooldownCoroutine != null)
+                StopCoroutine(CooldownCoroutine);
+
+            CooldownCoroutine = StartCoroutine(ShowCooldownBarCoroutine(miningCooldown));
 
             // FuelEvent.Trigger(FuelEventType.ConsumeFuel, 2f, PlayerFuelManager.MaxFuelPoints);
         }

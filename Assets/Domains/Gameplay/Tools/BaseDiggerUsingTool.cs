@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections;
 using Digger.Modules.Core.Sources;
 using Digger.Modules.Runtime.Sources;
 using Domains.Player.Scripts;
 using Domains.Scripts_that_Need_Sorting;
 using MoreMountains.Feedbacks;
+using MoreMountains.Tools;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -18,7 +20,7 @@ namespace Domains.Gameplay.Tools
         public float maxEffectRadius = 1.2f;
         public float minEffectOpacity = 5f;
         public float maxEffectOpacity = 150f;
-        [SerializeField] protected float miningCooldown = 1f; // seconds between digs
+        [SerializeField] public float miningCooldown = 1f; // seconds between digs
 
         [Header("Tool Settings")]
         [Tooltip("Feedbacks to play when the tool is used")]
@@ -31,10 +33,13 @@ namespace Domains.Gameplay.Tools
         public float stalagmiteHeight = 100f;
 
         public BrushType brush = BrushType.Stalagmite;
-        public UnityEngine.Camera mainCamera;
+        public Camera mainCamera;
 
         [Header("Feedbacks")] [Tooltip("Feedbacks to play when the tool cannot interact with an object")]
         public MMFeedbacks cannotInteractFeedbacks;
+
+        [SerializeField] protected MMProgressBar cooldownBar;
+        [SerializeField] protected CanvasGroup cooldownBarCanvasGroup;
 
 
         [Header("Allowed Layers")] [Tooltip("Allowed Unity layers for GameObjects (e.g., ore nodes)")]
@@ -52,6 +57,7 @@ namespace Domains.Gameplay.Tools
 
         protected readonly ActionType Action = ActionType.Dig;
         protected readonly bool EditAsynchronously = true;
+        protected Coroutine CooldownCoroutine;
 
         private float currentDepth;
 
@@ -62,6 +68,25 @@ namespace Domains.Gameplay.Tools
         protected float lastDigTime = -999f;
         protected RaycastHit lastHit;
         protected PlayerInteraction playerInteraction;
+
+        protected virtual void OnDisable()
+        {
+            if (CooldownCoroutine != null)
+            {
+                StopCoroutine(CooldownCoroutine);
+                CooldownCoroutine = null;
+            }
+        }
+
+        public void HideCooldownBar()
+        {
+            if (cooldownBar != null && cooldownBar.gameObject != null)
+            {
+                // cooldownBar.gameObject.SetActive(false);
+                cooldownBarCanvasGroup.alpha = 0f;
+                cooldownBar.UpdateBar01(0f);
+            }
+        }
 
         public ToolType ToolType => toolType;
         public ToolIteration ToolIteration => toolIteration;
@@ -133,6 +158,27 @@ namespace Domains.Gameplay.Tools
                 UnityEngine.Debug.LogError($"Error in GetCurrentTextureIndex: {ex.Message}");
                 return 0; // Default safe value
             }
+        }
+
+        protected IEnumerator ShowCooldownBarCoroutine(float duration)
+        {
+            if (cooldownBar == null) yield break;
+
+            var elapsed = 0f;
+            // cooldownBar.gameObject.SetActive(true);
+            cooldownBarCanvasGroup.alpha = 1f;
+
+            while (elapsed < duration)
+            {
+                if (cooldownBar != null)
+                    cooldownBar.UpdateBar01(elapsed / duration);
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+
+            cooldownBar.UpdateBar01(0f);
+            // cooldownBar.gameObject.SetActive(false);
+            cooldownBarCanvasGroup.alpha = 0f;
         }
 
         protected int GetTerrainLayerBasedOnDepthAndOverrides(int rawTextureIndex, float digDepth)
