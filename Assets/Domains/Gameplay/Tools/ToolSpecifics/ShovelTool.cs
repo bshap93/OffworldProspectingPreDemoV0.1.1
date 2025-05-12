@@ -30,8 +30,6 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
         {
             digger = FindFirstObjectByType<DiggerMasterRuntime>();
             playerInteraction = FindFirstObjectByType<PlayerInteraction>();
-            // cooldownBar.gameObject.SetActive(false);
-            // cooldownBar.UpdateBar01(0f); // Ensure it's visually empty
         }
 
         private void Start()

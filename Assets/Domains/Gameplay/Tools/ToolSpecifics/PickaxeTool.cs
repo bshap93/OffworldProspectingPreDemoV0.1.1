@@ -97,6 +97,12 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
                 $"PickaxeTool initialized with parameters: firstHitOpacity={firstHitEffectOpacity}, firstHitRadius={firstHitEffectRadius}, mainOpacity={effectOpacity}, mainRadius={effectRadius}");
         }
 
+        private void Start()
+        {
+            // Initialize cooldown bar
+            HideCooldownBar();
+        }
+
         private void Update()
         {
             // Validate parameters periodically or when forced
@@ -379,7 +385,11 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
                 }
 
                 // Handle object interaction first (ore, rocks, etc.)
-                if (isMinableObject) HandleObjectInteraction(hit);
+                if (isMinableObject)
+                {
+                    CooldownCoroutine = StartCoroutine(ShowCooldownBarCoroutine(miningCooldown));
+                    HandleObjectInteraction(hit);
+                }
 
                 // Exit if not a valid terrain texture
                 if (!isValidTerrain)
@@ -401,6 +411,7 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
                     textureIndex = 0; // Use a safe default
                 }
 
+                CooldownCoroutine = StartCoroutine(ShowCooldownBarCoroutine(miningCooldown));
                 // Handle terrain digging
                 HandleTerrainDigging(hit, textureIndex);
             }
@@ -680,6 +691,7 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
                     textureIndex, safeOpacity, safeRadius, safeHeight);
                 if (!didModify)
                     yield break;
+
 
 // after SafeModify you KNOW parameters are finite.
                 // UnityEngine.Debug.Log($"DIG {Time.frameCount}: p={digPosition} r={radius} o={opacity}");
