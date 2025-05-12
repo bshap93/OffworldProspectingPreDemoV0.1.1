@@ -75,7 +75,9 @@ namespace Domains.Scene.MainMenu
                     _loadingInProgress = true;
                     ClearAllSaveFilesOnly();
                     GameLoadFlags.IsNewGame = true;
-                    LoadScene(sceneToLoad);
+                    // LoadScene(sceneToLoad);
+                    // Use MMSceneLoadingManager for loading
+                    MMSceneLoadingManager.LoadScene(sceneToLoad, loadingScreenName);
                     break;
 
                 case MainMenuEventType.ContinueGameTriggered:
@@ -94,7 +96,9 @@ namespace Domains.Scene.MainMenu
                                 $"[SceneLoadManager] Reset LoadingScreenSceneName to {loadingScreenName}");
                         }
 
-                        LoadScene(sceneToLoad);
+                        // LoadScene(sceneToLoad);
+                        // Use MMSceneLoadingManager for loading
+                        MMSceneLoadingManager.LoadScene(sceneToLoad, loadingScreenName);
                     }
                     else
                     {

@@ -18,7 +18,7 @@ namespace Domains.Player.Events
         Pickaxe,
         Endurance,
         Inventory,
-        ToolChange,
+        Jetpack,
         None
     }
 

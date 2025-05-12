@@ -1,3 +1,4 @@
+using System;
 using System.Globalization;
 using Domains.Items.Events;
 using Domains.Scene.Scripts;
@@ -31,26 +32,42 @@ namespace Domains.Items.Inventory
 
         public void OnMMEvent(InventoryEvent eventType)
         {
+            if (_text == null)
+                return;
+
             if (eventType.EventType == InventoryEventType.ContentChanged)
-            {
                 UpdateWeightText();
-            }
             else if (eventType.EventType == InventoryEventType.UpgradedWeightLimit)
-            {
-                var maxWeight = PlayerInventoryManager.GetMaxWeight();
-                _text.text =
-                    $"{PlayerInventoryManager.GetCurrentWeight().ToString(CultureInfo.InvariantCulture)} / {maxWeight.ToString(CultureInfo.InvariantCulture)}";
-            }
+                try
+                {
+                    var maxWeight = PlayerInventoryManager.GetMaxWeight();
+                    var currentWeight = PlayerInventoryManager.GetCurrentWeight();
+                    _text.text =
+                        $"{currentWeight.ToString(CultureInfo.InvariantCulture)} / {maxWeight.ToString(CultureInfo.InvariantCulture)}";
+                }
+                catch (Exception ex)
+                {
+                    UnityEngine.Debug.LogError($"Error updating inventory weight text: {ex.Message}");
+                }
         }
+
 
         private void UpdateWeightText()
         {
-            var currentWeight = PlayerInventoryManager.GetCurrentWeight();
-            var maxWeight = PlayerInventoryManager.GetMaxWeight();
-            if (_text == null || _text.text == null) return;
-            _text.text =
-                $"{currentWeight.ToString(CultureInfo.InvariantCulture)} / {maxWeight.ToString(CultureInfo.InvariantCulture)}";
-            // _text.text = eventType.Inventory.CurrentWeight().ToString(CultureInfo.InvariantCulture);
+            if (_text == null)
+                return;
+
+            try
+            {
+                var currentWeight = PlayerInventoryManager.GetCurrentWeight();
+                var maxWeight = PlayerInventoryManager.GetMaxWeight();
+                _text.text =
+                    $"{currentWeight.ToString(CultureInfo.InvariantCulture)} / {maxWeight.ToString(CultureInfo.InvariantCulture)}";
+            }
+            catch (Exception ex)
+            {
+                UnityEngine.Debug.LogError($"Error updating inventory weight text: {ex.Message}");
+            }
         }
     }
 }

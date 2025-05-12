@@ -6,6 +6,7 @@ using Domains.Items.Events;
 using Domains.Player.Events;
 using Domains.Player.Scripts.ScriptableObjects;
 using Domains.Scene.Scripts;
+using Domains.Scene.StaticScripts;
 using MoreMountains.Feedbacks;
 using MoreMountains.Tools;
 using UnityEngine;
@@ -521,17 +522,45 @@ namespace Domains.Player.Scripts
             return upgrade.upgradeCosts[level];
         }
 
+        private void ResetToolEffectsToDefaults()
+        {
+            // Reset all tool effect values to defaults from characterStatProfile
+            shovelToolEffectRadius = characterStatProfile.initialShovelToolEffectRadius;
+            shovelToolEffectOpacity = characterStatProfile.initialShovelToolEffectOpacity;
+            pickaxeToolEffectRadius = characterStatProfile.initialPickaxeToolEffectRadius;
+            pickaxeToolEffectOpacity = characterStatProfile.pickaxeMiningToolEffectOpacity;
+
+            // Apply the effects to tools
+            if (shovelTool != null)
+                shovelTool.SetDiggerUsingToolEffectSize(shovelToolEffectRadius, shovelToolEffectOpacity);
+
+            if (pickaxeTool != null)
+                pickaxeTool.SetDiggerUsingToolEffectSize(pickaxeToolEffectRadius, pickaxeToolEffectOpacity);
+        }
+
         public void LoadUpgrades()
         {
             UnityEngine.Debug.Log("Loading upgrades...");
 
-            var isFreshStart = !ES3.KeyExists("ShovelMaterialLevel", "UpgradeSave.es3") &&
-                               !ES3.KeyExists("Shovel", "UpgradeSave.es3");
+            // var isFreshStart = !ES3.KeyExists("ShovelMaterialLevel", "UpgradeSave.es3") &&
+            //                    !ES3.KeyExists("Shovel", "UpgradeSave.es3");
+
+            // var isFreshStart = !ES3.FileExists("UpgradeSave.es3") || (
+            //     !ES3.KeyExists("ShovelMaterialLevel", "UpgradeSave.es3") &&
+            //     !ES3.KeyExists("Shovel", "UpgradeSave.es3") &&
+            //     !ES3.KeyExists("ShovelToolEffectRadius", "UpgradeSave.es3") &&
+            //     !ES3.KeyExists("PickaxeToolEffectRadius", "UpgradeSave.es3"));
+            var isFreshStart = GameLoadFlags.IsNewGame || !ES3.FileExists("UpgradeSave.es3") || (
+                !ES3.KeyExists("ShovelMaterialLevel", "UpgradeSave.es3") &&
+                !ES3.KeyExists("Shovel", "UpgradeSave.es3") &&
+                !ES3.KeyExists("ShovelToolEffectRadius", "UpgradeSave.es3") &&
+                !ES3.KeyExists("PickaxeToolEffectRadius", "UpgradeSave.es3"));
 
             if (isFreshStart)
             {
                 UnityEngine.Debug.Log("Fresh start detected - using initial materials");
                 ApplyInitialMaterials();
+                ResetToolEffectsToDefaults();
             }
 
             // Load upgrade levels
@@ -615,11 +644,26 @@ namespace Domains.Player.Scripts
             if (ES3.KeyExists("MaxFuelCapacity", "UpgradeSave.es3"))
                 fuelCapacity = ES3.Load<float>("MaxFuelCapacity", "UpgradeSave.es3");
 
-            if (ES3.KeyExists("InventoryMaxWeight", "GameSave.es3"))
+            if (ES3.KeyExists("InventoryMaxWeight", "GameSave.es3") && !GameLoadFlags.IsNewGame)
             {
                 var savedWeight = ES3.Load<float>("InventoryMaxWeight", "GameSave.es3");
                 PlayerInventoryManager.SetWeightLimit(savedWeight);
             }
+            else
+            {
+                UnityEngine.Debug.Log(
+                    "No saved InventoryMaxWeight found or new game — setting default from CharacterStatProfile");
+                PlayerInventoryManager.SetWeightLimit(characterStatProfile.InitialWeightLimit);
+            }
+
+            // if (PlayerInventoryManager.PlayerInventory != null)
+            //     InventoryEvent.Trigger(
+            //         InventoryEventType.UpgradedWeightLimit,
+            //         PlayerInventoryManager.PlayerInventory,
+            //         characterStatProfile.InitialWeightLimit
+            //     );
+            // else
+            //     UnityEngine.Debug.LogWarning("Cannot trigger InventoryEvent: PlayerInventory is null");
 
             if (ES3.KeyExists("CurrentToolID", "UpgradeSave.es3"))
                 currentToolId = ES3.Load<string>("CurrentToolID", "UpgradeSave.es3");
@@ -667,6 +711,7 @@ namespace Domains.Player.Scripts
 
             return upgrade.upgradeNames[level]; // Return the name for the current level
         }
+
 
         public bool HasSavedData()
         {
