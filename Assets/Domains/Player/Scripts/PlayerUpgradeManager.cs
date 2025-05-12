@@ -46,6 +46,9 @@ namespace Domains.Player.Scripts
         private static MyNormalMovement playerMovement;
         private static ParticleSystem jetPackParticleSystem;
 
+        [SerializeField] private ShovelTool shovelToolIn;
+        [SerializeField] private PickaxeTool pickaxeToolIn;
+
 
         // ---------------------------------------------------------
         // 2) Instance Fields: references to scene objects
@@ -110,14 +113,18 @@ namespace Domains.Player.Scripts
         {
             if (shovelTool == null)
             {
-                shovelTool = FindShovelTool();
+                shovelTool = shovelToolIn;
+                if (shovelTool == null)
+                    shovelTool = FindShovelTool();
                 if (shovelTool == null)
                     UnityEngine.Debug.LogWarning("ShovelTool not found. Upgrades may not apply correctly.");
             }
 
             if (pickaxeTool == null)
             {
-                pickaxeTool = FindPickaxeTool();
+                pickaxeTool = pickaxeToolIn;
+                if (pickaxeTool == null)
+                    pickaxeTool = FindPickaxeTool();
                 if (pickaxeTool == null)
                     UnityEngine.Debug.LogWarning("PickaxeTool not found. Upgrades may not apply correctly.");
             }
