@@ -92,7 +92,7 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
             if (CooldownCoroutine != null)
                 StopCoroutine(CooldownCoroutine);
 
-            CooldownCoroutine = StartCoroutine(ShowCooldownBarCoroutine(miningCooldown));
+            // CooldownCoroutine = StartCoroutine(ShowCooldownBarCoroutine(miningCooldown));
 
             if (playerInteraction == null || digger == null)
                 return;
@@ -120,6 +120,8 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
                     minable.MinableFailHit(hit.point);
                     moveToolDespiteFailHitFeedbacks?.PlayFeedbacks();
                     CameraEffectEvent.Trigger(CameraEffectEventType.ShakeCameraPosition, 0.2f);
+                    // CooldownCoroutine = StartCoroutine(ShowCooldownBarCoroutine(miningCooldown));
+
                     return;
                 }
             }
@@ -150,36 +152,23 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
             // Feedback trigger (from PerformToolAction, not MMFeedbacks directly)
             if (diggingFeedbacks != null) diggingFeedbacks.PlayFeedbacks(hit.point);
 
+
             // Dig!
             var digPosition = hit.point + mainCamera.transform.forward * 0.3f;
 
+            var didDig = false;
+
             if (EditAsynchronously)
-                digger.ModifyAsyncBuffured(digPosition, brush, Action, textureIndex, effectOpacity, effectRadius,
+                didDig = digger.ModifyAsyncBuffured(digPosition, brush, Action, textureIndex, effectOpacity,
+                    effectRadius,
                     stalagmiteHeight);
             else
                 digger.Modify(digPosition, brush, Action, textureIndex, effectOpacity, effectRadius);
 
-
+            if (didDig)
+                CooldownCoroutine = StartCoroutine(ShowCooldownBarCoroutine(miningCooldown));
         }
 
-        private IEnumerator ShowCooldownBarCoroutine(float duration)
-        {
-            if (cooldownProgressBar == null) yield break;
 
-            var elapsed = 0f;
-            cooldownCanvasGroup.alpha = 1f;
-            cooldownProgressBar.UpdateBar01(0f); // ← show full immediately
-
-
-            while (elapsed < duration)
-            {
-                cooldownProgressBar.UpdateBar01(elapsed / duration);
-                elapsed += Time.deltaTime;
-                yield return null;
-            }
-
-            cooldownProgressBar.UpdateBar01(1f);
-            cooldownCanvasGroup.alpha = 0f;
-        }
     }
 }

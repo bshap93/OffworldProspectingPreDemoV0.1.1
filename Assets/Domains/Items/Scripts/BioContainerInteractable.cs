@@ -7,7 +7,6 @@ using Domains.UI_Global.Events;
 using HighlightPlus;
 using INab.Dissolve;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Domains.Items.Scripts
 {
@@ -88,7 +87,7 @@ namespace Domains.Items.Scripts
                 highlightEffect.enabled = false;
 
             // Disable the script
-            var prompt = GetComponentInChildren<HorizontalLayoutGroup>();
+            var prompt = GetComponentInChildren<ButtonPromptWithAction>().gameObject;
             Destroy(prompt);
         }
 
@@ -122,7 +121,7 @@ namespace Domains.Items.Scripts
                     highlightEffect.enabled = false;
 
                 // Disable the script
-                var prompt = GetComponentInChildren<ButtonPromptWithAction>();
+                var prompt = GetComponentInChildren<ButtonPromptWithAction>().gameObject;
                 Destroy(prompt);
             }
         }

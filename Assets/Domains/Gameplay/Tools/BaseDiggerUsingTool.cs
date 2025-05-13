@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using Digger.Modules.Core.Sources;
 using Digger.Modules.Runtime.Sources;
 using Domains.Player.Scripts;
@@ -383,6 +385,26 @@ namespace Domains.Gameplay.Tools
                 float.IsNaN(vector.y) || float.IsInfinity(vector.y) ? 0f : vector.y,
                 float.IsNaN(vector.z) || float.IsInfinity(vector.z) ? 0f : vector.z
             );
+        }
+        
+        protected IEnumerator ShowCooldownBarCoroutine(float duration)
+        {
+            if (cooldownProgressBar == null) yield break;
+
+            var elapsed = 0f;
+            cooldownCanvasGroup.alpha = 1f;
+            cooldownProgressBar.UpdateBar01(0f); // ← show full immediately
+
+
+            while (elapsed < duration)
+            {
+                cooldownProgressBar.UpdateBar01(elapsed / duration);
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+
+            cooldownProgressBar.UpdateBar01(1f);
+            cooldownCanvasGroup.alpha = 0f;
         }
     }
 }
