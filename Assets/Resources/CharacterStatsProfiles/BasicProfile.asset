@@ -22,7 +22,7 @@ MonoBehaviour:
   InitialCurrency: 0
   InitialUpgradeState: 0
   initialShovelToolEffectRadius: 0.4
-  initialPickaxeToolEffectRadius: 0.4
+  initialPickaxeToolEffectRadius: 0.5
   initialJetPackSpeedMultiplier: 1.22
   SkipTutorial: 0
   shovelMiningToolWidth: 0.4

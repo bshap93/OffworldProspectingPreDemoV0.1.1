@@ -451,6 +451,8 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
                         moveToolDespiteFailHitFeedbacks?.PlayFeedbacks();
                         logger?.LogMessage("Failed to mine object - hardness too high");
                     }
+
+                    CooldownCoroutine = StartCoroutine(ShowCooldownBarCoroutine(miningCooldown));
                 }
             }
             catch (Exception ex)
@@ -528,6 +530,7 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
                         BrushType.Stalagmite));
 
                     // Effects
+                    CooldownCoroutine = StartCoroutine(ShowCooldownBarCoroutine(miningCooldown));
                     TriggerDebrisEffect(debrisEffectFirstHitPrefab, hit);
                     firstHitFeedbacks?.PlayFeedbacks(hit.point);
                     return;
@@ -568,6 +571,7 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
                         safeRadius));
 
                     // Effects
+                    CooldownCoroutine = StartCoroutine(ShowCooldownBarCoroutine(miningCooldown));
                     TriggerDebrisEffect(debrisEffectSecondHitPrefab, hit);
                     secondHitFeedbacks?.PlayFeedbacks(hit.point);
                 }
