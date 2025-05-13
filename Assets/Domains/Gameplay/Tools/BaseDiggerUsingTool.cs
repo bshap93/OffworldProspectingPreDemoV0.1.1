@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using Digger.Modules.Core.Sources;
 using Digger.Modules.Runtime.Sources;
 using Domains.Player.Scripts;
@@ -20,7 +21,11 @@ namespace Domains.Gameplay.Tools
         public float maxEffectRadius = 1.2f;
         public float minEffectOpacity = 5f;
         public float maxEffectOpacity = 150f;
-        [SerializeField] public float miningCooldown = 1f; // seconds between digs
+        [SerializeField] protected float miningCooldown = 1f; // seconds between digs
+
+        [SerializeField] protected MMProgressBar cooldownProgressBar;
+        [SerializeField] protected CanvasGroup cooldownCanvasGroup;
+
 
         [Header("Tool Settings")]
         [Tooltip("Feedbacks to play when the tool is used")]
@@ -37,9 +42,6 @@ namespace Domains.Gameplay.Tools
 
         [Header("Feedbacks")] [Tooltip("Feedbacks to play when the tool cannot interact with an object")]
         public MMFeedbacks cannotInteractFeedbacks;
-
-        [SerializeField] protected MMProgressBar cooldownBar;
-        [SerializeField] protected CanvasGroup cooldownBarCanvasGroup;
 
 
         [Header("Allowed Layers")] [Tooltip("Allowed Unity layers for GameObjects (e.g., ore nodes)")]
@@ -68,25 +70,6 @@ namespace Domains.Gameplay.Tools
         protected float lastDigTime = -999f;
         protected RaycastHit lastHit;
         protected PlayerInteraction playerInteraction;
-
-        protected virtual void OnDisable()
-        {
-            if (CooldownCoroutine != null)
-            {
-                StopCoroutine(CooldownCoroutine);
-                CooldownCoroutine = null;
-            }
-        }
-
-        public void HideCooldownBar()
-        {
-            if (cooldownBar != null && cooldownBar.gameObject != null)
-            {
-                // cooldownBar.gameObject.SetActive(false);
-                cooldownBarCanvasGroup.alpha = 0f;
-                cooldownBar.UpdateBar01(0f);
-            }
-        }
 
         public ToolType ToolType => toolType;
         public ToolIteration ToolIteration => toolIteration;
@@ -158,27 +141,6 @@ namespace Domains.Gameplay.Tools
                 UnityEngine.Debug.LogError($"Error in GetCurrentTextureIndex: {ex.Message}");
                 return 0; // Default safe value
             }
-        }
-
-        protected IEnumerator ShowCooldownBarCoroutine(float duration)
-        {
-            if (cooldownBar == null) yield break;
-
-            var elapsed = 0f;
-            // cooldownBar.gameObject.SetActive(true);
-            cooldownBarCanvasGroup.alpha = 1f;
-
-            while (elapsed < duration)
-            {
-                if (cooldownBar != null)
-                    cooldownBar.UpdateBar01(elapsed / duration);
-                elapsed += Time.deltaTime;
-                yield return null;
-            }
-
-            cooldownBar.UpdateBar01(0f);
-            // cooldownBar.gameObject.SetActive(false);
-            cooldownBarCanvasGroup.alpha = 0f;
         }
 
         protected int GetTerrainLayerBasedOnDepthAndOverrides(int rawTextureIndex, float digDepth)
@@ -423,6 +385,26 @@ namespace Domains.Gameplay.Tools
                 float.IsNaN(vector.y) || float.IsInfinity(vector.y) ? 0f : vector.y,
                 float.IsNaN(vector.z) || float.IsInfinity(vector.z) ? 0f : vector.z
             );
+        }
+        
+        protected IEnumerator ShowCooldownBarCoroutine(float duration)
+        {
+            if (cooldownProgressBar == null) yield break;
+
+            var elapsed = 0f;
+            cooldownCanvasGroup.alpha = 1f;
+            cooldownProgressBar.UpdateBar01(0f); // ← show full immediately
+
+
+            while (elapsed < duration)
+            {
+                cooldownProgressBar.UpdateBar01(elapsed / duration);
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+
+            cooldownProgressBar.UpdateBar01(1f);
+            cooldownCanvasGroup.alpha = 0f;
         }
     }
 }

@@ -77,7 +77,8 @@ namespace Domains.Scene.MainMenu
                     GameLoadFlags.IsNewGame = true;
                     // LoadScene(sceneToLoad);
                     // Use MMSceneLoadingManager for loading
-                    MMSceneLoadingManager.LoadScene(sceneToLoad, loadingScreenName);
+                    SceneLoadData.SceneToLoad = sceneToLoad;
+                    SceneManager.LoadScene(loadingScreenName);
                     break;
 
                 case MainMenuEventType.ContinueGameTriggered:

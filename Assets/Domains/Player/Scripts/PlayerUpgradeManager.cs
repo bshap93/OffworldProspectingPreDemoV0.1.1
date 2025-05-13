@@ -21,9 +21,9 @@ namespace Domains.Player.Scripts
         private static readonly Dictionary<string, int> UpgradeLevels = new();
 
         // Tool effect properties
-        private static float shovelToolEffectRadius = 0.8f;
+        private static float shovelToolEffectRadius = 0.4f;
         private static float shovelToolEffectOpacity = 10f;
-        private static float pickaxeToolEffectRadius = 0.8f;
+        private static float pickaxeToolEffectRadius = 0.4f;
         private static float pickaxeToolEffectOpacity = 10f;
 
         private static float jetPackSpeedMultiplier = 1.22f;
@@ -45,6 +45,9 @@ namespace Domains.Player.Scripts
         private static ShovelTool shovelTool;
         private static MyNormalMovement playerMovement;
         private static ParticleSystem jetPackParticleSystem;
+
+        [SerializeField] private ShovelTool shovelToolIn;
+        [SerializeField] private PickaxeTool pickaxeToolIn;
 
 
         // ---------------------------------------------------------
@@ -110,14 +113,18 @@ namespace Domains.Player.Scripts
         {
             if (shovelTool == null)
             {
-                shovelTool = FindShovelTool();
+                shovelTool = shovelToolIn;
+                if (shovelTool == null)
+                    shovelTool = FindShovelTool();
                 if (shovelTool == null)
                     UnityEngine.Debug.LogWarning("ShovelTool not found. Upgrades may not apply correctly.");
             }
 
             if (pickaxeTool == null)
             {
-                pickaxeTool = FindPickaxeTool();
+                pickaxeTool = pickaxeToolIn;
+                if (pickaxeTool == null)
+                    pickaxeTool = FindPickaxeTool();
                 if (pickaxeTool == null)
                     UnityEngine.Debug.LogWarning("PickaxeTool not found. Upgrades may not apply correctly.");
             }

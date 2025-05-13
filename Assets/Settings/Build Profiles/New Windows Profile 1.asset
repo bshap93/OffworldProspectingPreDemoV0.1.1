@@ -23,13 +23,13 @@ MonoBehaviour:
   - m_enabled: 1
     m_path: Assets/Scenes/MainMenu.unity
   - m_enabled: 1
+    m_path: Assets/Scenes/LoadingScreen.unity
+  - m_enabled: 1
     m_path: Assets/Scenes/MainScene08B.unity
   - m_enabled: 1
     m_path: Assets/Scenes/Facility01.unity
   - m_enabled: 1
     m_path: Assets/Scenes/EndSplash.unity
-  - m_enabled: 1
-    m_path: Assets/ThirdParty/Feel/MMTools/Core/MMSceneLoading/LoadingScreens/LoadingScreen.unity
   m_ScriptingDefines:
   - MOREMOUNTAINS_NICEVIBRATIONS_INSTALLED
   m_PlayerSettingsYaml:

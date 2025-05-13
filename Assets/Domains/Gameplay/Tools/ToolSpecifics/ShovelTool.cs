@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections;
+using System.Linq;
 using Digger.Modules.Runtime.Sources;
 using Domains.Gameplay.Mining.Scripts;
 using Domains.Player.Camera;
@@ -32,11 +33,6 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
             playerInteraction = FindFirstObjectByType<PlayerInteraction>();
         }
 
-        private void Start()
-        {
-            HideCooldownBar();
-        }
-
         private void OnEnable()
         {
             this.MMEventStartListening();
@@ -60,7 +56,6 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
                 SetDiggerUsingToolEffectSize(eventType.EffectValue, eventType.EffectValue2);
         }
 
-
         public void SetCurrentMaterial(Material material)
         {
             currentMaterial = material;
@@ -82,6 +77,8 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
 
         public override void PerformToolAction()
         {
+            if (Time.time < lastDigTime + miningCooldown)
+                return;
             var detectedTextureIndex = terrainLayerDetector.GetTextureIndex(lastHit, out _);
 
 // Reject early if not in allowed textures (raw index)
@@ -91,10 +88,11 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
             var textureIndex = GetTerrainLayerBasedOnDepthAndOverrides(detectedTextureIndex, lastHit.point.y);
 
 
-            if (Time.time < lastDigTime + miningCooldown)
-                return;
-
             lastDigTime = Time.time;
+            if (CooldownCoroutine != null)
+                StopCoroutine(CooldownCoroutine);
+
+            // CooldownCoroutine = StartCoroutine(ShowCooldownBarCoroutine(miningCooldown));
 
             if (playerInteraction == null || digger == null)
                 return;
@@ -122,6 +120,8 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
                     minable.MinableFailHit(hit.point);
                     moveToolDespiteFailHitFeedbacks?.PlayFeedbacks();
                     CameraEffectEvent.Trigger(CameraEffectEventType.ShakeCameraPosition, 0.2f);
+                    // CooldownCoroutine = StartCoroutine(ShowCooldownBarCoroutine(miningCooldown));
+
                     return;
                 }
             }
@@ -152,21 +152,23 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
             // Feedback trigger (from PerformToolAction, not MMFeedbacks directly)
             if (diggingFeedbacks != null) diggingFeedbacks.PlayFeedbacks(hit.point);
 
+
             // Dig!
             var digPosition = hit.point + mainCamera.transform.forward * 0.3f;
 
+            var didDig = false;
+
             if (EditAsynchronously)
-                digger.ModifyAsyncBuffured(digPosition, brush, Action, textureIndex, effectOpacity, effectRadius,
+                didDig = digger.ModifyAsyncBuffured(digPosition, brush, Action, textureIndex, effectOpacity,
+                    effectRadius,
                     stalagmiteHeight);
             else
                 digger.Modify(digPosition, brush, Action, textureIndex, effectOpacity, effectRadius);
 
-            if (CooldownCoroutine != null)
-                StopCoroutine(CooldownCoroutine);
-
-            CooldownCoroutine = StartCoroutine(ShowCooldownBarCoroutine(miningCooldown));
-
-            // FuelEvent.Trigger(FuelEventType.ConsumeFuel, 2f, PlayerFuelManager.MaxFuelPoints);
+            if (didDig)
+                CooldownCoroutine = StartCoroutine(ShowCooldownBarCoroutine(miningCooldown));
         }
+
+
     }
 }
