@@ -3824,7 +3824,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f22bb94d6b7adf845bfa3d3144dbf88f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: MainScene08B
+  sceneToLoad: LoadingScreen
   loadingScreenName: LoadingScreen
 --- !u!1 &530238742
 GameObject:
