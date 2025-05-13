@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections;
+using Domains.Input.Scripts;
 using Domains.Player.Events;
 using Domains.Player.Progression;
 using Domains.UI_Global.Events;
+using HighlightPlus;
 using INab.Dissolve;
 using UnityEngine;
 
@@ -57,6 +59,7 @@ namespace Domains.Items.Scripts
             StartCoroutine(DissolveCreatureThenDestroy());
         }
 
+
         private IEnumerator DissolveCreatureThenDestroy()
         {
             // Check if dissolver is assigned
@@ -77,6 +80,15 @@ namespace Domains.Items.Scripts
                 UnityEngine.Debug.LogWarning("SpotLight not assigned! Cannot change light color.");
             // Destroy game object
             Destroy(creatureDissolver.gameObject);
+
+            // Disable the HighlightEffect if it exists
+            var highlightEffect = GetComponent<HighlightEffect>();
+            if (highlightEffect != null)
+                highlightEffect.enabled = false;
+
+            // Disable the script
+            var prompt = GetComponentInChildren<ButtonPromptWithAction>();
+            Destroy(prompt);
         }
 
 
@@ -102,8 +114,16 @@ namespace Domains.Items.Scripts
                     Destroy(creatureDissolver.gameObject);
                 else
                     UnityEngine.Debug.LogWarning($"BioContainer {uniqueID} has no creatureDissolver assigned");
-            }
 
+                // Disable the HighlightEffect if it exists
+                var highlightEffect = GetComponent<HighlightEffect>();
+                if (highlightEffect != null)
+                    highlightEffect.enabled = false;
+
+                // Disable the script
+                var prompt = GetComponentInChildren<ButtonPromptWithAction>();
+                Destroy(prompt);
+            }
         }
     }
 }

@@ -21,9 +21,9 @@ namespace Domains.Player.Scripts
         private static readonly Dictionary<string, int> UpgradeLevels = new();
 
         // Tool effect properties
-        private static float shovelToolEffectRadius = 0.8f;
+        private static float shovelToolEffectRadius = 0.4f;
         private static float shovelToolEffectOpacity = 10f;
-        private static float pickaxeToolEffectRadius = 0.8f;
+        private static float pickaxeToolEffectRadius = 0.4f;
         private static float pickaxeToolEffectOpacity = 10f;
 
         private static float jetPackSpeedMultiplier = 1.22f;
