@@ -79,6 +79,12 @@ namespace Domains.UI_Global.Scripts
                 case UIEventType.HideInfoPanel:
                     uiIsOpen = false;
                     break;
+                case UIEventType.OpenCommsComputer:
+                    uiIsOpen = true;
+                    break;
+                case UIEventType.CloseCommsComputer:
+                    uiIsOpen = false;
+                    break;
             }
         }
     }

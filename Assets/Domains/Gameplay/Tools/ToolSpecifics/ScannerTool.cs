@@ -1,5 +1,4 @@
-﻿using System;
-using Domains.Gameplay.Equipment.Events;
+﻿using Domains.Gameplay.Equipment.Events;
 using Domains.Gameplay.Equipment.Scripts;
 using Domains.Scripts_that_Need_Sorting;
 using HighlightPlus;
@@ -65,7 +64,6 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
                 // Get terrain texture index at hit point
                 Terrain terrain;
                 var textureIndex = terrainLayerDetector.GetTextureIndex(hit, out terrain);
-                throw new NotImplementedException();
 
                 return textureIndex;
             }

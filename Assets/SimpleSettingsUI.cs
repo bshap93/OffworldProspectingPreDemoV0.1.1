@@ -270,7 +270,7 @@ public class SimpleSettingsUI : MonoBehaviour
     public void CloseSettingsMenu()
     {
         // Find and use your existing settings panel close method
-        var settingsPanel = FindObjectOfType<SettingsPanelsMainMenu>();
+        var settingsPanel = FindFirstObjectByType<SettingsPanelsMainMenu>();
         if (settingsPanel != null) settingsPanel.TriggerClose();
     }
 }
