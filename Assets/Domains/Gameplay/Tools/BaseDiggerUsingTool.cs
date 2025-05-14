@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using Digger.Modules.Core.Sources;
 using Digger.Modules.Runtime.Sources;
 using Domains.Player.Scripts;
@@ -141,6 +140,10 @@ namespace Domains.Gameplay.Tools
                 UnityEngine.Debug.LogError($"Error in GetCurrentTextureIndex: {ex.Message}");
                 return 0; // Default safe value
             }
+        }
+
+        public void HideCooldownBar()
+        {
         }
 
         protected int GetTerrainLayerBasedOnDepthAndOverrides(int rawTextureIndex, float digDepth)
@@ -386,7 +389,7 @@ namespace Domains.Gameplay.Tools
                 float.IsNaN(vector.z) || float.IsInfinity(vector.z) ? 0f : vector.z
             );
         }
-        
+
         protected IEnumerator ShowCooldownBarCoroutine(float duration)
         {
             if (cooldownProgressBar == null) yield break;

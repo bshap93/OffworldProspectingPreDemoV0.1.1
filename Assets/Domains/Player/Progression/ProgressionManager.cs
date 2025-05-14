@@ -23,9 +23,10 @@ namespace Domains.Player.Progression
     {
         private const string ObjectivesKeyName = "CollectableObjectives";
         private const string TutorialFinishedKeyName = "TutorialFinished";
-        private const string GameSaveHasProgressedKeyName = "GameSaveHasProgressed";
         public static HashSet<string> CollectedObjectives = new();
         public static bool TutorialFinished = true;
+
+        public static bool IsNewGame;
 
 
         private string _collectedObjectiveSave;
@@ -79,7 +80,7 @@ namespace Domains.Player.Progression
         public static void FinishTutorial()
         {
             TutorialFinished = true;
-            SaveAllProgression();
+            SaveAllProgression(false);
 
             UnityEngine.Debug.Log("ProgressionManager: Tutorial finished");
         }
@@ -114,6 +115,13 @@ namespace Domains.Player.Progression
         {
             CollectedObjectives = new HashSet<string>();
             TutorialFinished = false;
+            IsNewGame = true;
+        }
+
+        public static void ContinueGame()
+        {
+            IsNewGame = false;
+            UnityEngine.Debug.Log("ProgressionManager: Continue game");
         }
 
 
@@ -168,9 +176,12 @@ namespace Domains.Player.Progression
             }
         }
 
-        public static void SaveAllProgression()
+        public static void SaveAllProgression(bool newGame)
         {
             var savePath = GetSaveFilePath();
+
+            if (newGame) IsNewGame = true;
+            ES3.Save("IsNewGame", IsNewGame, savePath);
 
             ES3.Save(ObjectivesKeyName, CollectedObjectives, savePath);
             ES3.Save(TutorialFinishedKeyName, TutorialFinished, savePath);

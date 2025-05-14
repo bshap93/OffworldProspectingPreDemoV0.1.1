@@ -19,9 +19,7 @@ namespace Domains.Scene.Scripts
         public const string SaveFileName = "GameSave.es3";
         public const string SavePickablesFileName = "Pickables.es3";
         public const string SaveProgressionFilePath = "Progression.es3";
-        public const string HasGameSavedSinceNewGame = "HasGameSavedSinceNewGame";
 
-        public bool hasGameSavedSinceNewGameBool;
 
         // [Header("Persistence Managers")] [SerializeField]
         // InventoryPersistenceManager inventoryManager;
@@ -65,12 +63,7 @@ namespace Domains.Scene.Scripts
 
             Instance = this;
 
-            if (freshStart)
-            {
-                DataReset.ClearAllSaveData();
-                hasGameSavedSinceNewGameBool = false;
-                ES3.Save(HasGameSavedSinceNewGame, hasGameSavedSinceNewGameBool, GetSaveFileName());
-            }
+            if (freshStart) DataReset.ClearAllSaveData();
 
 
             // Initialize managers if needed
@@ -156,10 +149,8 @@ namespace Domains.Scene.Scripts
             PickableManager.SaveAllPickedItems();
             DestructableManager.SaveAllDestructables();
             DiggerEvent.Trigger(DiggerEventType.Persist);
-            ProgressionManager.SaveAllProgression();
+            ProgressionManager.SaveAllProgression(false);
             UnityEngine.Debug.Log("All data saved");
-            hasGameSavedSinceNewGameBool = true;
-            ES3.Save(HasGameSavedSinceNewGame, hasGameSavedSinceNewGameBool, GetSaveFileName());
 
             AlertEvent.Trigger(AlertReason.SavingGame, "Saving game...");
         }
@@ -174,7 +165,6 @@ namespace Domains.Scene.Scripts
             var pickablesLoaded = pickableManager != null && pickableManager.HasSavedData();
             var destructablesLoaded = destructableManager != null && destructableManager.HasSavedData();
             var progressionLoaded = progressionManager != null && progressionManager.HasProgressionData();
-            var hasGameSaved = ES3.Load<bool>(HasGameSavedSinceNewGame, GetSaveFileName());
 
 
             // Digger has no Load method
@@ -187,9 +177,6 @@ namespace Domains.Scene.Scripts
             if (pickablesLoaded) pickableManager.LoadPickedItems();
             if (destructablesLoaded) destructableManager.LoadDestructables();
             if (progressionLoaded) progressionManager.LoadProgressionObjectivesState();
-
-            if (hasGameSaved) hasGameSavedSinceNewGameBool = true;
-            else hasGameSavedSinceNewGameBool = false;
 
 
             // 3rd Party

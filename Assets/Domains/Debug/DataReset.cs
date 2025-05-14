@@ -1,3 +1,4 @@
+using Domains.Debug.Events;
 using Domains.Player.Events;
 using Domains.Player.Progression;
 using Domains.Player.Scripts;
@@ -48,7 +49,7 @@ namespace Domains.Debug
 
             // Reset progression
             ProgressionManager.ResetProgression();
-            ProgressionManager.SaveAllProgression();
+            ProgressionManager.SaveAllProgression(true);
 
             // Try reset Digger. Note this won't work in editor mode
             DiggerEvent.Trigger(DiggerEventType.Delete);
@@ -58,6 +59,8 @@ namespace Domains.Debug
             // Reset inventory
             PlayerInventoryManager.ResetInventory();
             PlayerInventoryManager.SaveInventory();
+
+            DataSaveEvent.Trigger(DataSaveEventType.DataResetFinished);
 
 
             UnityEngine.Debug.Log("All save data cleared successfully.");

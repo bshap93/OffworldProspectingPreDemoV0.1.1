@@ -1,21 +1,18 @@
-using Domains.Scene.Scripts;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class MainMenuSaveFileManager : MonoBehaviour
 {
     [SerializeField] private GameObject continueGameButton;
-    private bool hasGameSavedSinceNewGame;
 
 
     private void Start()
     {
-        hasGameSavedSinceNewGame =
-            ES3.Load<bool>(SaveManager.HasGameSavedSinceNewGame, SaveManager.SaveFileName);
+        var isNewGame = ES3.Load("IsNewGame", "Progression.es3", false);
 
-        if (!hasGameSavedSinceNewGame)
+
+        if (isNewGame)
         {
-            continueGameButton.gameObject.GetComponent<Button>().SetEnabled(false);
+            continueGameButton.gameObject.SetActive(false);
             Debug.Log("Continue Game Button Disabled");
         }
     }
