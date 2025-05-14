@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using JetBrains.Annotations;
 using MoreMountains.Feedbacks;
@@ -7,8 +8,17 @@ namespace Domains.Scripts_that_Need_Sorting
 {
     public class HabDoorsController : MonoBehaviour
     {
+        [Serializable]
+        public enum DoorOpenDirection
+        {
+            Outward,
+            Inward
+        }
+
         public GameObject RDoor;
         public GameObject LDoor;
+
+        public DoorOpenDirection DoorOpenDirectionType;
 
         [CanBeNull] public MMFeedbacks OpenDoorFeedbacks;
         [CanBeNull] public MMFeedbacks CloseDoorFeedbacks;
@@ -42,8 +52,18 @@ namespace Domains.Scripts_that_Need_Sorting
             isOpen = true;
             if (OpenDoorFeedbacks != null) OpenDoorFeedbacks.PlayFeedbacks();
 
-            RDoor.transform.DORotate(originalRotationR.eulerAngles + new Vector3(0, 90, 0), 1);
-            LDoor.transform.DORotate(originalRotationL.eulerAngles + new Vector3(0, -90, 0), 1);
+            if (DoorOpenDirectionType == DoorOpenDirection.Outward)
+            {
+                // Rotate outward
+                RDoor.transform.DORotate(originalRotationR.eulerAngles + new Vector3(0, -90, 0), 1);
+                LDoor.transform.DORotate(originalRotationL.eulerAngles + new Vector3(0, 90, 0), 1);
+            }
+            else
+            {
+                // Rotate inwar
+                RDoor.transform.DORotate(originalRotationR.eulerAngles + new Vector3(0, 90, 0), 1);
+                LDoor.transform.DORotate(originalRotationL.eulerAngles + new Vector3(0, -90, 0), 1);
+            }
         }
 
         public void CloseDoors()

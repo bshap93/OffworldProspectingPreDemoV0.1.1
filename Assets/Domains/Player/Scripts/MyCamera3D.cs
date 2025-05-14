@@ -157,7 +157,8 @@ namespace Domains.Player.Scripts
                 return;
             }
 
-            var cameraAxes = inputHandlerSettings.InputHandler.GetVector2(axes);
+            var cameraAxes = inputHandlerSettings.InputHandler.GetVector2(axes) *
+                             InputSettings.Instance.MouseSensitivity;
 
             // Add this block to apply Y-axis inversion
             if (InputSettings.Instance.InvertYAxis) cameraAxes.y = -cameraAxes.y;
