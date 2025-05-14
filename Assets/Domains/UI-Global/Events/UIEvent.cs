@@ -17,7 +17,7 @@ namespace Domains.UI_Global.Events
         OpenBriefing,
         CloseBriefing,
         ShowInfoPanel,
-        HideInfoPanel,
+        CloseInfoPanel,
         OpenCommsComputer,
         CloseCommsComputer
     }

@@ -8,6 +8,7 @@ namespace Domains.Input.Scripts
     {
         [SerializeField] private bool invertYAxis;
         [SerializeField] private float mouseSensitivity = 1f;
+        [SerializeField] private bool showKeyboardControls = true;
         public static InputSettings Instance { get; private set; }
 
 
@@ -18,6 +19,17 @@ namespace Domains.Input.Scripts
             {
                 invertYAxis = value;
                 PlayerPrefs.SetInt("InvertYAxis", value ? 1 : 0);
+                PlayerPrefs.Save();
+            }
+        }
+
+        public bool ShowKeyboardControls
+        {
+            get => showKeyboardControls;
+            set
+            {
+                showKeyboardControls = value;
+                PlayerPrefs.SetInt("ShowKeyboardControls", value ? 1 : 0);
                 PlayerPrefs.Save();
             }
         }
@@ -45,6 +57,9 @@ namespace Domains.Input.Scripts
 
                 if (PlayerPrefs.HasKey("MouseSensitivity"))
                     mouseSensitivity = PlayerPrefs.GetFloat("MouseSensitivity");
+
+                if (PlayerPrefs.HasKey("ShowKeyboardControls"))
+                    showKeyboardControls = PlayerPrefs.GetInt("ShowKeyboardControls") == 1;
             }
             else
             {
@@ -71,6 +86,9 @@ namespace Domains.Input.Scripts
                     break;
                 case InputSettingsEventType.SetMouseSensitivity:
                     if (eventType.FloatValue != null) MouseSensitivity = eventType.FloatValue.Value;
+                    break;
+                case InputSettingsEventType.ShowKeyboardControls:
+                    if (eventType.BoolValue != null) ShowKeyboardControls = eventType.BoolValue.Value;
                     break;
             }
         }

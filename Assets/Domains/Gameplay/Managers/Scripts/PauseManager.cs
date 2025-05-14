@@ -3,7 +3,9 @@ using Domains.Input.Scripts;
 using Domains.Scene.Events;
 using Domains.UI_Global.Events;
 using Domains.UI_Global.Scripts;
+using MoreMountains.Feedbacks;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Domains.Gameplay.Managers.Scripts
 {
@@ -12,6 +14,11 @@ namespace Domains.Gameplay.Managers.Scripts
         public static PauseManager Instance;
 
         [SerializeField] private AudioSource uiButtonAudioSource;
+
+        [SerializeField] private MMFeedbacks pauseFeedback;
+
+        [FormerlySerializedAs("unPauseFeedback")] [SerializeField]
+        private MMFeedbacks quitUIFeedbacks;
 
         private List<AudioSource> _audioSources = new();
 
@@ -45,6 +52,7 @@ namespace Domains.Gameplay.Managers.Scripts
 
 
                 SceneEvent.Trigger(SceneEventType.TogglePauseScene);
+                pauseFeedback?.PlayFeedbacks();
             }
             else if (CustomInputBindings.IsPausePressed())
             {
@@ -52,8 +60,11 @@ namespace Domains.Gameplay.Managers.Scripts
                 UIEvent.Trigger(UIEventType.CloseFuelConsole);
                 UIEvent.Trigger(UIEventType.CloseUI);
                 UIEvent.Trigger(UIEventType.CloseBriefing);
-                UIEvent.Trigger(UIEventType.HideInfoPanel);
+                UIEvent.Trigger(UIEventType.CloseInfoPanel);
+                UIEvent.Trigger(UIEventType.CloseInfoDump);
                 UIEvent.Trigger(UIEventType.CloseCommsComputer);
+
+                quitUIFeedbacks?.PlayFeedbacks();
             }
         }
 

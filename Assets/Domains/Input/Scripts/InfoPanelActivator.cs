@@ -42,7 +42,7 @@ namespace Domains.Input.Scripts
 
         public void OnMMEvent(UIEvent eventType)
         {
-            if (eventType.EventType == UIEventType.HideInfoPanel) HideInfoPanel();
+            if (eventType.EventType == UIEventType.CloseInfoPanel) HideInfoPanel();
         }
 
 

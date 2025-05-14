@@ -8,6 +8,7 @@ namespace Domains.Input.Scripts
     {
         [SerializeField] private SwitchManager invertYAxisToggle;
         [SerializeField] private SliderManager mouseSensitivitySlider;
+        [SerializeField] private SwitchManager showKeyboardControlsToggle;
 
         private void Awake()
         {
@@ -23,6 +24,11 @@ namespace Domains.Input.Scripts
         {
             var sensitivity = mouseSensitivitySlider.mainSlider.value;
             InputSettingsEvent.Trigger(InputSettingsEventType.SetMouseSensitivity, floatValue: sensitivity);
+        }
+
+        public void OnShowKeyboardControlsChanged(bool value)
+        {
+            InputSettingsEvent.Trigger(InputSettingsEventType.ShowKeyboardControls, value);
         }
     }
 }

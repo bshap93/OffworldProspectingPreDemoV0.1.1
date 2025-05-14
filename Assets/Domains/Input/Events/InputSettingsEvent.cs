@@ -7,7 +7,8 @@ namespace Domains.Input.Events
     public enum InputSettingsEventType
     {
         InvertYAxis,
-        SetMouseSensitivity
+        SetMouseSensitivity,
+        ShowKeyboardControls
     }
 
     public struct InputSettingsEvent

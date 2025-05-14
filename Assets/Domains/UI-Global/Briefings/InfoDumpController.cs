@@ -4,7 +4,7 @@ using Domains.UI_Global.Events;
 using MoreMountains.Tools;
 using UnityEngine;
 
-namespace Domains.UI_Global.Scripts
+namespace Domains.UI_Global.Briefings
 {
     public class InfoDumpController : MonoBehaviour, MMEventListener<UIEvent>
     {
