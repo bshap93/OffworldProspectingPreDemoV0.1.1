@@ -17,7 +17,9 @@ namespace Domains.UI_Global.Events
         OpenBriefing,
         CloseBriefing,
         ShowInfoPanel,
-        HideInfoPanel
+        HideInfoPanel,
+        OpenCommsComputer,
+        CloseCommsComputer
     }
 
     public struct UIEvent
