@@ -15,6 +15,8 @@ namespace Domains.Input.Scripts
 
         public float scaleFactor = 1f;
 
+        [Header("Prompt Settings")] public bool isShowing;
+
         public Vector3 promptTransformOffset;
         public Vector3 promptRotationOffset;
 
@@ -46,6 +48,23 @@ namespace Domains.Input.Scripts
             _infoPanelActivator = GetComponent<InfoPanelActivator>();
         }
 
+        private void Update()
+        {
+            if (isShowing)
+                if (CustomInputBindings.IsInteractPressed())
+                    Interact();
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.CompareTag("Player")) ShowInteractablePrompt();
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.CompareTag("Player")) HideInteractablePrompt();
+        }
+
 
         public void Interact()
         {
@@ -55,12 +74,20 @@ namespace Domains.Input.Scripts
 
         public void ShowInteractablePrompt()
         {
-            if (_buttonPrompt != null) _buttonPrompt.Show(PromptKeyStr, PromptActionStr);
+            if (_buttonPrompt != null)
+            {
+                isShowing = true;
+                _buttonPrompt.Show(PromptKeyStr, PromptActionStr);
+            }
         }
 
         public void HideInteractablePrompt()
         {
-            if (_buttonPrompt != null) _buttonPrompt.Hide();
+            if (_buttonPrompt != null)
+            {
+                isShowing = false;
+                _buttonPrompt.Hide();
+            }
         }
 
         private void ActivateButton()

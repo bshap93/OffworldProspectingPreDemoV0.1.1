@@ -30,21 +30,18 @@ MonoBehaviour:
   - playerDepth: -18
     defaultLayerIndex: 6
     alternateAcceptableLayerIndices: 0900000004000000
-  - playerDepth: -22.5
+  - playerDepth: -27
     defaultLayerIndex: 7
     alternateAcceptableLayerIndices: 080000000f000000090000000500000004000000
-  - playerDepth: -27
-    defaultLayerIndex: 9
-    alternateAcceptableLayerIndices: 0400000005000000
   - playerDepth: -40
     defaultLayerIndex: 15
+    alternateAcceptableLayerIndices: 0400000005000000
+  - playerDepth: -55
+    defaultLayerIndex: 5
     alternateAcceptableLayerIndices: 0800000007000000060000000500000004000000
-  - playerDepth: -50
-    defaultLayerIndex: 5
+  - playerDepth: -75
+    defaultLayerIndex: 8
     alternateAcceptableLayerIndices: 070000000800000004000000
-  - playerDepth: -60
-    defaultLayerIndex: 5
-    alternateAcceptableLayerIndices: 0f0000000900000004000000
   terrainDigParticlePrefabs:
   - terrainLayerIndex: 13
     primaryPrefab: {fileID: 6948713295122520351, guid: dd71b63c997ed704aa0f74c0bf4c3630, type: 3}

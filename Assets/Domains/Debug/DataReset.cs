@@ -1,4 +1,3 @@
-using Domains.Debug.Events;
 using Domains.Player.Events;
 using Domains.Player.Progression;
 using Domains.Player.Scripts;
@@ -57,10 +56,8 @@ namespace Domains.Debug
             // Reset digger data if it exists
             // if (DiggerDataManager.Instance != null) DiggerDataManager.Instance.ResetDiggerData();
             // Reset inventory
-            PlayerInventoryManager.ResetInventory();
-            PlayerInventoryManager.SaveInventory();
-
-            DataSaveEvent.Trigger(DataSaveEventType.DataResetFinished);
+            PlayerInventoryManager.ResetInventory(); // will avoid clearing scene inventory if not loaded
+            InventorySaveUtility.Reset(); // safely wipes saved inventory data
 
 
             UnityEngine.Debug.Log("All save data cleared successfully.");
