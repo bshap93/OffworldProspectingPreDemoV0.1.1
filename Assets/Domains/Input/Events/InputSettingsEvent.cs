@@ -6,7 +6,8 @@ namespace Domains.Input.Events
     [Serializable]
     public enum InputSettingsEventType
     {
-        InvertYAxis
+        InvertYAxis,
+        SetMouseSensitivity
     }
 
     public struct InputSettingsEvent
