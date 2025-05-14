@@ -41,6 +41,8 @@ namespace Domains.Input.Scripts
                 var promptPosition = transform.position + promptTransformOffset;
                 var promptRotation = Quaternion.Euler(promptRotationOffset);
                 _buttonPrompt = Instantiate(ButtonPromptPrefab, promptPosition, promptRotation, transform);
+                _buttonPrompt.transform.localScale *= scaleFactor;
+                _buttonPrompt.SetTextColor(PromptTextColor);
                 _buttonPrompt.Initialization();
                 _buttonPrompt.Hide();
             }

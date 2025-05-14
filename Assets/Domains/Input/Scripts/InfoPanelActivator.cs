@@ -2,6 +2,7 @@
 using MoreMountains.Feedbacks;
 using MoreMountains.Tools;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Domains.Input.Scripts
 {
@@ -16,6 +17,8 @@ namespace Domains.Input.Scripts
         public Vector2 screenOffset = Vector2.zero;
 
         [Header("Feedbacks")] public MMFeedbacks hidePanelFeedbacks;
+
+        public UnityEvent onShowPanel;
 
         public MMFeedbacks showPanelFeedbacks;
         // private Coroutine _hideTimerCoroutine;
@@ -75,6 +78,7 @@ namespace Domains.Input.Scripts
             _isPanelVisible = true;
             UIEvent.Trigger(UIEventType.ShowInfoPanel);
             showPanelFeedbacks?.PlayFeedbacks();
+            onShowPanel?.Invoke();
 
             var rectTransform = _infoPanelInstance.GetComponent<RectTransform>();
             if (rectTransform != null)

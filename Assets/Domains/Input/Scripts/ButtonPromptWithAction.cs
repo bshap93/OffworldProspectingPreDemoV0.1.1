@@ -61,6 +61,8 @@ namespace Domains.Input.Scripts
         public virtual void SetTextColor(Color newColor)
         {
             PromptText.color = newColor;
+            ActionText.color = newColor;
+            _tempColor = newColor;
         }
 
         public virtual void Show(string key, string action)
