@@ -15,5 +15,10 @@ namespace Domains.UI_Global.Triggers
         {
             UIEvent.Trigger(UIEventType.CloseUI);
         }
+
+        public void TriggerCloseCommsComputer()
+        {
+            UIEvent.Trigger(UIEventType.CloseCommsComputer);
+        }
     }
 }

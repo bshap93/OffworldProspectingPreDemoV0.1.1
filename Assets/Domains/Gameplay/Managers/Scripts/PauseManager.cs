@@ -63,6 +63,7 @@ namespace Domains.Gameplay.Managers.Scripts
                 UIEvent.Trigger(UIEventType.CloseInfoPanel);
                 UIEvent.Trigger(UIEventType.CloseInfoDump);
                 UIEvent.Trigger(UIEventType.CloseCommsComputer);
+                UIEvent.Trigger(UIEventType.CloseSettings);
 
                 quitUIFeedbacks?.PlayFeedbacks();
             }

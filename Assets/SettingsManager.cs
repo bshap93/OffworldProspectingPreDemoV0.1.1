@@ -76,7 +76,7 @@ public class SettingsManager : MonoBehaviour
         PlayerPrefs.SetInt("QualityLevel", qualityIndex);
         PlayerPrefs.Save();
     }
-    
+
     // Y Inversion
     public void SetYInversion(bool isInverted)
     {

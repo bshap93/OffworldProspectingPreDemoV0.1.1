@@ -1,8 +1,8 @@
-using Domains.Scene.MainMenu;
+using Domains.UI_Global.Events;
 using MoreMountains.Tools;
 using UnityEngine;
 
-public class SettingsPanelsMainMenu : MonoBehaviour, MMEventListener<MainMenuEvent>
+public class SettingsPanelsMainMenu : MonoBehaviour, MMEventListener<UIEvent>
 {
     private CanvasGroup settingsPanelCanvasGroup;
 
@@ -23,14 +23,14 @@ public class SettingsPanelsMainMenu : MonoBehaviour, MMEventListener<MainMenuEve
         this.MMEventStopListening();
     }
 
-    public void OnMMEvent(MainMenuEvent eventType)
+    public void OnMMEvent(UIEvent eventType)
     {
         switch (eventType.EventType)
         {
-            case MainMenuEventType.SettingsOpenTriggered:
+            case UIEventType.OpenSettings:
                 OpenSettingsPanel();
                 break;
-            case MainMenuEventType.SettingsCloseTriggered:
+            case UIEventType.CloseSettings:
                 CloseSettingsPanel();
                 break;
         }
@@ -38,12 +38,12 @@ public class SettingsPanelsMainMenu : MonoBehaviour, MMEventListener<MainMenuEve
 
     public void TriggerClose()
     {
-        MainMenuEvent.Trigger(MainMenuEventType.SettingsCloseTriggered);
+        UIEvent.Trigger(UIEventType.CloseSettings);
     }
 
     public void TriggerOpen()
     {
-        MainMenuEvent.Trigger(MainMenuEventType.SettingsOpenTriggered);
+        UIEvent.Trigger(UIEventType.OpenSettings);
     }
 
 

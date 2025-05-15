@@ -224,13 +224,15 @@ namespace Domains.Player.Scripts
                 eventType.EventType == UIEventType.OpenFuelConsole ||
                 eventType.EventType == UIEventType.OpenInfoDump ||
                 eventType.EventType == UIEventType.OpenQuestDialogue ||
-                eventType.EventType == UIEventType.OpenBriefing
+                eventType.EventType == UIEventType.OpenBriefing ||
+                eventType.EventType == UIEventType.OpenCommsComputer
                ) EnableCameraControl(false);
             else if (eventType.EventType == UIEventType.CloseVendorConsole ||
                      eventType.EventType == UIEventType.CloseFuelConsole ||
                      eventType.EventType == UIEventType.CloseInfoDump ||
                      eventType.EventType == UIEventType.CloseQuestDialogue
-                     || eventType.EventType == UIEventType.CloseBriefing
+                     || eventType.EventType == UIEventType.CloseBriefing ||
+                     eventType.EventType == UIEventType.CloseCommsComputer
                     ) EnableCameraControl(true);
         }
 

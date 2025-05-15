@@ -91,6 +91,12 @@ namespace Domains.UI_Global.Scripts
                 case UIEventType.CloseInfoDump:
                     uiIsOpen = false;
                     break;
+                case UIEventType.OpenSettings:
+                    uiIsOpen = true;
+                    break;
+                case UIEventType.CloseSettings:
+                    uiIsOpen = false;
+                    break;
             }
         }
     }

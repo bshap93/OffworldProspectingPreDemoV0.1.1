@@ -19,7 +19,9 @@ namespace Domains.UI_Global.Events
         ShowInfoPanel,
         CloseInfoPanel,
         OpenCommsComputer,
-        CloseCommsComputer
+        CloseCommsComputer,
+        CloseSettings,
+        OpenSettings
     }
 
     public struct UIEvent

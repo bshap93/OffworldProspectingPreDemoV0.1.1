@@ -55,6 +55,7 @@ crashlytics-build.properties
 /[Aa]ssets/_AssetInventoryPreviewsTemp/*
 Assets/Scenes/MainScene03.unity
 
+
 *.vom_v*
 *.vox_v*
 *.asset_*
