@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using Domains.Input.Scripts;
 using Domains.Player.Events;
 using Domains.Player.Progression;
 using Domains.UI_Global.Events;
@@ -11,11 +12,11 @@ namespace Domains.Items.Scripts
 {
     public class BeaconInteractable : InteractableObjective
     {
-        public GameObject interactablePrompt;
-
         [SerializeField] private Dissolver dissolver;
 
         [FormerlySerializedAs("IsObjective")] public bool isObjective;
+
+        private InfoPanelActivator _infoPanelActivator;
 
 
         private bool _interactionComplete;
@@ -30,6 +31,7 @@ namespace Domains.Items.Scripts
             base.Start();
             StartCoroutine(InitializeAfterProgressionManager());
 
+            _infoPanelActivator = GetComponent<InfoPanelActivator>();
             if (interactFeedbacks != null) interactFeedbacks.Initialization();
         }
 
@@ -50,6 +52,15 @@ namespace Domains.Items.Scripts
         public override void Interact()
         {
             if (hasBeenInteractedWith) return;
+            if (_infoPanelActivator != null)
+            {
+                _infoPanelActivator.ToggleInfoPanel();
+            }
+            // FlagBeaconForTeleport();
+        }
+
+        private void FlagBeaconForTeleport()
+        {
             CurrencyEvent.Trigger(CurrencyEventType.AddCurrency, rewardAmount);
             AlertEvent.Trigger(AlertReason.CreditsAdded, rewardAmount! + " Credits Added to your account",
                 "Beacon Interacted", null, null, Color.white);
