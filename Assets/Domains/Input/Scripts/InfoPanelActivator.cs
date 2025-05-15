@@ -94,6 +94,7 @@ namespace Domains.Input.Scripts
             {
                 _infoPanelInstance.SetActive(false);
                 _isPanelVisible = false;
+                UIEvent.Trigger(UIEventType.CloseInfoPanel);
                 hidePanelFeedbacks?.PlayFeedbacks();
                 onHidePanel?.Invoke();
             }
