@@ -20,6 +20,8 @@ namespace Domains.Input.Scripts
 
         public UnityEvent onShowPanel;
 
+        public UnityEvent onHidePanel;
+
         public MMFeedbacks showPanelFeedbacks;
         // private Coroutine _hideTimerCoroutine;
 
@@ -76,7 +78,7 @@ namespace Domains.Input.Scripts
 
             _infoPanelInstance.SetActive(true);
             _isPanelVisible = true;
-            UIEvent.Trigger(UIEventType.ShowInfoPanel);
+            UIEvent.Trigger(UIEventType.OpenInfoPanel);
             showPanelFeedbacks?.PlayFeedbacks();
             onShowPanel?.Invoke();
 
@@ -93,6 +95,7 @@ namespace Domains.Input.Scripts
                 _infoPanelInstance.SetActive(false);
                 _isPanelVisible = false;
                 hidePanelFeedbacks?.PlayFeedbacks();
+                onHidePanel?.Invoke();
             }
         }
     }

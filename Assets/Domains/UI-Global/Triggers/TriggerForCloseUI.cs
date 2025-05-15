@@ -20,5 +20,10 @@ namespace Domains.UI_Global.Triggers
         {
             UIEvent.Trigger(UIEventType.CloseCommsComputer);
         }
+
+        public void TriggerCloseInfoPanel()
+        {
+            UIEvent.Trigger(UIEventType.CloseInfoPanel);
+        }
     }
 }

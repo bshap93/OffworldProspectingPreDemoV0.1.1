@@ -52,14 +52,11 @@ namespace Domains.Items.Scripts
         public override void Interact()
         {
             if (hasBeenInteractedWith) return;
-            if (_infoPanelActivator != null)
-            {
-                _infoPanelActivator.ToggleInfoPanel();
-            }
+            if (_infoPanelActivator != null) _infoPanelActivator.ToggleInfoPanel();
             // FlagBeaconForTeleport();
         }
 
-        private void FlagBeaconForTeleport()
+        public void FlagBeaconForTeleport()
         {
             CurrencyEvent.Trigger(CurrencyEventType.AddCurrency, rewardAmount);
             AlertEvent.Trigger(AlertReason.CreditsAdded, rewardAmount! + " Credits Added to your account",

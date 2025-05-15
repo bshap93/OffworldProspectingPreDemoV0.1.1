@@ -226,6 +226,7 @@ namespace Domains.Player.Scripts
                 eventType.EventType == UIEventType.OpenQuestDialogue ||
                 eventType.EventType == UIEventType.OpenBriefing ||
                 eventType.EventType == UIEventType.OpenCommsComputer
+                || eventType.EventType == UIEventType.OpenInfoPanel
                ) EnableCameraControl(false);
             else if (eventType.EventType == UIEventType.CloseVendorConsole ||
                      eventType.EventType == UIEventType.CloseFuelConsole ||
@@ -233,6 +234,7 @@ namespace Domains.Player.Scripts
                      eventType.EventType == UIEventType.CloseQuestDialogue
                      || eventType.EventType == UIEventType.CloseBriefing ||
                      eventType.EventType == UIEventType.CloseCommsComputer
+                     || eventType.EventType == UIEventType.CloseInfoPanel
                     ) EnableCameraControl(true);
         }
 
