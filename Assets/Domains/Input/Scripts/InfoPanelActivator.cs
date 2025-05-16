@@ -11,6 +11,7 @@ namespace Domains.Input.Scripts
         [Tooltip("Prefab to show when the object is looked at.")]
         public GameObject infoPanelPrefab;
 
+        public bool automaticallyShowOnInteract = true;
         public Canvas canvas;
 
         [Tooltip("Optional offset from center of screen (Canvas space).")]
@@ -81,6 +82,7 @@ namespace Domains.Input.Scripts
             UIEvent.Trigger(UIEventType.OpenInfoPanel);
             showPanelFeedbacks?.PlayFeedbacks();
             onShowPanel?.Invoke();
+
 
             var rectTransform = _infoPanelInstance.GetComponent<RectTransform>();
             if (rectTransform != null)

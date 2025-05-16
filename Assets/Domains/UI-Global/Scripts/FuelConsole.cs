@@ -1,3 +1,4 @@
+using Domains.Input.Scripts;
 using Domains.Player.Events;
 using Domains.Player.Scripts;
 using Domains.UI_Global.Events;
@@ -11,6 +12,10 @@ namespace Domains.UI_Global.Scripts
     {
         public int fuelPricePerUnit = 10;
         [SerializeField] private MMFeedbacks buyFuelFeedbacks;
+
+        [SerializeField] private InfoPanelActivator infoPanelActivator;
+
+        public bool hasBeenIntroduced;
         private FuelUIController fuelUIController;
 
         private float playerCurrencyAmount;
@@ -31,6 +36,20 @@ namespace Domains.UI_Global.Scripts
         private void OnDisable()
         {
             this.MMEventStopListening();
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (!hasBeenIntroduced)
+            {
+                hasBeenIntroduced = true;
+                infoPanelActivator?.ShowInfoPanel();
+            }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (hasBeenIntroduced) infoPanelActivator?.HideInfoPanel();
         }
 
         public void OnMMEvent(UIEvent eventType)
