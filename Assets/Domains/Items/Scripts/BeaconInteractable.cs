@@ -5,6 +5,7 @@ using Domains.Player.Events;
 using Domains.Player.Progression;
 using Domains.UI_Global.Events;
 using INab.Dissolve;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -15,6 +16,8 @@ namespace Domains.Items.Scripts
         [SerializeField] private Dissolver dissolver;
 
         [FormerlySerializedAs("IsObjective")] public bool isObjective;
+
+        [SerializeField] [CanBeNull] private GameObject parentObject;
 
         private InfoPanelActivator _infoPanelActivator;
 
@@ -46,7 +49,13 @@ namespace Domains.Items.Scripts
             yield return null;
 
 
-            if (ProgressionManager.IsObjectiveCollected(uniqueID)) Destroy(gameObject);
+            if (ProgressionManager.IsObjectiveCollected(uniqueID))
+            {
+                if (parentObject != null)
+                    Destroy(parentObject);
+                else
+                    Destroy(gameObject);
+            }
         }
 
         public override void Interact()
@@ -82,7 +91,10 @@ namespace Domains.Items.Scripts
             if (dissolver == null)
             {
                 UnityEngine.Debug.LogWarning("Dissolver not assigned! Destroying object without dissolve.");
-                Destroy(gameObject);
+                if (parentObject != null)
+                    Destroy(parentObject);
+                else
+                    Destroy(gameObject);
                 yield break;
             }
 
@@ -90,7 +102,10 @@ namespace Domains.Items.Scripts
             dissolver.Dissolve();
             yield return new WaitForSeconds(dissolver.duration);
             // Destroy game object
-            Destroy(gameObject);
+            if (parentObject != null)
+                Destroy(parentObject);
+            else
+                Destroy(gameObject);
         }
     }
 }
