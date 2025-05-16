@@ -33,7 +33,7 @@ Material:
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 2450
   stringTagMap:
     RenderType: TransparentCutout
   disabledShaderPasses: []
@@ -146,7 +146,7 @@ Material:
     - _GlossyReflections: 1
     - _GuideTilling: 2
     - _Hardness: 0
-    - _Metallic: 0.136
+    - _Metallic: 0.508
     - _Metallic_Intensity: 1
     - _Mode: 0
     - _OcclusionStrength: 1
@@ -154,7 +154,7 @@ Material:
     - _Parallax: 0.02
     - _Roughness_Intensity: 9.14
     - _Roughness_Intensity1: 0
-    - _Smoothness: 0.913
+    - _Smoothness: 0.813
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _Specular_Intensity: 2
@@ -166,7 +166,7 @@ Material:
     - _USE_TRIPLANAR_UVS: 0
     - _USE_VERTEX_DISPLACEMENT: 0
     - _UVSec: 0
-    - _Use_Metallic_Texture: 0
+    - _Use_Metallic_Texture: 1
     - _Width: 0
     - _ZWrite: 1
     - __dirty: 0
