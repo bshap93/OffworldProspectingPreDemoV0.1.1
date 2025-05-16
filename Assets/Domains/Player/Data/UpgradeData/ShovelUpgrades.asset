@@ -19,7 +19,7 @@ MonoBehaviour:
   - Shovel LV3
   - Shovel LV4
   description: 
-  upgradeCosts: b004000098080000401f0000204e0000
+  upgradeCosts: b0040000980800003011000028230000
   upgradeColors:
   - {r: 0.014813383, g: 0.67295593, b: 0.061269637, a: 1}
   - {r: 0, g: 0.10374492, b: 0.9433962, a: 1}
@@ -38,9 +38,9 @@ MonoBehaviour:
   effectTypes: 00000000000000000000000000000000
   effectValues:
   - 1.35
-  - 1.5
-  - 1.5
-  - 1.5
+  - 1.35
+  - 1.35
+  - 1.35
   toolChangeIDs:
   - 
   - 
