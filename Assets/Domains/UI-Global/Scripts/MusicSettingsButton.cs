@@ -34,6 +34,12 @@ namespace Domains.UI_Global.Scripts
 
         public void OnPointerEnter(PointerEventData eventData)
         {
+            if (detailImage == null || detailIcon == null || detailBackground == null)
+            {
+                UnityEngine.Debug.Log("One or more UI elements are not assigned.");
+                return;
+            }
+
             if (enableIconPreview)
             {
                 detailImage.gameObject.SetActive(false);
