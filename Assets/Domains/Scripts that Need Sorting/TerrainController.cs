@@ -7,6 +7,9 @@ namespace Domains.Scripts_that_Need_Sorting
     public class TerrainController : MonoBehaviour
     {
         [SerializeField] public TerrainBehavior terrainBehavior;
+        private GameObject currentDebrisPrefab;
+
+        private GameObject previousDebrisPrefab;
 
         public static TerrainController Instance { get; private set; }
 

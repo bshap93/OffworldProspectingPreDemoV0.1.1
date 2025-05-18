@@ -35,6 +35,7 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
         public Material currentMaterial;
         private readonly float defaultEffectOpacity = 10f;
 
+
         // Backup default values to restore if needed
         private readonly float defaultEffectRadius = 0.8f;
         private readonly float defaultFirstHitOpacity = 1f;
@@ -60,6 +61,8 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
         private bool isDigging;
 
         private Vector3 lastHitPosition;
+
+        private GameObject lastValidDebrisPrefab;
 
         // Logger reference
         private DiggerDebugLogger logger;
