@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Linq;
+﻿using System.Linq;
 using Digger.Modules.Runtime.Sources;
 using Domains.Gameplay.Mining.Scripts;
 using Domains.Player.Camera;
@@ -16,6 +15,7 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
     {
         [Header("Feedbacks")] public MMFeedbacks diggingFeedbacks;
 
+        [SerializeField] private ProgressBarBlue cooldownProgressBar;
         public GameObject debrisEffectPrefab;
 
         [Header("Material")] [Header("Material Settings")]
@@ -166,9 +166,8 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
                 digger.Modify(digPosition, brush, Action, textureIndex, effectOpacity, effectRadius);
 
             if (didDig)
-                CooldownCoroutine = StartCoroutine(ShowCooldownBarCoroutine(miningCooldown));
+                CooldownCoroutine =
+                    StartCoroutine(cooldownProgressBar.ShowCooldownBarCoroutine(miningCooldown));
         }
-
-
     }
 }

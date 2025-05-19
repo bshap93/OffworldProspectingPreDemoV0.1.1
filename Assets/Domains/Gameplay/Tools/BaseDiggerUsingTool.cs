@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections;
 using Digger.Modules.Core.Sources;
 using Digger.Modules.Runtime.Sources;
 using Domains.Player.Scripts;
 using Domains.Scripts_that_Need_Sorting;
 using MoreMountains.Feedbacks;
-using MoreMountains.Tools;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -21,9 +19,6 @@ namespace Domains.Gameplay.Tools
         public float minEffectOpacity = 5f;
         public float maxEffectOpacity = 150f;
         [SerializeField] protected float miningCooldown = 1f; // seconds between digs
-
-        [SerializeField] protected MMProgressBar cooldownProgressBar;
-        [SerializeField] protected CanvasGroup cooldownCanvasGroup;
 
 
         [Header("Tool Settings")]
@@ -390,24 +385,24 @@ namespace Domains.Gameplay.Tools
             );
         }
 
-        protected IEnumerator ShowCooldownBarCoroutine(float duration)
-        {
-            if (cooldownProgressBar == null) yield break;
-
-            var elapsed = 0f;
-            cooldownCanvasGroup.alpha = 1f;
-            cooldownProgressBar.UpdateBar01(0f); // ← show full immediately
-
-
-            while (elapsed < duration)
-            {
-                cooldownProgressBar.UpdateBar01(elapsed / duration);
-                elapsed += Time.deltaTime;
-                yield return null;
-            }
-
-            cooldownProgressBar.UpdateBar01(1f);
-            cooldownCanvasGroup.alpha = 0f;
-        }
+        // protected IEnumerator ShowCooldownBarCoroutine(float duration)
+        // {
+        //     if (cooldownProgressBar == null) yield break;
+        //
+        //     var elapsed = 0f;
+        //     cooldownCanvasGroup.alpha = 1f;
+        //     cooldownProgressBar.UpdateBar01(0f); // ← show full immediately
+        //
+        //
+        //     while (elapsed < duration)
+        //     {
+        //         cooldownProgressBar.UpdateBar01(elapsed / duration);
+        //         elapsed += Time.deltaTime;
+        //         yield return null;
+        //     }
+        //
+        //     cooldownProgressBar.UpdateBar01(1f);
+        //     cooldownCanvasGroup.alpha = 0f;
+        // }
     }
 }

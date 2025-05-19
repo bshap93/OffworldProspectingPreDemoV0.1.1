@@ -33,6 +33,8 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
         private MMFeedbacks pickaxeBehavior;
 
         public Material currentMaterial;
+
+        [SerializeField] private ProgressBarBlue cooldownProgressBar;
         private readonly float defaultEffectOpacity = 10f;
 
 
@@ -390,7 +392,7 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
                 // Handle object interaction first (ore, rocks, etc.)
                 if (isMinableObject)
                 {
-                    CooldownCoroutine = StartCoroutine(ShowCooldownBarCoroutine(miningCooldown));
+                    CooldownCoroutine = StartCoroutine(cooldownProgressBar.ShowCooldownBarCoroutine(miningCooldown));
                     HandleObjectInteraction(hit);
                 }
 
@@ -414,7 +416,7 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
                     textureIndex = 0; // Use a safe default
                 }
 
-                CooldownCoroutine = StartCoroutine(ShowCooldownBarCoroutine(miningCooldown));
+                CooldownCoroutine = StartCoroutine(cooldownProgressBar.ShowCooldownBarCoroutine(miningCooldown));
                 // Handle terrain digging
                 HandleTerrainDigging(hit, textureIndex);
             }
@@ -466,7 +468,7 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
                         logger?.LogMessage("Failed to mine object - hardness too high");
                     }
 
-                    CooldownCoroutine = StartCoroutine(ShowCooldownBarCoroutine(miningCooldown));
+                    CooldownCoroutine = StartCoroutine(cooldownProgressBar.ShowCooldownBarCoroutine(miningCooldown));
                 }
             }
             catch (Exception ex)
@@ -544,7 +546,7 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
                         BrushType.Stalagmite));
 
                     // Effects
-                    CooldownCoroutine = StartCoroutine(ShowCooldownBarCoroutine(miningCooldown));
+                    CooldownCoroutine = StartCoroutine(cooldownProgressBar.ShowCooldownBarCoroutine(miningCooldown));
                     TriggerDebrisEffect(debrisEffectFirstHitPrefab, hit);
                     firstHitFeedbacks?.PlayFeedbacks(hit.point);
                     return;
@@ -585,7 +587,7 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
                         safeRadius));
 
                     // Effects
-                    CooldownCoroutine = StartCoroutine(ShowCooldownBarCoroutine(miningCooldown));
+                    CooldownCoroutine = StartCoroutine(cooldownProgressBar.ShowCooldownBarCoroutine(miningCooldown));
                     TriggerDebrisEffect(debrisEffectSecondHitPrefab, hit);
                     secondHitFeedbacks?.PlayFeedbacks(hit.point);
                 }
