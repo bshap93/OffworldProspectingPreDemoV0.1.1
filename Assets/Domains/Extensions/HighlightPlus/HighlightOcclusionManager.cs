@@ -1,7 +1,7 @@
 ﻿using HighlightPlus;
 using UnityEngine;
 
-namespace YourGame.Highlighting
+namespace Domains.Extensions.HighlightPlus
 {
     /// <summary>
     ///     Manages occlusion for HighlightTrigger components without modifying them
@@ -27,7 +27,8 @@ namespace YourGame.Highlighting
             if (raycastCamera == null)
             {
                 raycastCamera = Camera.main;
-                if (raycastCamera == null) Debug.LogError("HighlightOcclusionManager: No camera assigned or found!");
+                if (raycastCamera == null)
+                    UnityEngine.Debug.LogError("HighlightOcclusionManager: No camera assigned or found!");
             }
         }
 

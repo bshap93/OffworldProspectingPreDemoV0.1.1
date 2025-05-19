@@ -390,11 +390,7 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
                 }
 
                 // Handle object interaction first (ore, rocks, etc.)
-                if (isMinableObject)
-                {
-                    CooldownCoroutine = StartCoroutine(cooldownProgressBar.ShowCooldownBarCoroutine(miningCooldown));
-                    HandleObjectInteraction(hit);
-                }
+                if (isMinableObject) HandleObjectInteraction(hit);
 
                 // Exit if not a valid terrain texture
                 if (!isValidTerrain)
