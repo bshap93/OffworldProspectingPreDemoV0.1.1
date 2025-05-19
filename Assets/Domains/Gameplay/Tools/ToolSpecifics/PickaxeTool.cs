@@ -7,7 +7,6 @@ using Domains.Gameplay.Mining.Scripts;
 using Domains.Player.Events;
 using Domains.Player.Scripts;
 using Domains.Scripts_that_Need_Sorting;
-using HighlightPlus;
 using MoreMountains.Feedbacks;
 using MoreMountains.Tools;
 using UnityEngine;
@@ -451,14 +450,6 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
                     var objectHardness = minable.GetCurrentMinableHardness();
                     logger?.LogMessage(
                         $"Mining object with hardness {objectHardness} vs tool hardness {hardnessCanBreak}");
-
-                    var highlightEffect = hit.collider.GetComponent<HighlightEffect>();
-
-                    if (highlightEffect != null)
-                    {
-                        var isHighlighted = highlightEffect.highlighted;
-                        if (!isHighlighted) return;
-                    }
 
 
                     if (objectHardness <= hardnessCanBreak)

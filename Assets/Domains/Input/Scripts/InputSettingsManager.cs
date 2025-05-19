@@ -46,25 +46,17 @@ namespace Domains.Input.Scripts
 
         private void Awake()
         {
-            if (Instance == null)
-            {
-                Instance = this;
-                DontDestroyOnLoad(gameObject);
+            Instance = this;
 
-                // Load saved setting
-                if (PlayerPrefs.HasKey("InvertYAxis"))
-                    invertYAxis = PlayerPrefs.GetInt("InvertYAxis") == 1;
+            // Load saved setting
+            if (PlayerPrefs.HasKey("InvertYAxis"))
+                invertYAxis = PlayerPrefs.GetInt("InvertYAxis") == 1;
 
-                if (PlayerPrefs.HasKey("MouseSensitivity"))
-                    mouseSensitivity = PlayerPrefs.GetFloat("MouseSensitivity");
+            if (PlayerPrefs.HasKey("MouseSensitivity"))
+                mouseSensitivity = PlayerPrefs.GetFloat("MouseSensitivity");
 
-                if (PlayerPrefs.HasKey("ShowKeyboardControls"))
-                    showKeyboardControls = PlayerPrefs.GetInt("ShowKeyboardControls") == 1;
-            }
-            else
-            {
-                Destroy(gameObject);
-            }
+            if (PlayerPrefs.HasKey("ShowKeyboardControls"))
+                showKeyboardControls = PlayerPrefs.GetInt("ShowKeyboardControls") == 1;
         }
 
         private void OnEnable()
