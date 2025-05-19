@@ -1,4 +1,4 @@
-using Domains.Player.Events;
+using Digger.Modules.Runtime.Sources;
 using Domains.Player.Progression;
 using Domains.Player.Scripts;
 using Domains.Scene.Scripts;
@@ -50,14 +50,23 @@ namespace Domains.Debug
             ProgressionManager.ResetProgression();
             ProgressionManager.SaveAllProgression(true);
 
-            // Try reset Digger. Note this won't work in editor mode
-            DiggerEvent.Trigger(DiggerEventType.Delete);
 
             // Reset digger data if it exists
             // if (DiggerDataManager.Instance != null) DiggerDataManager.Instance.ResetDiggerData();
             // Reset inventory
             PlayerInventoryManager.ResetInventory(); // will avoid clearing scene inventory if not loaded
             InventorySaveUtility.Reset(); // safely wipes saved inventory data
+
+            var diggerMasterRuntime = FindObjectOfType<DiggerMasterRuntime>();
+            if (diggerMasterRuntime == null)
+            {
+                UnityEngine.Debug.LogError("DiggerDataManager: No DiggerMasterRuntime found in scene!");
+                return;
+            }
+
+            diggerMasterRuntime.SetPersistenceDataPathPrefix("PlayerDiggerData");
+
+            diggerMasterRuntime.DeleteAllPersistedData();
 
 
             UnityEngine.Debug.Log("All save data cleared successfully.");

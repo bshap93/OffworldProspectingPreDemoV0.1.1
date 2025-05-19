@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
+using Digger.Modules.Runtime.Sources;
 using Domains.Debug;
-using Domains.Player.Events;
 using Domains.Player.Progression;
 using Domains.Player.Scripts;
 using Domains.SaveLoad;
@@ -33,6 +33,7 @@ namespace Domains.Scene.Scripts
         [SerializeField] private PlayerHealthManager playerHealthManager;
 
         [SerializeField] private MMFeedbacks saveFeedbacks;
+        [SerializeField] private DiggerMasterRuntime diggerMasterRuntime;
 
         [Header("Item & Container Persistence")]
         public PickableManager pickableManager;
@@ -63,7 +64,6 @@ namespace Domains.Scene.Scripts
 
             Instance = this;
 
-            if (freshStart) DataReset.ClearAllSaveData();
 
 
             // Initialize managers if needed
@@ -148,8 +148,20 @@ namespace Domains.Scene.Scripts
             PlayerUpgradeManager.SaveUpgrades();
             PickableManager.SaveAllPickedItems();
             DestructableManager.SaveAllDestructables();
-            DiggerEvent.Trigger(DiggerEventType.Persist);
+
+
             ProgressionManager.SaveAllProgression(false);
+
+            if (diggerMasterRuntime == null)
+            {
+                UnityEngine.Debug.LogError("DiggerDataManager: No DiggerMasterRuntime found in scene!");
+                return;
+            }
+
+            diggerMasterRuntime.SetPersistenceDataPathPrefix("PlayerDiggerData");
+            diggerMasterRuntime.PersistAll();
+            UnityEngine.Debug.Log("Called PersistAll on DiggerMasterRuntime: " + diggerMasterRuntime.name);
+
             UnityEngine.Debug.Log("All data saved");
 
             AlertEvent.Trigger(AlertReason.SavingGame, "Saving game...");

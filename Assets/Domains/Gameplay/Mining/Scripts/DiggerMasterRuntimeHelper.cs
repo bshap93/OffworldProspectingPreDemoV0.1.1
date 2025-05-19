@@ -1,29 +1,32 @@
 using Digger.Modules.Runtime.Sources;
 using UnityEngine;
 
-public class DiggerMasterRuntimeHelper : MonoBehaviour
-
+namespace Domains.Gameplay.Mining.Scripts
 {
-    [SerializeField] private DiggerMasterRuntime diggerMasterRuntime;
-    [SerializeField] private Terrain terrain;
+    public class DiggerMasterRuntimeHelper : MonoBehaviour
 
-    private void Start()
     {
-        if (!Application.isEditor) diggerMasterRuntime.SetupRuntimeTerrain(terrain);
-    }
+        [SerializeField] private DiggerMasterRuntime diggerMasterRuntime;
+        [SerializeField] private Terrain terrain;
 
-
-    public void ForceDeleteAllPersistedData()
-    {
-        if (diggerMasterRuntime == null)
+        private void Start()
         {
-            Debug.LogError("DiggerMasterRuntime is not assigned.");
-            return;
+            if (!Application.isEditor) diggerMasterRuntime.SetupRuntimeTerrain(terrain);
         }
 
 
-        diggerMasterRuntime.DeleteAllPersistedData();
+        public void ForceDeleteAllPersistedData()
+        {
+            if (diggerMasterRuntime == null)
+            {
+                UnityEngine.Debug.LogError("DiggerMasterRuntime is not assigned.");
+                return;
+            }
 
-        diggerMasterRuntime.SetupRuntimeTerrain(terrain);
+
+            diggerMasterRuntime.DeleteAllPersistedData();
+
+            diggerMasterRuntime.SetupRuntimeTerrain(terrain);
+        }
     }
 }
