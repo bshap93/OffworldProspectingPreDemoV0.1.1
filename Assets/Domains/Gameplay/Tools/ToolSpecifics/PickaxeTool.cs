@@ -7,6 +7,7 @@ using Domains.Gameplay.Mining.Scripts;
 using Domains.Player.Events;
 using Domains.Player.Scripts;
 using Domains.Scripts_that_Need_Sorting;
+using HighlightPlus;
 using MoreMountains.Feedbacks;
 using MoreMountains.Tools;
 using UnityEngine;
@@ -451,6 +452,15 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
                     logger?.LogMessage(
                         $"Mining object with hardness {objectHardness} vs tool hardness {hardnessCanBreak}");
 
+                    var highlightEffect = hit.collider.GetComponent<HighlightEffect>();
+
+                    if (highlightEffect != null)
+                    {
+                        var isHighlighted = highlightEffect.highlighted;
+                        if (!isHighlighted) return;
+                    }
+
+
                     if (objectHardness <= hardnessCanBreak)
                     {
                         minable.MinableMineHit();
@@ -602,37 +612,6 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
             }
         }
 
-// Add this method to your PickaxeTool class
-        private void ValidateDigParameters(ref float radiusParam, ref float opacityParam, ref float heightParam)
-        {
-            // Check for NaN or infinity values
-            if (float.IsNaN(radiusParam) || float.IsInfinity(radiusParam))
-            {
-                UnityEngine.Debug.LogError($"Invalid radius parameter detected: {radiusParam}. Using safe value.");
-                radiusParam = 0.5f; // Safe default
-            }
-
-            if (float.IsNaN(opacityParam) || float.IsInfinity(opacityParam))
-            {
-                UnityEngine.Debug.LogError($"Invalid opacity parameter detected: {opacityParam}. Using safe value.");
-                opacityParam = 10f; // Safe default
-            }
-
-            if (float.IsNaN(heightParam) || float.IsInfinity(heightParam))
-            {
-                UnityEngine.Debug.LogError($"Invalid height parameter detected: {heightParam}. Using safe value.");
-                heightParam = 100f; // Safe default
-            }
-
-            // Clamp to reasonable ranges
-            radiusParam = Mathf.Clamp(radiusParam, 0.1f, 5f);
-            opacityParam = Mathf.Clamp(opacityParam, 1f, 200f);
-            heightParam = Mathf.Clamp(heightParam, 0.1f, 200f);
-
-            if (debugLogging)
-                UnityEngine.Debug.Log(
-                    $"Validated dig parameters: radius={radiusParam}, opacity={opacityParam}, height={heightParam}");
-        }
 
 // Modify your Dig coroutine to validate parameters before passing to SafeModify
         private IEnumerator Dig(Vector3 digPosition, int textureIndex,

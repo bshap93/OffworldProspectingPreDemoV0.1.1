@@ -13,7 +13,7 @@ namespace Domains.Gameplay.Tools
     {
         [Header("Dig Settings")] public float diggerUsingRange = 5f;
 
-        [Header("Effect Settings")] public float minEffectRadius = 0.4f;
+        [Header("Effect Settings")] public float minEffectRadius = 0.3f;
 
         public float maxEffectRadius = 1.2f;
         public float minEffectOpacity = 5f;

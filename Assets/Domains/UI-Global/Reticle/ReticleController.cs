@@ -3,6 +3,7 @@ using Domains.Gameplay.Mining.Scripts;
 using Domains.Gameplay.Tools;
 using Domains.Gameplay.Tools.ToolSpecifics;
 using Domains.Scripts_that_Need_Sorting;
+using HighlightPlus;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -44,6 +45,7 @@ namespace Domains.UI_Global.Reticle
                 // Check for interactable components
                 var interactable = hit.Value.collider.GetComponent<IInteractable>();
                 var minable = hit.Value.collider.GetComponent<IMinable>();
+                var highlightEffect = hit.Value.collider.GetComponent<HighlightEffect>();
 
                 if (!terrainBlocking)
                 {
@@ -55,9 +57,14 @@ namespace Domains.UI_Global.Reticle
                     {
                         // Check if current tool can mine this object
                         var pickaxe = currentTool as PickaxeTool;
-                        if (pickaxe != null && pickaxe.hardnessCanBreak >= minable.GetCurrentMinableHardness())
+                        if (pickaxe != null && pickaxe.hardnessCanBreak >= minable.GetCurrentMinableHardness() &&
+                            highlightEffect.highlighted)
                         {
                             targetState = mineableState;
+                        }
+                        else if (pickaxe != null && pickaxe.hardnessCanBreak >= minable.GetCurrentMinableHardness())
+                        {
+                            targetState = defaultState;
                         }
                         else
                         {
