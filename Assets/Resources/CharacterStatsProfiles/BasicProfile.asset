@@ -21,12 +21,12 @@ MonoBehaviour:
   InitialWeightLimit: 5
   InitialCurrency: 0
   InitialUpgradeState: 0
-  initialShovelToolEffectRadius: 0.3
-  initialPickaxeToolEffectRadius: 0.5
+  initialShovelToolEffectRadius: 0.4
+  initialPickaxeToolEffectRadius: 0.4
   initialJetPackSpeedMultiplier: 1.22
   SkipTutorial: 0
-  shovelMiningToolWidth: 0.3
-  pickaxeMiningToolWidth: 0.3
+  shovelMiningToolWidth: 0.4
+  pickaxeMiningToolWidth: 0.4
   initialShovelToolEffectOpacity: 5
   pickaxeMiningToolEffectOpacity: 10
   initialJetPackParticleColor: {r: 1, g: 1, b: 1, a: 1}

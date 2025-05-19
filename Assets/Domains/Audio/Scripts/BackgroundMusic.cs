@@ -3,7 +3,7 @@ using Domains.UI_Global.Events;
 using MoreMountains.Tools;
 using UnityEngine;
 
-namespace Domains.Audio
+namespace Domains.Audio.Scripts
 {
     public class BackgroundMusic : MonoBehaviour, MMEventListener<AudioEvent>
     {
