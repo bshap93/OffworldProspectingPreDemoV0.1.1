@@ -51,13 +51,6 @@ namespace Domains.Input.Scripts
         }
 
 
-
-        public static bool IsDeletionKeyPressed()
-        {
-            return UnityEngine.Input.GetKeyDown(DeletionKey);
-        }
-
-
         public static bool IsMineMouseButtonPressed()
         {
             return UnityEngine.Input.GetMouseButton(MineMouseButton);
@@ -72,7 +65,5 @@ namespace Domains.Input.Scripts
         {
             return UnityEngine.Input.mouseScrollDelta.y > 0 ? 1 : -1;
         }
-
-
     }
 }

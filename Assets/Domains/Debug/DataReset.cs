@@ -1,4 +1,3 @@
-using Digger.Modules.Runtime.Sources;
 using Domains.Player.Progression;
 using Domains.Player.Scripts;
 using Domains.Scene.Scripts;
@@ -56,17 +55,6 @@ namespace Domains.Debug
             // Reset inventory
             PlayerInventoryManager.ResetInventory(); // will avoid clearing scene inventory if not loaded
             InventorySaveUtility.Reset(); // safely wipes saved inventory data
-
-            var diggerMasterRuntime = FindObjectOfType<DiggerMasterRuntime>();
-            if (diggerMasterRuntime == null)
-            {
-                UnityEngine.Debug.LogError("DiggerDataManager: No DiggerMasterRuntime found in scene!");
-                return;
-            }
-
-            diggerMasterRuntime.SetPersistenceDataPathPrefix("PlayerDiggerData");
-
-            diggerMasterRuntime.DeleteAllPersistedData();
 
 
             UnityEngine.Debug.Log("All save data cleared successfully.");

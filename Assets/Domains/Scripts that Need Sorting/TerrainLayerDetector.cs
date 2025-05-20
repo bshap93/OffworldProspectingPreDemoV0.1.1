@@ -17,11 +17,9 @@ namespace Domains.Scripts_that_Need_Sorting
         [SerializeField] private LayerMask playerMask;
 
 
-        private DiggerMaster diggerMaster;
-
         private void Start()
         {
-            diggerMaster = FindFirstObjectByType<DiggerMaster>();
+            FindFirstObjectByType<DiggerMaster>();
         }
 
         // private void Update()

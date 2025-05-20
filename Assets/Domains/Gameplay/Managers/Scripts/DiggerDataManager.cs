@@ -4,26 +4,39 @@ using Domains.Player.Events;
 using Domains.UI_Global.Events;
 using MoreMountains.Feedbacks;
 using MoreMountains.Tools;
-using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Domains.Gameplay.Managers.Scripts
 {
-    public class DiggerDataManager : MonoBehaviour, MMEventListener<DiggerEvent>
+    public class DiggerDataManager : Manager, MMEventListener<DiggerEvent>
     {
+        private const string AutoSaveKey = "AutoSave";
+        private const string ForceDeleteOnStartKey = "ForceDeleteOnStart";
+
+        public static bool AutoSave = true;
+        public static bool ForceDeleteOnStart;
         public DiggerMasterRuntime diggerMasterRuntime;
 
         public MMFeedbacks deleteAllDataFeedbacks;
         public MMFeedbacks saveDataFeedbacks;
 
-        public DiggerSystem[] diggerSystems;
 
-        public bool autoSave = true;
-        [FormerlySerializedAs("doNotPersist")] public bool forceDeleteOnQuit;
+        public DiggerSystem[] diggerSystems;
+        private string _savePath;
         public static DiggerDataManager Instance { get; private set; }
 
         private void Awake()
         {
+            LoadBooleanFlags();
+            if (diggerMasterRuntime == null)
+            {
+                UnityEngine.Debug.LogError("DiggerDataManager: No DiggerMasterRuntime found in scene!");
+            }
+            else
+            {
+                if (ForceDeleteOnStart) DeleteAllDiggerData();
+            }
+
+
             if (Instance != null && Instance != this)
             {
                 Destroy(gameObject);
@@ -31,13 +44,6 @@ namespace Domains.Gameplay.Managers.Scripts
             }
 
             Instance = this;
-
-            if (diggerMasterRuntime == null)
-            {
-                diggerMasterRuntime = FindFirstObjectByType<DiggerMasterRuntime>();
-                if (diggerMasterRuntime == null)
-                    UnityEngine.Debug.LogError("DiggerDataManager: No DiggerMasterRuntime found in scene!");
-            }
         }
 
 
@@ -53,9 +59,9 @@ namespace Domains.Gameplay.Managers.Scripts
 
         private void OnApplicationQuit()
         {
-            if (forceDeleteOnQuit) DeleteAllDiggerData();
+            // if (forceDeleteOnQuit) DeleteAllDiggerData();
 
-            if (autoSave) SaveDiggerData();
+            if (AutoSave) SaveDiggerData();
         }
 
         public void OnMMEvent(DiggerEvent eventType)
@@ -77,6 +83,8 @@ namespace Domains.Gameplay.Managers.Scripts
             saveDataFeedbacks?.PlayFeedbacks();
             diggerMasterRuntime.PersistAll();
 
+            AlertEvent.Trigger(AlertReason.SavingGame,
+                "Persisting digger data...", "Saving digger data...");
             UnityEngine.Debug.Log("Digger data saved.");
         }
 
@@ -93,6 +101,33 @@ namespace Domains.Gameplay.Managers.Scripts
             AlertEvent.Trigger(AlertReason.DeletingDiggerData, "Digger data deleted.");
 
             UnityEngine.Debug.Log("Digger data deleted.");
+        }
+
+        protected override void LoadBooleanFlags()
+        {
+            if (_savePath == null) _savePath = GetSaveFilePath();
+
+            if (ES3.KeyExists(AutoSaveKey, _savePath))
+            {
+                AutoSave = ES3.Load<bool>(AutoSaveKey, _savePath);
+                UnityEngine.Debug.Log($"Loaded AutoSave state: {AutoSave}");
+            }
+            else
+            {
+                AutoSave = false;
+                UnityEngine.Debug.Log($"No saved AutoSave state found. Defaulting to: {AutoSave}");
+            }
+
+            if (ES3.KeyExists(ForceDeleteOnStartKey, _savePath))
+            {
+                ForceDeleteOnStart = ES3.Load<bool>(ForceDeleteOnStartKey, _savePath);
+                UnityEngine.Debug.Log($"Loaded ForceDeleteOnStart state: {ForceDeleteOnStart}");
+            }
+            else
+            {
+                ForceDeleteOnStart = false;
+                UnityEngine.Debug.Log($"No saved ForceDeleteOnStart state found. Defaulting to: {ForceDeleteOnStart}");
+            }
         }
     }
 }

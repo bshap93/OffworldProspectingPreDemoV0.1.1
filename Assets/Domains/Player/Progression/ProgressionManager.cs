@@ -1,6 +1,6 @@
 using System.Collections.Generic;
+using Domains.Gameplay.Managers;
 using Domains.Player.Events;
-using Domains.Scene.Scripts;
 using MoreMountains.Tools;
 using UnityEditor;
 using UnityEngine;
@@ -19,7 +19,7 @@ namespace Domains.Player.Progression
     }
 #endif
     [DefaultExecutionOrder(-10)]
-    public class ProgressionManager : MonoBehaviour, MMEventListener<ProgressionEvent>
+    public class ProgressionManager : Manager, MMEventListener<ProgressionEvent>
     {
         private const string ObjectivesKeyName = "CollectableObjectives";
         private const string TutorialFinishedKeyName = "TutorialFinished";
@@ -132,7 +132,7 @@ namespace Domains.Player.Progression
                    ES3.KeyExists(TutorialFinishedKeyName, _collectedObjectiveSave);
         }
 
-        private void LoadBooleanFlags()
+        protected override void LoadBooleanFlags()
         {
             if (_savePath == null) _savePath = GetSaveFilePath();
 
@@ -187,11 +187,6 @@ namespace Domains.Player.Progression
             ES3.Save(TutorialFinishedKeyName, TutorialFinished, savePath);
 
             foreach (var uniqueId in CollectedObjectives) ES3.Save(uniqueId, true, savePath);
-        }
-
-        private static string GetSaveFilePath()
-        {
-            return SaveManager.SaveProgressionFilePath;
         }
     }
 }

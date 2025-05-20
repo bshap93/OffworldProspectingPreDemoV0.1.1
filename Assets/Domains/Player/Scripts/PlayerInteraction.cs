@@ -1,6 +1,7 @@
 using System;
 using Digger.Modules.Core.Sources;
 using Digger.Modules.Runtime.Sources;
+using Domains.Gameplay.Managers.Scripts;
 using Domains.Gameplay.Mining.Scripts;
 using Domains.Input.Scripts;
 using Domains.Player.Events;
@@ -41,6 +42,8 @@ namespace Domains.Player.Scripts
 
         private float _positionEventTimer;
 
+        private DiggerDataManager diggerDataManager;
+
         private QuestJournal questJournal;
 
         private void Start()
@@ -60,6 +63,13 @@ namespace Domains.Player.Scripts
                 UnityEngine.Debug.LogWarning("QuestJournal not found in the scene. Cannot track quest information.");
 
             if (reticleController == null) reticleController = FindFirstObjectByType<ReticleController>();
+
+            if (diggerDataManager == null)
+                diggerDataManager = FindFirstObjectByType<DiggerDataManager>();
+
+            if (diggerDataManager == null)
+                UnityEngine.Debug.LogWarning(
+                    "DiggerDataManager not found in the scene. Cannot track digger data.");
         }
 
         private void Update()
@@ -81,14 +91,8 @@ namespace Domains.Player.Scripts
             if (CustomInputBindings.IsInteractPressed()) // Press E to interact
                 PerformInteraction();
 
-            // if (CustomInputBindings.IsQuestJournalKeyPressed())
-            // {
-            //     questJournal.ToggleJournalUI();
-            // }
-
             if (CustomInputBindings.IsPersistanceKeyPressed())
-                _diggerMasterRuntime.PersistAll();
-            else if (CustomInputBindings.IsDeletionKeyPressed()) _diggerMasterRuntime.DeleteAllPersistedData();
+                diggerDataManager.SaveDiggerData();
         }
 
         private void OnDrawGizmos()
