@@ -100,6 +100,7 @@ namespace Domains.Gameplay.Managers.Scripts
             }
 
             diggerMasterRuntime.DeleteAllPersistedData();
+            diggerMasterRuntime.ClearScene();
             AlertEvent.Trigger(AlertReason.DeletingDiggerData, "Digger data deleted.");
 
             UnityEngine.Debug.Log("Digger data deleted.");
@@ -116,7 +117,7 @@ namespace Domains.Gameplay.Managers.Scripts
             }
             else
             {
-                AutoSave = false;
+                AutoSave = true;
                 UnityEngine.Debug.Log($"No saved AutoSave state found. Defaulting to: {AutoSave}");
             }
 
@@ -124,11 +125,6 @@ namespace Domains.Gameplay.Managers.Scripts
             {
                 ForceDeleteOnStart = ES3.Load<bool>(ForceDeleteOnStartKey, _savePath);
                 UnityEngine.Debug.Log($"Loaded ForceDeleteOnStart state: {ForceDeleteOnStart}");
-            }
-            else
-            {
-                // Set to true as we do want to delete on start
-                ForceDeleteOnStart = true;
             }
         }
     }
