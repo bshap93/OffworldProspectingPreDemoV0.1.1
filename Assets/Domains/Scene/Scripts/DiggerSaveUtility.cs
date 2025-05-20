@@ -1,4 +1,6 @@
-﻿namespace Domains.Scene.Scripts
+﻿using Domains.Gameplay.Managers.Scripts;
+
+namespace Domains.Scene.Scripts
 {
     public static class DiggerSaveUtility
     {
@@ -19,6 +21,8 @@
         public static void Save(bool autoSave, bool forceDeleteOnStart)
         {
             var path = "GameSave.es3";
+            DiggerDataManager.ForceDeleteOnStart = forceDeleteOnStart;
+            DiggerDataManager.AutoSave = autoSave;
             ES3.Save(AutoSaveKey, autoSave, path);
             ES3.Save(ForceDeleteOnStartKey, forceDeleteOnStart, path);
         }

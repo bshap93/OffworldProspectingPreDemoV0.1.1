@@ -10,6 +10,7 @@ public class NewGameButton : MonoBehaviour
     public void OnClick()
     {
         DataReset.ClearAllSaveData();
+
         loadNewGameFeedbacks?.PlayFeedbacks();
     }
 }

@@ -902,6 +902,7 @@ GameObject:
   - component: {fileID: 102935363}
   - component: {fileID: 102935362}
   - component: {fileID: 102935361}
+  - component: {fileID: 102935364}
   m_Layer: 5
   m_Name: ContinueButton
   m_TagString: Untagged
@@ -973,9 +974,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1001247500}
-        m_TargetAssemblyTypeName: MoreMountains.Feedbacks.MMF_Player, MoreMountains.Tools
-        m_MethodName: PlayFeedbacks
+      - m_Target: {fileID: 102935364}
+        m_TargetAssemblyTypeName: ContinueGameButton, Assembly-CSharp
+        m_MethodName: OnClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1023,6 +1024,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 102935359}
   m_CullTransparentMesh: 1
+--- !u!114 &102935364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 102935359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8dd9be4abd5432d4ba1124854818f920, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loadContinueGameFeedbacks: {fileID: 1001247500}
 --- !u!1 &127858582
 GameObject:
   m_ObjectHideFlags: 0

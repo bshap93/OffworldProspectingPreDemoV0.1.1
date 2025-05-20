@@ -55,7 +55,7 @@ namespace Domains.Debug
             // Reset inventory
             PlayerInventoryManager.ResetInventory(); // will avoid clearing scene inventory if not loaded
             InventorySaveUtility.Reset(); // safely wipes saved inventory data
-
+            DiggerSaveUtility.Save(true, true);
 
             UnityEngine.Debug.Log("All save data cleared successfully.");
         }

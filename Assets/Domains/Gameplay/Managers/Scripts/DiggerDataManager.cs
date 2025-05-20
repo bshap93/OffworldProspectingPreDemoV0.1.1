@@ -1,6 +1,7 @@
 using Digger.Modules.Core.Sources;
 using Digger.Modules.Runtime.Sources;
 using Domains.Player.Events;
+using Domains.Scene.Scripts;
 using Domains.UI_Global.Events;
 using MoreMountains.Feedbacks;
 using MoreMountains.Tools;
@@ -28,13 +29,9 @@ namespace Domains.Gameplay.Managers.Scripts
         {
             LoadBooleanFlags();
             if (diggerMasterRuntime == null)
-            {
                 UnityEngine.Debug.LogError("DiggerDataManager: No DiggerMasterRuntime found in scene!");
-            }
-            else
-            {
-                if (ForceDeleteOnStart) DeleteAllDiggerData();
-            }
+
+            if (ForceDeleteOnStart) DeleteAllDiggerData();
 
 
             if (Instance != null && Instance != this)
@@ -44,6 +41,8 @@ namespace Domains.Gameplay.Managers.Scripts
             }
 
             Instance = this;
+
+            DiggerSaveUtility.Save(true, false);
         }
 
 
@@ -86,6 +85,9 @@ namespace Domains.Gameplay.Managers.Scripts
             AlertEvent.Trigger(AlertReason.SavingGame,
                 "Persisting digger data...", "Saving digger data...");
             UnityEngine.Debug.Log("Digger data saved.");
+
+            ForceDeleteOnStart = false; // Reset the flag after saving
+            DiggerSaveUtility.Save(AutoSave, ForceDeleteOnStart);
         }
 
         public void DeleteAllDiggerData()
@@ -125,8 +127,8 @@ namespace Domains.Gameplay.Managers.Scripts
             }
             else
             {
-                ForceDeleteOnStart = false;
-                UnityEngine.Debug.Log($"No saved ForceDeleteOnStart state found. Defaulting to: {ForceDeleteOnStart}");
+                // Set to true as we do want to delete on start
+                ForceDeleteOnStart = true;
             }
         }
     }

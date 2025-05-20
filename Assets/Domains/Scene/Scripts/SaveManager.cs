@@ -46,9 +46,6 @@ namespace Domains.Scene.Scripts
         public ProgressionManager progressionManager;
 
 
-        public bool freshStart;
-
-
         public static SaveManager Instance { get; private set; }
 
         private void Awake()
@@ -147,6 +144,7 @@ namespace Domains.Scene.Scripts
 
 
             ProgressionManager.SaveAllProgression(false);
+            DiggerSaveUtility.Save(true, false);
 
 
             UnityEngine.Debug.Log("All data saved");
