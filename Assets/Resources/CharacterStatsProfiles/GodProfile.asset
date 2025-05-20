@@ -14,15 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InitialMaxFuel: 200
   InitialMaxHealth: 20
-  InitialEnduranceLevel: 1
-  InitialEnduranceExperiencePoints: 0
+  initialUpgradeColor: {r: 0, g: 0, b: 0, a: 0}
+  initialPickaxeMaterial: {fileID: 0}
+  initialShovelMaterial: {fileID: 0}
+  initialScannerMaterial: {fileID: 0}
   InitialWeightLimit: 10
-  InitialCurrency: 10000
+  InitialCurrency: 100000
   InitialUpgradeState: 0
   initialShovelToolEffectRadius: 0.4
   initialPickaxeToolEffectRadius: 1.2
+  initialJetPackSpeedMultiplier: 0
   SkipTutorial: 1
   shovelMiningToolWidth: 0.64
   pickaxeMiningToolWidth: 0.64
   initialShovelToolEffectOpacity: 75
   pickaxeMiningToolEffectOpacity: 150
+  initialJetPackParticleColor: {r: 0, g: 0, b: 0, a: 0}

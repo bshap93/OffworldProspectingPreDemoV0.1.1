@@ -19,7 +19,7 @@ MonoBehaviour:
   initialShovelMaterial: {fileID: 2100000, guid: 811b9db2cc68c1848a54e3c0269b7dc2, type: 2}
   initialScannerMaterial: {fileID: 2100000, guid: efdc6d31ee5e58349bd28802f9cce677, type: 2}
   InitialWeightLimit: 5
-  InitialCurrency: 30000
+  InitialCurrency: 10000
   InitialUpgradeState: 0
   initialShovelToolEffectRadius: 0.4
   initialPickaxeToolEffectRadius: 0.4
@@ -28,5 +28,5 @@ MonoBehaviour:
   shovelMiningToolWidth: 0.4
   pickaxeMiningToolWidth: 0.4
   initialShovelToolEffectOpacity: 5
-  pickaxeMiningToolEffectOpacity: 10
+  pickaxeMiningToolEffectOpacity: 5
   initialJetPackParticleColor: {r: 1, g: 1, b: 1, a: 1}

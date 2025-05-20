@@ -19,7 +19,7 @@ MonoBehaviour:
   - + 5 KG Weight Limit
   - + 5 KG Weight Limit
   description: 
-  upgradeCosts: e8030000b80b0000401f0000e02e0000
+  upgradeCosts: e8030000b80b000070170000e02e0000
   upgradeColors:
   - {r: 0.014813383, g: 0.67295593, b: 0.061269637, a: 1}
   - {r: 0, g: 0.10374492, b: 0.9433962, a: 1}
