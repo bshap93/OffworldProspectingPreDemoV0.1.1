@@ -15,6 +15,8 @@ namespace Domains.Items.Scripts
         protected override void Start()
         {
             base.Start();
+            StartCoroutine(InitializeAfterProgressionManager());
+
             _infoPanelActivator = GetComponent<InfoPanelActivator>();
             if (interactFeedbacks != null) interactFeedbacks.Initialization();
         }
@@ -38,6 +40,12 @@ namespace Domains.Items.Scripts
             EquipmentEvent.Trigger(EquipmentEventType.PickupEquipment, ToolType.Jetpack);
             AlertEvent.Trigger(AlertReason.PickedUpEquipment,
                 "Picked up Jetpack", "Jetpack Picked Up", null, null, Color.white);
+
+            interactFeedbacks?.PlayFeedbacks();
+            hasBeenInteractedWith = true;
+            ProgressionManager.AddInteractableObjective(uniqueID, true);
+            OnInteractableInteract?.Invoke();
+            Destroy(gameObject);
         }
     }
 }
