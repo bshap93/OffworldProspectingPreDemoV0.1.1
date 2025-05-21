@@ -543,7 +543,6 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
                         BrushType.Stalagmite));
 
                     // Effects
-                    CooldownCoroutine = StartCoroutine(cooldownProgressBar.ShowCooldownBarCoroutine(miningCooldown));
                     TriggerDebrisEffect(debrisEffectFirstHitPrefab, hit);
                     firstHitFeedbacks?.PlayFeedbacks(hit.point);
                     return;
@@ -576,6 +575,7 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
                     // Cancel any existing coroutine
                     if (activeDigCoroutine != null) StopCoroutine(activeDigCoroutine);
 
+
                     // Start new coroutine
                     activeDigCoroutine = StartCoroutine(Dig(
                         digPosition,
@@ -584,7 +584,6 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
                         safeRadius));
 
                     // Effects
-                    CooldownCoroutine = StartCoroutine(cooldownProgressBar.ShowCooldownBarCoroutine(miningCooldown));
                     TriggerDebrisEffect(debrisEffectSecondHitPrefab, hit);
                     secondHitFeedbacks?.PlayFeedbacks(hit.point);
                 }
