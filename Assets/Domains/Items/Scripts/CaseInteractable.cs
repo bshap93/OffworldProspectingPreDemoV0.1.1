@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Domains.Player.Events;
 using Domains.Player.Progression;
 using Domains.UI_Global.Events;
@@ -23,6 +24,11 @@ namespace Domains.Items.Scripts
             ProgressionManager.AddInteractableObjective(uniqueID, true);
             OnInteractableInteract?.Invoke();
             StartCoroutine(DissolveThenDestroy());
+        }
+
+        protected override IEnumerator InitializeAfterProgressionManager()
+        {
+            throw new NotImplementedException();
         }
 
         private IEnumerator DissolveThenDestroy()

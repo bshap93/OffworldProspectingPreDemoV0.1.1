@@ -19,7 +19,8 @@ namespace Domains.UI_Global.Events
         LowOnFuel,
         ResetManually,
         InventotryEmpty,
-        HealthFull
+        HealthFull,
+        PickedUpEquipment
     }
 
     public enum AlertType

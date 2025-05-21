@@ -52,7 +52,7 @@ namespace Domains.Gameplay.Equipment.Scripts
                 if (Tools[i] == null) UnityEngine.Debug.LogError($"Tool at index {i} does not implement IToolAction.");
             }
 
-            EquipmentEvent.Trigger(currentToolType);
+            EquipmentEvent.Trigger(EquipmentEventType.ChangeToEquipment, currentToolType);
         }
 
         private void Start()
@@ -112,7 +112,7 @@ namespace Domains.Gameplay.Equipment.Scripts
             }
 
             // Trigger the appropriate events and feedbacks
-            EquipmentEvent.Trigger(currentToolType);
+            EquipmentEvent.Trigger(EquipmentEventType.ChangeToEquipment, currentToolType);
             tool.EquipFeedbacks?.PlayFeedbacks();
         }
     }

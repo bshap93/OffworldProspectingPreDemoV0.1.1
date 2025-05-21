@@ -1,4 +1,6 @@
-﻿using CompassNavigatorPro;
+﻿using System;
+using System.Collections;
+using CompassNavigatorPro;
 using Domains.Gameplay.Mining.Scripts;
 using MoreMountains.Feedbacks;
 using UnityEngine;
@@ -24,19 +26,27 @@ namespace Domains.Items.Scripts
 
         protected CompassProPOI compassProPOI;
 
+        protected bool InteractionComplete;
+
+        protected void Awake()
+        {
+            if (string.IsNullOrEmpty(uniqueID)) uniqueID = Guid.NewGuid().ToString(); // Generate only if unset
+        }
+
         protected virtual void Start()
         {
             compassProPOI = GetComponent<CompassProPOI>();
-            if (compassProPOI != null)
-            {
-                compassProPOI.ToggleIndicatorVisibility(false);
-
-
-            }
+            if (compassProPOI != null) compassProPOI.ToggleIndicatorVisibility(false);
 
 
             compassPro = FindFirstObjectByType<CompassPro>();
             if (compassPro != null) compassPro.UpdateSettings();
+        }
+
+
+        protected void OnDestroy()
+        {
+            enabled = false;
         }
 
         public abstract void Interact();
@@ -49,5 +59,7 @@ namespace Domains.Items.Scripts
         {
             if (compassProPOI != null) compassProPOI.ToggleIndicatorVisibility(false);
         }
+
+        protected abstract IEnumerator InitializeAfterProgressionManager();
     }
 }

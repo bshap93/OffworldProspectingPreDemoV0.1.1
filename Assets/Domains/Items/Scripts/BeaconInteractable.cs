@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using Domains.Input.Scripts;
 using Domains.Player.Events;
 using Domains.Player.Progression;
@@ -22,13 +21,6 @@ namespace Domains.Items.Scripts
         private InfoPanelActivator _infoPanelActivator;
 
 
-        private bool _interactionComplete;
-
-        private void Awake()
-        {
-            if (string.IsNullOrEmpty(uniqueID)) uniqueID = Guid.NewGuid().ToString(); // Generate only if unset
-        }
-
         protected override void Start()
         {
             base.Start();
@@ -38,13 +30,8 @@ namespace Domains.Items.Scripts
             if (interactFeedbacks != null) interactFeedbacks.Initialization();
         }
 
-        private void OnDestroy()
-        {
-            enabled = false;
-        }
 
-
-        private IEnumerator InitializeAfterProgressionManager()
+        protected override IEnumerator InitializeAfterProgressionManager()
         {
             yield return null;
 

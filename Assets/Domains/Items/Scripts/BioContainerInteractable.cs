@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using Domains.Input.Scripts;
 using Domains.Player.Events;
 using Domains.Player.Progression;
@@ -7,6 +6,7 @@ using Domains.UI_Global.Events;
 using HighlightPlus;
 using INab.Dissolve;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Domains.Items.Scripts
 {
@@ -14,17 +14,13 @@ namespace Domains.Items.Scripts
     {
         public GameObject interactablePrompt;
         [SerializeField] private Dissolver creatureDissolver;
-        [SerializeField] private Light SpotLight;
+
+        [FormerlySerializedAs("SpotLight")] [SerializeField]
+        private Light spotLight;
+
         [SerializeField] private Color beforeColor;
         [SerializeField] private Color afterColor;
 
-
-        private bool _interactionComplete;
-
-        private void Awake()
-        {
-            if (string.IsNullOrEmpty(uniqueID)) uniqueID = Guid.NewGuid().ToString(); // Generate only if unset
-        }
 
         protected override void Start()
         {
@@ -34,10 +30,6 @@ namespace Domains.Items.Scripts
             if (interactFeedbacks != null) interactFeedbacks.Initialization();
         }
 
-        private void OnDestroy()
-        {
-            enabled = false;
-        }
 
         public override void Interact()
         {
@@ -74,8 +66,8 @@ namespace Domains.Items.Scripts
             creatureDissolver.Dissolve();
             yield return new WaitForSeconds(creatureDissolver.duration);
             // Change light color
-            if (SpotLight != null)
-                SpotLight.color = afterColor;
+            if (spotLight != null)
+                spotLight.color = afterColor;
             else
                 UnityEngine.Debug.LogWarning("SpotLight not assigned! Cannot change light color.");
             // Destroy game object
@@ -92,7 +84,7 @@ namespace Domains.Items.Scripts
         }
 
 
-        private IEnumerator InitializeAfterProgressionManager()
+        protected override IEnumerator InitializeAfterProgressionManager()
         {
             // Wait a bit longer to ensure ProgressionManager has fully loaded
             yield return new WaitForSeconds(0.2f);
@@ -106,8 +98,8 @@ namespace Domains.Items.Scripts
                 if (interactablePrompt != null)
                     interactablePrompt.SetActive(false);
 
-                if (SpotLight != null)
-                    SpotLight.color = afterColor;
+                if (spotLight != null)
+                    spotLight.color = afterColor;
 
                 // Add null check to prevent errors
                 if (creatureDissolver != null)

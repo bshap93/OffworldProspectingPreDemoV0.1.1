@@ -9,7 +9,8 @@ namespace Domains.Scripts_that_Need_Sorting
     {
         Shovel,
         Pickaxe,
-        Scanner
+        Scanner,
+        Jetpack
     }
 
     public enum ToolIteration

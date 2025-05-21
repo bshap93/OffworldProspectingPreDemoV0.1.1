@@ -36,7 +36,7 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
 
         public void PerformToolAction()
         {
-            EquipmentEvent.Trigger(ToolType.Scanner);
+            EquipmentEvent.Trigger(EquipmentEventType.ChangeToEquipment, ToolType.Scanner);
             useFeedbacks?.PlayFeedbacks();
             highlightEffect.highlighted = true;
         }

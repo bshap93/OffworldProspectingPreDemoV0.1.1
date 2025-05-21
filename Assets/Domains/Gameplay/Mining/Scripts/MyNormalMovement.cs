@@ -3,6 +3,7 @@ using Domains.Gameplay.Equipment.Scripts;
 using Domains.Gameplay.Tools;
 using Domains.Input.Scripts;
 using Domains.Player.Events;
+using Domains.Player.Progression;
 using Domains.Player.Scripts;
 using Domains.Scripts_that_Need_Sorting;
 using Domains.UI_Global.Events;
@@ -38,8 +39,6 @@ namespace Domains.Gameplay.Mining.Scripts
         public LookingDirectionParameters lookingDirectionParameters = new();
 
         public PlayerInteraction playerInteraction;
-
-        // public TextureDetector textureDetector;
 
         [FormerlySerializedAs("ForwardTextureDetector")]
         public TerrainLayerDetector forwardTerrainLayerDetector;
@@ -83,6 +82,10 @@ namespace Domains.Gameplay.Mining.Scripts
         protected bool isCrouched;
 
         protected bool isFalling;
+
+        // public TextureDetector textureDetector;
+
+        private bool isJetpackEquipped;
         // [SerializeField] private float maxSpeed = 5f; // used for scaling
 
         private JetPackBehavior jetPackBehavior;
@@ -206,8 +209,8 @@ namespace Domains.Gameplay.Mining.Scripts
                                       playerInteraction.diggableLayers[textureIndex];
 
                 // Perform a raycast to detect non-terrain objects (e.g., OreNodes)
-                if (Physics.Raycast(UnityEngine.Camera.main.transform.position,
-                        UnityEngine.Camera.main.transform.forward,
+                if (Physics.Raycast(Camera.main.transform.position,
+                        Camera.main.transform.forward,
                         out var hit, 5f, ~playerInteraction.playerLayerMask))
                 {
                     var canUseOnObject = tool.CanInteractWithObject(hit.collider.gameObject);
@@ -548,7 +551,9 @@ namespace Domains.Gameplay.Mining.Scripts
 
             ProcessGravity(dt);
             ProcessJump(dt);
-            ProcessJetPack(dt);
+            if (!isJetpackEquipped) isJetpackEquipped = ProgressionManager.IsObjectiveCollected("Jetpack");
+            if (isJetpackEquipped)
+                ProcessJetPack(dt);
         }
 
         // New method to handle fall damage

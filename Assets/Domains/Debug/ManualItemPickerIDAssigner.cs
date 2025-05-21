@@ -91,6 +91,34 @@ namespace Domains.Debug
 
             UnityEngine.Debug.Log($"Assigned unique IDs to {allItemPickers.Length} ManualItemPicker components.");
         }
+
+        [MenuItem("Debug/Assign Unique IDs to InteractableObjectives")]
+        private static void AssignUniqueIDsInteractableObjectives()
+        {
+            // Find all InteractableObjective components in the current scene
+            var allInteractableObjectives = FindObjectsByType<InteractableObjective>(FindObjectsSortMode.None);
+
+            // Check if any were found
+            if (allInteractableObjectives.Length == 0)
+            {
+                UnityEngine.Debug.LogWarning("No InteractableObjective components found in the scene.");
+                return;
+            }
+
+            // Iterate through each InteractableObjective and assign a unique ID
+            foreach (var interactableObjective in allInteractableObjectives)
+                if (interactableObjective != null)
+                {
+                    // Generate a unique ID using GUID
+                    interactableObjective.uniqueID = Guid.NewGuid().ToString();
+                    EditorUtility.SetDirty(interactableObjective); // Mark the object as dirty for saving
+                }
+
+            // Save the scene to persist changes
+            AssetDatabase.SaveAssets();
+
+            UnityEngine.Debug.Log($"Assigned unique IDs to {allInteractableObjectives.Length} InteractableObjectives.");
+        }
     }
 }
 #endif
