@@ -62,6 +62,33 @@ namespace Domains.Input.Scripts
             }
         }
 
+        // public void ShowInfoPanel()
+        // {
+        //     if (infoPanelPrefab == null) return;
+        //
+        //     if (_infoPanelInstance == null)
+        //     {
+        //         if (canvas == null)
+        //         {
+        //             UnityEngine.Debug.LogWarning("No Canvas found in scene!");
+        //             return;
+        //         }
+        //
+        //         _infoPanelInstance = Instantiate(infoPanelPrefab, canvas.transform);
+        //     }
+        //
+        //     _infoPanelInstance.SetActive(true);
+        //     _isPanelVisible = true;
+        //     UIEvent.Trigger(UIEventType.OpenInfoPanel);
+        //     showPanelFeedbacks?.PlayFeedbacks();
+        //     onShowPanel?.Invoke();
+        //
+        //
+        //     var rectTransform = _infoPanelInstance.GetComponent<RectTransform>();
+        //     if (rectTransform != null)
+        //         rectTransform.anchoredPosition = screenOffset;
+        // }
+
         public void ShowInfoPanel()
         {
             if (infoPanelPrefab == null) return;
@@ -74,7 +101,8 @@ namespace Domains.Input.Scripts
                     return;
                 }
 
-                _infoPanelInstance = Instantiate(infoPanelPrefab, canvas.transform);
+                _infoPanelInstance = Instantiate(infoPanelPrefab, canvas.transform, false);
+                // ^ `false` keeps the prefab's RectTransform exactly as it was designed
             }
 
             _infoPanelInstance.SetActive(true);
@@ -82,13 +110,7 @@ namespace Domains.Input.Scripts
             UIEvent.Trigger(UIEventType.OpenInfoPanel);
             showPanelFeedbacks?.PlayFeedbacks();
             onShowPanel?.Invoke();
-
-
-            var rectTransform = _infoPanelInstance.GetComponent<RectTransform>();
-            if (rectTransform != null)
-                rectTransform.anchoredPosition = screenOffset;
         }
-
 
         public void HideInfoPanel()
         {
