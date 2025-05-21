@@ -21,12 +21,15 @@ namespace Domains.Items.Scripts
         [SerializeField] private Color beforeColor;
         [SerializeField] private Color afterColor;
 
+        private InfoPanelActivator _infoPanelActivator;
+
 
         protected override void Start()
         {
             base.Start();
             StartCoroutine(InitializeAfterProgressionManager());
 
+            _infoPanelActivator = GetComponent<InfoPanelActivator>();
             if (interactFeedbacks != null) interactFeedbacks.Initialization();
         }
 
@@ -40,9 +43,15 @@ namespace Domains.Items.Scripts
                 return;
             }
 
+            if (_infoPanelActivator != null) _infoPanelActivator.ToggleInfoPanel();
+        }
+
+        public void FlagBioContainerForTeleport()
+        {
             CurrencyEvent.Trigger(CurrencyEventType.AddCurrency, rewardAmount);
             AlertEvent.Trigger(AlertReason.CreditsAdded, $"{rewardAmount} Credits Added to your account",
                 "BioContainer Scanned");
+
 
             interactFeedbacks?.PlayFeedbacks();
             hasBeenInteractedWith = true;
