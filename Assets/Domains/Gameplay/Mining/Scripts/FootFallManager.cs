@@ -95,6 +95,7 @@ namespace Domains.Gameplay.Mining.Scripts
                 case 0:
                 case 12:
                 case 15:
+                case 10:
                     terrainFootstepFeedbacks?.PlayFeedbacks();
                     break;
 
