@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Domains.Items.Scripts;
 using UnityEngine;
 
 namespace Domains.Gameplay.Managers
@@ -91,30 +92,35 @@ namespace Domains.Gameplay.Managers
             var pos = obj.transform.position;
 
             // Step 1: Check for ground below
-            var hasGroundBelow = HasSafeGroundBelow(pos);
+            var hasGroundBelow = HasSafeGroundBelow(pos, obj);
 
             // Step 2: Check for blocking surfaces around object
-            var isBlocked = HasBlockingSurfaces(pos);
+            var isBlocked = HasBlockingSurfaces(pos, obj);
 
             // Enable gravity only if has ground AND not blocked
             var shouldHaveGravity = hasGroundBelow && !isBlocked;
 
             obj.SetGravityEnabled(shouldHaveGravity);
-
-            if (showDebugRays)
-                UnityEngine.Debug.DrawRay(pos, Vector3.down * maxGroundCheckDistance,
-                    hasGroundBelow ? Color.green : Color.red, 0.5f);
         }
 
-        private bool HasSafeGroundBelow(Vector3 position)
+        private bool HasSafeGroundBelow(Vector3 position, SimpleGravityObject obj)
         {
+            var objCollider = obj.GetComponent<Collider>();
+            var bottomY = objCollider.bounds.min.y;
+
+            var rayOrigin = new Vector3(position.x, bottomY, position.z);
+
+
             // Single raycast downward
-            if (Physics.Raycast(position, Vector3.down, out var hit,
+            if (Physics.Raycast(rayOrigin, Vector3.down, out var hit,
                     maxGroundCheckDistance, terrainLayerMask))
             {
                 // Check if the ground surface is facing up toward the object
                 var toObject = (position - hit.point).normalized;
                 var dot = Vector3.Dot(hit.normal, toObject);
+
+                if (showDebugRays)
+                    UnityEngine.Debug.DrawRay(rayOrigin, Vector3.down * maxGroundCheckDistance, Color.red, 0.5f);
 
                 // Normal pointing toward object = safe ground
                 return dot > 0.1f;
@@ -123,8 +129,14 @@ namespace Domains.Gameplay.Managers
             return false; // No ground = not safe
         }
 
-        private bool HasBlockingSurfaces(Vector3 position)
+
+        private bool HasBlockingSurfaces(Vector3 position, SimpleGravityObject obj)
         {
+            var objCollider = obj.GetComponent<Collider>();
+            var bottomY = objCollider.bounds.min.y;
+
+            var rayOrigin = new Vector3(position.x, bottomY, position.z);
+
             // Check 4 cardinal directions around object for blocking surfaces
             Vector3[] directions =
             {
@@ -135,21 +147,31 @@ namespace Domains.Gameplay.Managers
             };
 
             foreach (var direction in directions)
-                if (Physics.Raycast(position, direction, out var hit,
+            {
+                // Always draw debug ray regardless of hit
+                if (showDebugRays)
+                    UnityEngine.Debug.DrawRay(rayOrigin, direction * blockingCheckDistance, Color.blue, 0.5f);
+
+                if (Physics.Raycast(rayOrigin, direction, out var hit,
                         blockingCheckDistance, terrainLayerMask))
                 {
                     // Check if surface normal points away from object (blocking)
-                    var toObject = (position - hit.point).normalized;
+                    var toObject = (rayOrigin - hit.point).normalized;
                     var dot = Vector3.Dot(hit.normal, toObject);
 
                     // Normal pointing away from object = blocking surface
                     if (dot < -0.1f)
                     {
                         if (showDebugRays)
-                            UnityEngine.Debug.DrawRay(position, direction * blockingCheckDistance, Color.red, 0.5f);
+                            UnityEngine.Debug.DrawRay(rayOrigin, direction * blockingCheckDistance, Color.cyan, 0.5f);
                         return true; // Found blocking surface
                     }
+
+                    // Hit something but it's not blocking (normal points toward object)
+                    if (showDebugRays)
+                        UnityEngine.Debug.DrawRay(rayOrigin, direction * blockingCheckDistance, Color.yellow, 0.5f);
                 }
+            }
 
             return false; // No blocking surfaces found
         }

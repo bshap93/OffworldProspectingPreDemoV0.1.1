@@ -1,82 +1,84 @@
 using Domains.Gameplay.Managers;
+using MoreMountains.Feedbacks;
 using UnityEngine;
 
-/// <summary>
-///     Simple component for objects that need gravity management
-/// </summary>
-public class SimpleGravityObject : MonoBehaviour
+namespace Domains.Items.Scripts
 {
-    [Header("Physics")] public Rigidbody targetRigidbody;
-
-    public bool makeKinematicWhenDisabled = true;
-
-    [Header("Effects")] public GameObject enabledEffect;
-
-    public AudioClip enabledSound;
-    private AudioSource audioSource;
-
-    private bool gravityEnabled;
-
-    private void Awake()
+    /// <summary>
+    ///     Simple component for objects that need gravity management
+    /// </summary>
+    public class SimpleGravityObject : MonoBehaviour
     {
-        if (targetRigidbody == null)
-            targetRigidbody = GetComponent<Rigidbody>();
+        [Header("Physics")] public Rigidbody targetRigidbody;
 
-        audioSource = GetComponent<AudioSource>();
+        public bool makeKinematicWhenDisabled = true;
 
-        // Start with gravity disabled
-        SetGravityEnabled(false);
-    }
+        [Header("Effects")] public GameObject enabledEffect;
 
-    private void Start()
-    {
-        // Register with manager
-        SimpleGravityManager.Instance?.RegisterObject(this);
-    }
+        [SerializeField] private MMFeedbacks enabledFeedbacks;
 
-    private void OnDestroy()
-    {
-        // Unregister
-        SimpleGravityManager.Instance?.UnregisterObject(this);
-    }
 
-    public void SetGravityEnabled(bool enabled)
-    {
-        if (enabled == gravityEnabled) return;
+        private bool gravityEnabled;
 
-        gravityEnabled = enabled;
-
-        if (targetRigidbody != null)
+        private void Awake()
         {
-            if (enabled)
+            if (targetRigidbody == null)
+                targetRigidbody = GetComponent<Rigidbody>();
+
+
+            // Start with gravity disabled
+            SetGravityEnabled(false);
+        }
+
+        private void Start()
+        {
+            // Register with manager
+            SimpleGravityManager.Instance?.RegisterObject(this);
+        }
+
+        private void OnDestroy()
+        {
+            // Unregister
+            SimpleGravityManager.Instance?.UnregisterObject(this);
+        }
+
+        public void SetGravityEnabled(bool enabled)
+        {
+            if (enabled == gravityEnabled) return;
+
+            gravityEnabled = enabled;
+
+            if (targetRigidbody != null)
             {
-                // Enable physics
-                targetRigidbody.useGravity = true;
-                targetRigidbody.isKinematic = false;
+                if (enabled)
+                {
+                    // Enable physics
+                    targetRigidbody.useGravity = true;
+                    targetRigidbody.isKinematic = false;
 
-                // Play effects
-                if (enabledEffect != null)
-                    Instantiate(enabledEffect, transform.position, Quaternion.identity);
+                    // Play effects
+                    if (enabledEffect != null)
+                        Instantiate(enabledEffect, transform.position, Quaternion.identity);
 
-                if (enabledSound != null && audioSource != null)
-                    audioSource.PlayOneShot(enabledSound);
-            }
-            else
-            {
-                // Disable physics
-                targetRigidbody.useGravity = false;
-                if (makeKinematicWhenDisabled)
-                    targetRigidbody.isKinematic = true;
+                    enabledFeedbacks?.PlayFeedbacks();
+                }
+                else
+                {
+                    // Disable physics
+                    targetRigidbody.useGravity = false;
+                    if (makeKinematicWhenDisabled)
+                        targetRigidbody.isKinematic = true;
 
-                // Stop motion
-                targetRigidbody.linearVelocity = Vector3.zero;
-                targetRigidbody.angularVelocity = Vector3.zero;
+                    // Stop motion
+                    targetRigidbody.linearVelocity = Vector3.zero;
+                    targetRigidbody.angularVelocity = Vector3.zero;
+                }
             }
         }
-    }
 
-    public bool IsGravityEnabled()
-    {
-        return gravityEnabled;
+        public bool IsGravityEnabled()
+        {
+            return gravityEnabled;
+        }
     }
 }
