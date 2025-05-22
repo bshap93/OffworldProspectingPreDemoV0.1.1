@@ -135,8 +135,8 @@ namespace Domains.Gameplay.Managers
             var objCollider = obj.GetComponent<Collider>();
             var bottomY = objCollider.bounds.min.y;
 
-            // var rayOrigin = new Vector3(position.x, bottomY, position.z);
-            var rayOrigin = new Vector3(position.x, position.y, position.z);
+            var rayOrigin = new Vector3(position.x, bottomY, position.z);
+            // var rayOrigin = new Vector3(position.x, position.y, position.z);
 
             // Check 4 cardinal directions around object for blocking surfaces
             Vector3[] directions =
