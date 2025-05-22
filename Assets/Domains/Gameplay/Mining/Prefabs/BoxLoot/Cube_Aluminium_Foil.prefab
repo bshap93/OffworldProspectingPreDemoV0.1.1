@@ -18,6 +18,8 @@ GameObject:
   - component: {fileID: 1147827610368190141}
   - component: {fileID: 89861604682367113}
   - component: {fileID: 2503494545819577762}
+  - component: {fileID: 6537973318588688971}
+  - component: {fileID: 7531422946564159427}
   m_Layer: 6
   m_Name: Cube_Aluminium_Foil
   m_TagString: Untagged
@@ -128,7 +130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 380f9b65545dc3b488923b80b2b83bb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uniqueID: 5c8f77bc-b7b5-4681-bcf7-a95803d9a07d
+  uniqueID: e17b28bd-e5cb-4ce1-b2b8-d76a5df8d3f9
   itemType: {fileID: 11400000, guid: 0a2dd580cb4a54e4ca1670f0ad0873e6, type: 2}
   quantity: 1
   OnItemPicked:
@@ -451,11 +453,54 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9eb18bd15cc5eb54dbddc9772eb732ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetID: d560a2f7-00bf-4d24-a281-1b047f2095f9
+  targetID: 12f91564-bee6-4d0e-b944-d2ded9bb28f8
   onScanned:
     m_PersistentCalls:
       m_Calls: []
   targetDuration: 5
+--- !u!54 &6537973318588688971
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2233801481511711179}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &7531422946564159427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2233801481511711179}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b824c3800bbbcf64da11f8500382b46c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetRigidbody: {fileID: 6537973318588688971}
+  makeKinematicWhenDisabled: 1
+  enabledEffect: {fileID: 0}
+  enabledFeedbacks: {fileID: 0}
 --- !u!1 &8113279767753474682
 GameObject:
   m_ObjectHideFlags: 0

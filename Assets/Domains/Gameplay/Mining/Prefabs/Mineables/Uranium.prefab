@@ -735,6 +735,8 @@ GameObject:
   - component: {fileID: 2588776611368955734}
   - component: {fileID: 5109623187792797151}
   - component: {fileID: 7939386556831795790}
+  - component: {fileID: 5926173810144492486}
+  - component: {fileID: 1884829103718386327}
   m_Layer: 13
   m_Name: Uranium
   m_TagString: OreNode
@@ -913,7 +915,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   OreHardness: 0
-  UniqueID: 9a11a085-c506-4cad-a938-74a51bd2046a
+  UniqueID: 8185ec6c-623f-48a7-a189-a971afd1589d
   failHitFeedbacks: {fileID: 5939243206290031498}
   failHitParticles: {fileID: 6835221663383594993, guid: b4fdebf16c953b245b30edeebb4ed72c, type: 3}
   oreHitParticles: {fileID: 6835221663383594993, guid: b4fdebf16c953b245b30edeebb4ed72c, type: 3}
@@ -1177,11 +1179,54 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9eb18bd15cc5eb54dbddc9772eb732ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetID: 276b9f97-abb6-43d4-8768-a2423f9d40e5
+  targetID: 8c0e08bd-154c-4dc2-8a91-24e32d254125
   onScanned:
     m_PersistentCalls:
       m_Calls: []
   targetDuration: 5
+--- !u!114 &5926173810144492486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3682673757431954790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b824c3800bbbcf64da11f8500382b46c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetRigidbody: {fileID: 1884829103718386327}
+  makeKinematicWhenDisabled: 1
+  enabledEffect: {fileID: 6948713295122520351, guid: dd71b63c997ed704aa0f74c0bf4c3630, type: 3}
+  enabledFeedbacks: {fileID: 0}
+--- !u!54 &1884829103718386327
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3682673757431954790}
+  serializedVersion: 4
+  m_Mass: 10
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &8582551177170356759
 GameObject:
   m_ObjectHideFlags: 0
