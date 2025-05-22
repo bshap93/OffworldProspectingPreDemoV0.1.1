@@ -3,6 +3,7 @@ using System.Collections;
 using Digger.Modules.Core.Sources;
 using Digger.Modules.Runtime.Sources;
 using Domains.Debug;
+using Domains.Gameplay.Managers;
 using Domains.Gameplay.Mining.Scripts;
 using Domains.Player.Events;
 using Domains.Player.Scripts;
@@ -669,6 +670,7 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
 
 // after SafeModify you KNOW parameters are finite.
                 // UnityEngine.Debug.Log($"DIG {Time.frameCount}: p={digPosition} r={radius} o={opacity}");
+                SimpleGravityIntegration.OnDigPerformed(digPosition, effectRadius * 2f);
             }
             catch (Exception ex)
             {

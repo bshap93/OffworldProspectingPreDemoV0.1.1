@@ -285,6 +285,8 @@ GameObject:
   - component: {fileID: 2994222604615500405}
   - component: {fileID: 7386675870006774814}
   - component: {fileID: 256766808036625632}
+  - component: {fileID: 8105782743470657360}
+  - component: {fileID: 6600615933839063625}
   m_Layer: 13
   m_Name: IronOre
   m_TagString: OreNode
@@ -383,7 +385,7 @@ MeshCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 5422956604508025602, guid: b625f157455560344baeae8a39e12769, type: 3}
 --- !u!114 &3845043461234623603
@@ -459,7 +461,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   OreHardness: 0
-  UniqueID: fd022a99-0aae-4ef7-a028-f3eaa4112e82
+  UniqueID: eeaba538-96df-4394-8a59-2167842a67aa
   failHitFeedbacks: {fileID: 481408227980071728}
   failHitParticles: {fileID: 6835221663383594993, guid: 67bf2c07e69f9c14e8b49b2add42dd8f, type: 3}
   oreHitParticles: {fileID: 6835221663383594993, guid: 67bf2c07e69f9c14e8b49b2add42dd8f, type: 3}
@@ -711,11 +713,54 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9eb18bd15cc5eb54dbddc9772eb732ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetID: e7f8fcbb-7407-4b72-b8fb-47505afdef4c
+  targetID: 238082e1-3a05-419b-a06c-a9856e43b31c
   onScanned:
     m_PersistentCalls:
       m_Calls: []
   targetDuration: 5
+--- !u!54 &8105782743470657360
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3629160438555580656}
+  serializedVersion: 4
+  m_Mass: 10
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &6600615933839063625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3629160438555580656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b824c3800bbbcf64da11f8500382b46c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetRigidbody: {fileID: 8105782743470657360}
+  makeKinematicWhenDisabled: 1
+  enabledEffect: {fileID: 6948713295122520351, guid: dd71b63c997ed704aa0f74c0bf4c3630, type: 3}
+  enabledFeedbacks: {fileID: 0}
 --- !u!1 &4601757348309822409
 GameObject:
   m_ObjectHideFlags: 0

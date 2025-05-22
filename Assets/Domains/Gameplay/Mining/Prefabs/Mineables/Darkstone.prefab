@@ -554,6 +554,8 @@ GameObject:
   - component: {fileID: 5178177609660149189}
   - component: {fileID: 6415750033236011695}
   - component: {fileID: 7020157154326008017}
+  - component: {fileID: 3656199611915659481}
+  - component: {fileID: 3935156373481999436}
   m_Layer: 13
   m_Name: Darkstone
   m_TagString: OreNode
@@ -653,7 +655,7 @@ MeshCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -2578072017595742013, guid: 2a61f96b221437047ae1683ffb5fd221, type: 3}
 --- !u!114 &5466057757064491444
@@ -729,7 +731,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   OreHardness: 0
-  UniqueID: aa4e5c3b-a239-4165-9032-312054093428
+  UniqueID: dadfefb0-8067-4556-affe-d828b87b0816
   failHitFeedbacks: {fileID: 2879248722755317898}
   failHitParticles: {fileID: 6835221663383594993, guid: 4dcc88f5d0e581d488cb4d6cf6aa94ac, type: 3}
   oreHitParticles: {fileID: 6835221663383594993, guid: 4dcc88f5d0e581d488cb4d6cf6aa94ac, type: 3}
@@ -746,7 +748,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9eb18bd15cc5eb54dbddc9772eb732ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetID: 9388a789-1321-40a6-816b-9f4c15dcdfdf
+  targetID: 0d63ddfa-cb3e-487e-b0ef-1427f352102e
   onScanned:
     m_PersistentCalls:
       m_Calls: []
@@ -986,6 +988,49 @@ MonoBehaviour:
   singleSelection: 0
   toggle: 0
   keepSelection: 1
+--- !u!54 &3656199611915659481
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3425872484700846920}
+  serializedVersion: 4
+  m_Mass: 5
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &3935156373481999436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3425872484700846920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b824c3800bbbcf64da11f8500382b46c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetRigidbody: {fileID: 3656199611915659481}
+  makeKinematicWhenDisabled: 1
+  enabledEffect: {fileID: 6948713295122520351, guid: dd71b63c997ed704aa0f74c0bf4c3630, type: 3}
+  enabledFeedbacks: {fileID: 0}
 --- !u!1 &8425722701829819162
 GameObject:
   m_ObjectHideFlags: 0
