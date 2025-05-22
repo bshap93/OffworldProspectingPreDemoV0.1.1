@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Digger.Modules.Runtime.Sources;
+using Domains.Gameplay.Managers;
 using Domains.Gameplay.Mining.Scripts;
 using Domains.Player.Camera;
 using Domains.Player.Events;
@@ -168,6 +169,10 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
             if (didDig)
                 CooldownCoroutine =
                     StartCoroutine(cooldownProgressBar.ShowCooldownBarCoroutine(miningCooldown));
+            
+            // Experimental gravity integration
+            // Check nearby gravity objects
+            SimpleGravityIntegration.OnDigPerformed(digPosition, effectRadius * 2f);
         }
     }
 }
