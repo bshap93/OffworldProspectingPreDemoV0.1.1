@@ -82,6 +82,7 @@ namespace Domains.Gameplay.Managers.Scripts
             saveDataFeedbacks?.PlayFeedbacks();
             diggerMasterRuntime.PersistAll();
 
+
             AlertEvent.Trigger(AlertReason.SavingGame,
                 "Persisting digger data...", "Saving digger data...");
             UnityEngine.Debug.Log("Digger data saved.");
@@ -94,10 +95,7 @@ namespace Domains.Gameplay.Managers.Scripts
         {
             deleteAllDataFeedbacks?.PlayFeedbacks();
             if (diggerMasterRuntime == null)
-            {
                 UnityEngine.Debug.Log("DiggerDataManager: No DiggerMasterRuntime found in scene!");
-                return;
-            }
 
             diggerMasterRuntime.DeleteAllPersistedData();
             diggerMasterRuntime.ClearScene();
