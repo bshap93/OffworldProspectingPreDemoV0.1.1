@@ -10,6 +10,7 @@ namespace Domains.Items.Scripts
 {
     public class EquipmentPickupInteractable : InteractableObjective
     {
+        [SerializeField] private ToolType toolType;
         private InfoPanelActivator _infoPanelActivator;
 
         protected override void Start()
@@ -37,9 +38,20 @@ namespace Domains.Items.Scripts
 
         public void PickupEquipment()
         {
-            EquipmentEvent.Trigger(EquipmentEventType.PickupEquipment, ToolType.Jetpack);
-            AlertEvent.Trigger(AlertReason.PickedUpEquipment,
-                "Picked up Jetpack", "Jetpack Picked Up", null, null, Color.white);
+            if (toolType == ToolType.Jetpack)
+            {
+                EquipmentEvent.Trigger(EquipmentEventType.PickupEquipment, ToolType.Jetpack);
+                AlertEvent.Trigger(AlertReason.PickedUpEquipment,
+                    "Picked up Jetpack", "Jetpack Picked Up", null, null, Color.white);
+            }
+
+            if (toolType == ToolType.DemoGift)
+            {
+                EquipmentEvent.Trigger(EquipmentEventType.PickupEquipment, ToolType.DemoGift);
+                AlertEvent.Trigger(AlertReason.PickedUpEquipment,
+                    "Picked up Demo Gift", "Demo Gift Picked Up", null, null, Color.white);
+            }
+
 
             interactFeedbacks?.PlayFeedbacks();
             hasBeenInteractedWith = true;
