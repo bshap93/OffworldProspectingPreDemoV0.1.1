@@ -2,6 +2,7 @@
 using System.Collections;
 using CompassNavigatorPro;
 using Domains.Gameplay.Mining.Scripts;
+using Domains.Gameplay.Objectives.Events;
 using MoreMountains.Feedbacks;
 using UnityEngine;
 using UnityEngine.Events;
@@ -17,6 +18,8 @@ namespace Domains.Items.Scripts
 
         [SerializeField] protected bool hasBeenInteractedWith;
         [Header("Events")] public UnityEvent OnInteractableInteract;
+        [SerializeField] QuestControlEvent questControlEvent;
+ 
 
 
         public MMFeedbacks interactFeedbacks;
@@ -50,6 +53,7 @@ namespace Domains.Items.Scripts
         }
 
         public abstract void Interact();
+
 
         public void ShowInteractablePrompt()
         {

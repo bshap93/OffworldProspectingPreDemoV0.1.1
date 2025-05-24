@@ -27,7 +27,7 @@ namespace Domains.Gameplay.Tools.Shovel
             rotationSpring.UpdateSpringValue(Time.deltaTime);
 
             // Apply as X-axis rotation offset
-            shovelHead.localRotation = initialLocalRotation * Quaternion.Euler(-rotationSpring.CurrentValue, 0, 0);
+            
         }
 
         public void TriggerSwing()

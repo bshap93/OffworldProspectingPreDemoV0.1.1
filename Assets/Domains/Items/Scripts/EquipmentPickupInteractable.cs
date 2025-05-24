@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using Domains.Gameplay.Equipment.Events;
+using Domains.Gameplay.Objectives.Events;
 using Domains.Input.Scripts;
 using Domains.Player.Events;
 using Domains.Player.Progression;
@@ -13,6 +14,7 @@ namespace Domains.Items.Scripts
     {
         [SerializeField] private ToolType toolType;
         private InfoPanelActivator _infoPanelActivator;
+        
 
         protected override void Start()
         {
