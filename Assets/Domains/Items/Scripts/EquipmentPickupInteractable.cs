@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using Domains.Gameplay.Equipment.Events;
 using Domains.Input.Scripts;
+using Domains.Player.Events;
 using Domains.Player.Progression;
 using Domains.Scripts_that_Need_Sorting;
 using Domains.UI_Global.Events;
@@ -33,6 +34,7 @@ namespace Domains.Items.Scripts
         public override void Interact()
         {
             if (hasBeenInteractedWith) return;
+            CurrencyEvent.Trigger(CurrencyEventType.AddCurrency, rewardAmount);
             if (_infoPanelActivator != null) _infoPanelActivator.ToggleInfoPanel();
         }
 
