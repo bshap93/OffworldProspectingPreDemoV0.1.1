@@ -19,6 +19,7 @@ public class DiggerMasterRuntimeUsage : MonoBehaviour
 
             PlayerPrefs.SetInt("IsNewGame", 0);
 
+            _diggerMasterRuntime.PersistAll();
             // Reload the scene to apply changes
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
