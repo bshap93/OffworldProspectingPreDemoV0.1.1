@@ -8,8 +8,10 @@ namespace Domains.Input.Scripts
         private const KeyCode InteractKey = KeyCode.E;
         private const KeyCode CrouchKey = KeyCode.LeftControl;
         private const KeyCode RunKey = KeyCode.LeftShift;
+
         private const KeyCode ChangePerspectiveKey = KeyCode.V;
-        private const KeyCode PersistanceKey = KeyCode.P;
+
+        // private const KeyCode PersistanceKey = KeyCode.P;
         private const KeyCode DeletionKey = KeyCode.Alpha0;
         private const KeyCode SaveDebugKey = KeyCode.F5;
         private const KeyCode PauseKey = KeyCode.Escape;
@@ -45,11 +47,11 @@ namespace Domains.Input.Scripts
         }
 
 
-        public static bool IsPersistanceKeyPressed()
-        {
-            return UnityEngine.Input.GetKeyDown(PersistanceKey);
-        }
-
+        // public static bool IsPersistanceKeyPressed()
+        // {
+        //     return UnityEngine.Input.GetKeyDown(PersistanceKey);
+        // }
+        //
 
         public static bool IsMineMouseButtonPressed()
         {

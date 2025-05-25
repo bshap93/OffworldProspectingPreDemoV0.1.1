@@ -91,8 +91,8 @@ namespace Domains.Player.Scripts
             if (CustomInputBindings.IsInteractPressed()) // Press E to interact
                 PerformInteraction();
 
-            if (CustomInputBindings.IsPersistanceKeyPressed())
-                diggerDataManager.SaveDiggerData();
+            // if (CustomInputBindings.IsPersistanceKeyPressed())
+            //     diggerDataManager.SaveDiggerData();
         }
 
         private void OnDrawGizmos()

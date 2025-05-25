@@ -144,7 +144,7 @@ namespace Domains.Scene.Scripts
 
 
             ProgressionManager.SaveAllProgression(false);
-            DiggerSaveUtility.Save(true, false);
+            // DiggerSaveUtility.Save(true, false);
 
 
             UnityEngine.Debug.Log("All data saved");

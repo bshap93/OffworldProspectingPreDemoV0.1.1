@@ -1,7 +1,7 @@
+using System;
 using Digger.Modules.Core.Sources;
 using Digger.Modules.Runtime.Sources;
 using Domains.Player.Events;
-using Domains.Scene.Scripts;
 using Domains.UI_Global.Events;
 using MoreMountains.Feedbacks;
 using MoreMountains.Tools;
@@ -10,11 +10,12 @@ namespace Domains.Gameplay.Managers.Scripts
 {
     public class DiggerDataManager : Manager, MMEventListener<DiggerEvent>
     {
-        private const string AutoSaveKey = "AutoSave";
-        private const string ForceDeleteOnStartKey = "ForceDeleteOnStart";
+        // private const string AutoSaveKey = "AutoSave";
+        // private const string ForceDeleteOnStartKey = "ForceDeleteOnStart";
 
-        public static bool AutoSave = true;
-        public static bool ForceDeleteOnStart;
+        // public static bool AutoSave = true;
+
+        // public static bool ForceDeleteOnStart;
         public DiggerMasterRuntime diggerMasterRuntime;
 
         public MMFeedbacks deleteAllDataFeedbacks;
@@ -31,7 +32,7 @@ namespace Domains.Gameplay.Managers.Scripts
             if (diggerMasterRuntime == null)
                 UnityEngine.Debug.LogError("DiggerDataManager: No DiggerMasterRuntime found in scene!");
 
-            if (ForceDeleteOnStart) DeleteAllDiggerData();
+            // if (ForceDeleteOnStart) DeleteAllDiggerData();
 
 
             if (Instance != null && Instance != this)
@@ -41,8 +42,6 @@ namespace Domains.Gameplay.Managers.Scripts
             }
 
             Instance = this;
-
-            DiggerSaveUtility.Save(true, false);
         }
 
 
@@ -60,7 +59,7 @@ namespace Domains.Gameplay.Managers.Scripts
         {
             // if (forceDeleteOnQuit) DeleteAllDiggerData();
 
-            if (AutoSave) SaveDiggerData();
+            // if (AutoSave) SaveDiggerData();
         }
 
         public void OnMMEvent(DiggerEvent eventType)
@@ -80,15 +79,15 @@ namespace Domains.Gameplay.Managers.Scripts
         public void SaveDiggerData()
         {
             saveDataFeedbacks?.PlayFeedbacks();
-            diggerMasterRuntime.PersistAll();
+            // diggerMasterRuntime.PersistAll();
 
 
             AlertEvent.Trigger(AlertReason.SavingGame,
                 "Persisting digger data...", "Saving digger data...");
             UnityEngine.Debug.Log("Digger data saved.");
 
-            ForceDeleteOnStart = false; // Reset the flag after saving
-            DiggerSaveUtility.Save(AutoSave, ForceDeleteOnStart);
+            // ForceDeleteOnStart = false; // Reset the flag after saving
+            // DiggerSaveUtility.Save(AutoSave, ForceDeleteOnStart);
         }
 
         public void DeleteAllDiggerData()
@@ -97,33 +96,17 @@ namespace Domains.Gameplay.Managers.Scripts
             if (diggerMasterRuntime == null)
                 UnityEngine.Debug.Log("DiggerDataManager: No DiggerMasterRuntime found in scene!");
 
-            diggerMasterRuntime.DeleteAllPersistedData();
-            diggerMasterRuntime.ClearScene();
+            // diggerMasterRuntime.DeleteAllPersistedData();
+            // diggerMasterRuntime.ClearScene();
             AlertEvent.Trigger(AlertReason.DeletingDiggerData, "Digger data deleted.");
 
             UnityEngine.Debug.Log("Digger data deleted.");
         }
 
+
         protected override void LoadBooleanFlags()
         {
-            if (_savePath == null) _savePath = GetSaveFilePath();
-
-            if (ES3.KeyExists(AutoSaveKey, _savePath))
-            {
-                AutoSave = ES3.Load<bool>(AutoSaveKey, _savePath);
-                UnityEngine.Debug.Log($"Loaded AutoSave state: {AutoSave}");
-            }
-            else
-            {
-                AutoSave = true;
-                UnityEngine.Debug.Log($"No saved AutoSave state found. Defaulting to: {AutoSave}");
-            }
-
-            if (ES3.KeyExists(ForceDeleteOnStartKey, _savePath))
-            {
-                ForceDeleteOnStart = ES3.Load<bool>(ForceDeleteOnStartKey, _savePath);
-                UnityEngine.Debug.Log($"Loaded ForceDeleteOnStart state: {ForceDeleteOnStart}");
-            }
+            throw new NotImplementedException();
         }
     }
 }
