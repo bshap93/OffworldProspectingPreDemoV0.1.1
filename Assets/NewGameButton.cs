@@ -11,6 +11,8 @@ public class NewGameButton : MonoBehaviour
     {
         DataReset.ClearAllSaveData();
 
+        PlayerPrefs.SetInt("IsNewGame", 1);
+
         loadNewGameFeedbacks?.PlayFeedbacks();
     }
 }

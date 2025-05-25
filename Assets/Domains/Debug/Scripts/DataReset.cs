@@ -50,12 +50,8 @@ namespace Domains.Debug
             ProgressionManager.SaveAllProgression(true);
 
 
-            // Reset digger data if it exists
-            // if (DiggerDataManager.Instance != null) DiggerDataManager.Instance.ResetDiggerData();
-            // Reset inventory
             PlayerInventoryManager.ResetInventory(); // will avoid clearing scene inventory if not loaded
             InventorySaveUtility.Reset(); // safely wipes saved inventory data
-            DiggerSaveUtility.Save(true, true);
 
             UnityEngine.Debug.Log("All save data cleared successfully.");
         }
