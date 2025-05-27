@@ -45,8 +45,7 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
         private readonly float defaultFirstHitRadius = 0.1f;
         private readonly float defaultStalagmiteHeight = 100f;
 
-        [Header("Hit Number Logic")] [SerializeField]
-        private readonly float hitThresholdDistance = 0.5f; // adjust as needed
+        [Header("Hit Number Logic")] private readonly float hitThresholdDistance = 0.5f; // adjust as needed
 
         private new readonly float maxEffectOpacity = 100f;
 
@@ -130,13 +129,9 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
             ValidateAllParameters();
 
             // Reapply current material when enabled
-            if (currentMaterial != null)
-            {
-                SetCurrentMaterial(currentMaterial);
-                if (debugLogging)
-                    UnityEngine.Debug.Log($"{GetType().Name} enabled - reapplied material: {currentMaterial.name}");
-            }
-
+            if (currentMaterial != null) SetCurrentMaterial(currentMaterial);
+            // if (debugLogging)
+            //     UnityEngine.Debug.Log($"{GetType().Name} enabled - reapplied material: {currentMaterial.name}");
             // Reset state when tool is enabled
             isDigging = false;
             terrainHitCount = 0;
@@ -146,7 +141,7 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
                 activeDigCoroutine = null;
             }
 
-            if (debugLogging) UnityEngine.Debug.Log("PickaxeTool enabled and reset");
+            // if (debugLogging) UnityEngine.Debug.Log("PickaxeTool enabled and reset");
         }
 
         private void OnDisable()

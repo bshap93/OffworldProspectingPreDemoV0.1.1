@@ -1,9 +1,12 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using Domains.Gameplay.Objectives.Events;
 using Domains.Gameplay.Objectives.Scripts;
 using MoreMountains.Tools;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ObjectivesListHUD : MonoBehaviour, MMEventListener<ObjectiveEvent>
 {
@@ -18,12 +21,14 @@ public class ObjectivesListHUD : MonoBehaviour, MMEventListener<ObjectiveEvent>
 
     public Color ActiveObjectiveTextColor;
     public Color CompletedObjectiveTextColor;
+    public int numCompletedObjectivesToShow;
 
     private ObjectivesManager objectivesManager;
 
     private void Start()
     {
         objectivesManager = FindFirstObjectByType<ObjectivesManager>();
+
         RefreshActiveObjectivesList();
         RefreshCompletedObjectivesList();
     }
@@ -41,14 +46,21 @@ public class ObjectivesListHUD : MonoBehaviour, MMEventListener<ObjectiveEvent>
     public void OnMMEvent(ObjectiveEvent eventType)
     {
         if (eventType.type == ObjectiveEventType.ObjectiveActivated)
-        {
-            RefreshActiveObjectivesList();
-        }
+            StartCoroutine(DelayedRefresh(() => RefreshActiveObjectivesList()));
         else if (eventType.type == ObjectiveEventType.ObjectiveCompleted)
-        {
-            RefreshCompletedObjectivesList();
-            RefreshActiveObjectivesList();
-        }
+            StartCoroutine(DelayedRefresh(() =>
+            {
+                RefreshCompletedObjectivesList();
+                RefreshActiveObjectivesList();
+            }));
+    }
+
+    private IEnumerator DelayedRefresh(Action refreshAction)
+    {
+        yield return null; // Wait one frame
+        refreshAction();
+        yield return null;
+
     }
 
     public void RefreshActiveObjectivesList()
@@ -102,7 +114,15 @@ public class ObjectivesListHUD : MonoBehaviour, MMEventListener<ObjectiveEvent>
                 Debug.LogWarning($"Objective with ID {objectiveId} not found in objectives list.");
             }
 
+
             CompletedObjectiveElements.Add(objectiveElement);
+
+            // Limit the number of completed objectives shown
+            if (CompletedObjectiveElements.Count > numCompletedObjectivesToShow)
+            {
+                Destroy(CompletedObjectiveElements[0]);
+                CompletedObjectiveElements.RemoveAt(0);
+            }
         }
     }
 }

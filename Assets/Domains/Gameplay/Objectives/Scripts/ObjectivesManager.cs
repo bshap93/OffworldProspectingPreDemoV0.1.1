@@ -36,49 +36,8 @@ namespace Domains.Gameplay.Objectives.Scripts
 
             LoadObjectives();
 
-            // foreach (var objective in objectivesList.objectives)
-            //     if (objective.activateWhenCompleted.Length == 0)
-            //     {
-            //         if (!IsObjectiveActive(objective.objectiveId) && !IsObjectiveCompleted(objective.objectiveId))
-            //             ObjectiveEvent.Trigger(objective.objectiveId, ObjectiveEventType.ObjectiveActivated);
-            //     }
-            //     else
-            //     {
-            //         foreach (var prerequisite in objective.activateWhenCompleted)
-            //             if (!IsObjectiveCompleted(prerequisite))
-            //                 break;
-            //
-            //         if (!IsObjectiveActive(objective.objectiveId) && !IsObjectiveCompleted(objective.objectiveId))
-            //             ObjectiveEvent.Trigger(objective.objectiveId, ObjectiveEventType.ObjectiveActivated);
-            //     }
+
             StartCoroutine(InitializeAfterFrame());
-
-            
-        }
-
-        private IEnumerator InitializeAfterFrame()
-        {
-            yield return null;
-
-            foreach (var objective in objectivesList.objectives)
-            {
-                if (objective.activateWhenCompleted.Length == 0)
-                {
-                    if (!IsObjectiveActive(objective.objectiveId) && !IsObjectiveCompleted(objective.objectiveId))
-                        ObjectiveEvent.Trigger(objective.objectiveId, ObjectiveEventType.ObjectiveActivated);
-                }
-                else
-                {
-                    foreach (var prerequisite in objective.activateWhenCompleted)
-                        if (!IsObjectiveCompleted(prerequisite))
-                            break;
-
-                    if (!IsObjectiveActive(objective.objectiveId) && !IsObjectiveCompleted(objective.objectiveId))
-                        ObjectiveEvent.Trigger(objective.objectiveId, ObjectiveEventType.ObjectiveActivated);
-                } 
-                SaveAllObjectives();
-                
-            }
         }
 
 
@@ -102,8 +61,59 @@ namespace Domains.Gameplay.Objectives.Scripts
 
             if (eventType.type == ObjectiveEventType.ObjectiveCompleted)
             {
-                UnityEngine.Debug.Log($"Objective {eventType.objectiveId} has been completed.");
+                // UnityEngine.Debug.Log($"Objective {eventType.objectiveId} has been completed.");
                 CompleteObjective(eventType.objectiveId);
+                SaveAllObjectives();
+
+                // Add this: Check if any objectives should now be activated
+                CheckForNewObjectivesToActivate();
+            }
+        }
+
+        private void CheckForNewObjectivesToActivate()
+        {
+            foreach (var objective in objectivesList.objectives)
+            {
+                // Skip if already active or completed
+                if (IsObjectiveActive(objective.objectiveId) || IsObjectiveCompleted(objective.objectiveId))
+                    continue;
+
+                // Check if all prerequisites are met
+                var allPrerequisitesMet = true;
+
+                foreach (var prerequisite in objective.activateWhenCompleted)
+                    if (!IsObjectiveCompleted(prerequisite))
+                    {
+                        allPrerequisitesMet = false;
+                        break;
+                    }
+
+                if (allPrerequisitesMet)
+                    ObjectiveEvent.Trigger(objective.objectiveId, ObjectiveEventType.ObjectiveActivated);
+            }
+        }
+
+        private IEnumerator InitializeAfterFrame()
+        {
+            yield return null;
+            var allPrerequisitesCompleted = true;
+
+            foreach (var objective in objectivesList.objectives)
+            {
+                // Check ALL prerequisites are met
+                var allPrerequisitesMet = true;
+                foreach (var prerequisite in objective.activateWhenCompleted)
+                    if (!IsObjectiveCompleted(prerequisite))
+                    {
+                        allPrerequisitesMet = false;
+                        break;
+                    }
+
+                // Only activate if ALL prerequisites are met
+                if (allPrerequisitesMet && !IsObjectiveActive(objective.objectiveId) &&
+                    !IsObjectiveCompleted(objective.objectiveId))
+                    ObjectiveEvent.Trigger(objective.objectiveId, ObjectiveEventType.ObjectiveActivated);
+                SaveAllObjectives();
             }
         }
 
@@ -160,11 +170,11 @@ namespace Domains.Gameplay.Objectives.Scripts
 
         public static void CompleteObjective(string objectiveId)
         {
-            if (!ActiveObjectives.Contains(objectiveId))
-            {
-                UnityEngine.Debug.LogError($"Objective {objectiveId} is not active and cannot be completed.");
-                return;
-            }
+            // if (!ActiveObjectives.Contains(objectiveId))
+            // {
+            //     UnityEngine.Debug.LogError($"Objective {objectiveId} is not active and cannot be completed.");
+            //     return;
+            // }
 
             if (CompletedObjectives.Contains(objectiveId))
             {
@@ -175,7 +185,6 @@ namespace Domains.Gameplay.Objectives.Scripts
 
             ActiveObjectives.Remove(objectiveId);
             CompletedObjectives.Add(objectiveId);
-            UnityEngine.Debug.Log($"Objective {objectiveId} completed.");
         }
 
         public static void SaveAllObjectives()

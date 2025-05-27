@@ -202,8 +202,8 @@ namespace Domains.Player.Scripts
                 FuelPoints = ES3.Load<float>("FuelPoints", saveFilePath);
                 MaxFuelPoints = ES3.Load<float>("MaxFuelPoints", saveFilePath);
                 fuelBarUpdater.Initialize();
-                UnityEngine.Debug.Log(
-                    $"✅ Loaded fuel data: Fuel Points={FuelPoints}, Max Fuel Points={MaxFuelPoints}");
+                // UnityEngine.Debug.Log(
+                //     $"✅ Loaded fuel data: Fuel Points={FuelPoints}, Max Fuel Points={MaxFuelPoints}");
             }
             else
             {

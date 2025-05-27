@@ -9,5 +9,7 @@ namespace Domains.Gameplay.Objectives.ScriptableObjects
         [SerializeField] public string objectiveId;
         [SerializeField] public string objectiveText;
         [SerializeField] public string[] activateWhenCompleted;
+        [SerializeField] public int numberOfObjectives = 1;
+        
     }
 }
