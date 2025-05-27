@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0563783c091e4b1aabec9355fe50eaaf, type: 3}
-  m_Name: ScanRockTut 1
+  m_Name: CheckMail
   m_EditorClassIdentifier: 
-  objectiveId: ScanRockTut
-  objectiveText: Scan Stone Ore
+  objectiveId: CheckMail
+  objectiveText: Check the Comms Panel
   activateWhenCompleted:
-  - GetAluTut
+  - GetJetpack
+  numberOfObjectives: 1

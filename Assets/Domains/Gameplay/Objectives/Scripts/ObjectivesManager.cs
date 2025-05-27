@@ -54,10 +54,8 @@ namespace Domains.Gameplay.Objectives.Scripts
         public void OnMMEvent(ObjectiveEvent eventType)
         {
             if (eventType.type == ObjectiveEventType.ObjectiveActivated)
-            {
-                UnityEngine.Debug.Log($"Objective {eventType.objectiveId} has been activated.");
+                // UnityEngine.Debug.Log($"Objective {eventType.objectiveId} has been activated.");
                 AddActiveObjective(eventType.objectiveId);
-            }
 
             if (eventType.type == ObjectiveEventType.ObjectiveCompleted)
             {
@@ -98,8 +96,35 @@ namespace Domains.Gameplay.Objectives.Scripts
             yield return null;
             var allPrerequisitesCompleted = true;
 
+            // First, trigger events for objectives that are already active (loaded from save)
+            foreach (var activeObjectiveId in ActiveObjectives)
+                ObjectiveEvent.Trigger(activeObjectiveId, ObjectiveEventType.ObjectiveActivated);
+
+            // foreach (var objective in objectivesList.objectives)
+            // {
+            //     // Check ALL prerequisites are met
+            //     var allPrerequisitesMet = true;
+            //     foreach (var prerequisite in objective.activateWhenCompleted)
+            //         if (!IsObjectiveCompleted(prerequisite))
+            //         {
+            //             allPrerequisitesMet = false;
+            //             break;
+            //         }
+            //
+            //     // Only activate if ALL prerequisites are met
+            //     if (allPrerequisitesMet && !IsObjectiveActive(objective.objectiveId) &&
+            //         !IsObjectiveCompleted(objective.objectiveId))
+            //         ObjectiveEvent.Trigger(objective.objectiveId, ObjectiveEventType.ObjectiveActivated);
+            //     SaveAllObjectives();
+            // }
+
+            // Then check for new objectives to activate
             foreach (var objective in objectivesList.objectives)
             {
+                // Skip if already active or completed
+                if (IsObjectiveActive(objective.objectiveId) || IsObjectiveCompleted(objective.objectiveId))
+                    continue;
+
                 // Check ALL prerequisites are met
                 var allPrerequisitesMet = true;
                 foreach (var prerequisite in objective.activateWhenCompleted)
@@ -109,12 +134,11 @@ namespace Domains.Gameplay.Objectives.Scripts
                         break;
                     }
 
-                // Only activate if ALL prerequisites are met
-                if (allPrerequisitesMet && !IsObjectiveActive(objective.objectiveId) &&
-                    !IsObjectiveCompleted(objective.objectiveId))
+                if (allPrerequisitesMet)
                     ObjectiveEvent.Trigger(objective.objectiveId, ObjectiveEventType.ObjectiveActivated);
-                SaveAllObjectives();
             }
+
+            SaveAllObjectives();
         }
 
         public static bool IsObjectiveActive(string objectiveId)
@@ -165,7 +189,7 @@ namespace Domains.Gameplay.Objectives.Scripts
 
 
             ActiveObjectives.Add(objectiveId);
-            UnityEngine.Debug.Log($"Objective {objectiveId} added to active objectives.");
+            // UnityEngine.Debug.Log($"Objective {objectiveId} added to active objectives.");
         }
 
         public static void CompleteObjective(string objectiveId)

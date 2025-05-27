@@ -567,15 +567,11 @@ namespace Domains.Player.Scripts
             // Load upgrade levels
             foreach (var upgrade in availableUpgrades)
                 if (ES3.KeyExists(upgrade.upgradeTypeName, "UpgradeSave.es3"))
-                {
                     UpgradeLevels[upgrade.upgradeTypeName] = ES3.Load<int>(upgrade.upgradeTypeName, "UpgradeSave.es3");
-                    UnityEngine.Debug.Log(
-                        $"Loaded upgrade level for {upgrade.upgradeTypeName}: {UpgradeLevels[upgrade.upgradeTypeName]}");
-                }
+                // UnityEngine.Debug.Log(
+                //     $"Loaded upgrade level for {upgrade.upgradeTypeName}: {UpgradeLevels[upgrade.upgradeTypeName]}");
                 else
-                {
                     UpgradeLevels[upgrade.upgradeTypeName] = 0;
-                }
 
             // Load tool properties
             LoadToolProperties();
@@ -599,11 +595,8 @@ namespace Domains.Player.Scripts
                 shovelToolWidth = ES3.Load<float>("ShovelToolWidth", "UpgradeSave.es3");
 
             if (ES3.KeyExists("ShovelMaterialLevel", "UpgradeSave.es3"))
-            {
                 shovelMaterialLevel = ES3.Load<int>("ShovelMaterialLevel", "UpgradeSave.es3");
-                UnityEngine.Debug.Log($"Loaded shovel material level: {shovelMaterialLevel}");
-            }
-
+            // UnityEngine.Debug.Log($"Loaded shovel material level: {shovelMaterialLevel}");
             if (ES3.KeyExists("JetPackSpeedMultiplier", "UpgradeSave.es3"))
                 jetPackSpeedMultiplier = ES3.Load<float>("JetPackSpeedMultiplier", "UpgradeSave.es3");
             if (ES3.KeyExists("JetPackMaterialLevel", "UpgradeSave.es3"))

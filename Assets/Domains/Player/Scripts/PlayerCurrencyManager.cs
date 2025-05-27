@@ -155,11 +155,9 @@ namespace Domains.Player.Scripts
             {
                 CompanyCredits = ES3.Load<float>("CompanyCredits", saveFilePath);
                 currencyBarUpdater.Initialize();
-                UnityEngine.Debug.Log($"✅ Loaded currency data from {saveFilePath}");
             }
             else
             {
-                UnityEngine.Debug.Log($"No saved currency data found at {saveFilePath}");
                 ResetPlayerCurrency();
                 currencyBarUpdater.Initialize();
             }

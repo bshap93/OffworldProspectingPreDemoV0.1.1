@@ -46,7 +46,7 @@ namespace Domains.Scene.Scripts
         public DestructableManager destructableManager;
 
         public ProgressionManager progressionManager;
-        
+
         public ObjectivesManager objectivesManager;
 
 
@@ -93,9 +93,6 @@ namespace Domains.Scene.Scripts
             //     if (playerFuelManager == null)
             //         UnityEngine.Debug.LogError("PlayerFuelManager not found in SaveManager");
             // }
-
-
-
         }
 
 
@@ -146,7 +143,7 @@ namespace Domains.Scene.Scripts
 
             ProgressionManager.SaveAllProgression(false);
 
-            UnityEngine.Debug.Log("All data saved");
+            // UnityEngine.Debug.Log("All data saved");
 
             AlertEvent.Trigger(AlertReason.SavingGame, "Saving game...");
         }

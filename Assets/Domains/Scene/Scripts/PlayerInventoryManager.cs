@@ -227,7 +227,7 @@ namespace Domains.Scene.Scripts
             // Save weight limit
             ES3.Save(WeightLimitKey, _weightLimit, _savePath);
 
-            UnityEngine.Debug.Log($"✅ Saved inventory data to {_savePath}");
+            // UnityEngine.Debug.Log($"✅ Saved inventory data to {_savePath}");
         }
 
         public void LoadInventory()

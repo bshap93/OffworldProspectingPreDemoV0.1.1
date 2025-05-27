@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using CompassNavigatorPro;
-using Domains.Input.Scripts;
-using Domains.UI_Global.Events;
 using UnityEngine;
 
 namespace Domains.Scripts_that_Need_Sorting
@@ -19,10 +17,10 @@ namespace Domains.Scripts_that_Need_Sorting
             _compassPro = FindFirstObjectByType<CompassPro>();
             if (_compassPro != null)
             {
-                _compassPro.showOnScreenIndicators = false;
-                _compassPro.showOffScreenIndicators = false;
+                _compassPro.showOnScreenIndicators = true;
+                _compassPro.showOffScreenIndicators = true;
                 _compassPro.UpdateSettings();
-                UnityEngine.Debug.Log("Compass settings initialized");
+                // UnityEngine.Debug.Log("Compass settings initialized");
             }
             else
             {
@@ -33,30 +31,30 @@ namespace Domains.Scripts_that_Need_Sorting
         // Update is called once per frame
         private void Update()
         {
-            if (CustomInputBindings.IsGetMoreInfoPressed())
-            {
-                if (_compassPro != null)
-                {
-                    if (!hasUsedMoreInfo)
-                    {
-                        TutorialEvent.Trigger(TutorialEventType.PlayerUsedMoreInfo);
-                        hasUsedMoreInfo = true;
-                    }
-
-                    _compassPro.showOnScreenIndicators = true;
-                    _compassPro.showOffScreenIndicators = true;
-                    _compassPro.UpdateSettings();
-                }
-            }
-            else
-            {
-                if (_compassPro != null)
-                {
-                    _compassPro.showOnScreenIndicators = false;
-                    _compassPro.showOffScreenIndicators = false;
-                    _compassPro.UpdateSettings();
-                }
-            }
+            // if (CustomInputBindings.IsGetMoreInfoPressed())
+            // {
+            //     if (_compassPro != null)
+            //     {
+            //         if (!hasUsedMoreInfo)
+            //         {
+            //             TutorialEvent.Trigger(TutorialEventType.PlayerUsedMoreInfo);
+            //             hasUsedMoreInfo = true;
+            //         }
+            //
+            //         _compassPro.showOnScreenIndicators = true;
+            //         _compassPro.showOffScreenIndicators = true;
+            //         _compassPro.UpdateSettings();
+            //     }
+            // }
+            // else
+            // {
+            //     if (_compassPro != null)
+            //     {
+            //         _compassPro.showOnScreenIndicators = false;
+            //         _compassPro.showOffScreenIndicators = false;
+            //         _compassPro.UpdateSettings();
+            //     }
+            // }
         }
     }
 }

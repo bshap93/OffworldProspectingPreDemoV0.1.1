@@ -52,14 +52,10 @@ namespace Domains.Input.Scripts
         public void ToggleInfoPanel()
         {
             if (!_isPanelVisible)
-            {
-                UnityEngine.Debug.Log("InfoPanel is not instantiated yet.");
+                // UnityEngine.Debug.Log("InfoPanel is not instantiated yet.");
                 ShowInfoPanel();
-            }
             else
-            {
                 HideInfoPanel();
-            }
         }
 
         // public void ShowInfoPanel()

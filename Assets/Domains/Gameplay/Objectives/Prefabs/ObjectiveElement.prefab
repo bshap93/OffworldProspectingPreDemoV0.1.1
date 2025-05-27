@@ -50,6 +50,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ObjectiveText: {fileID: 2338311265802573249}
+  PanelBackground: {fileID: 0}
 --- !u!1 &5691799130688830542
 GameObject:
   m_ObjectHideFlags: 0
@@ -62,7 +63,7 @@ GameObject:
   - component: {fileID: 2272594361463776702}
   - component: {fileID: 9169156692121138935}
   m_Layer: 5
-  m_Name: GameObject
+  m_Name: PanelImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77,7 +78,7 @@ RectTransform:
   m_GameObject: {fileID: 5691799130688830542}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.527, y: 1.4734, z: 1}
+  m_LocalScale: {x: 2.0907683, y: 1.7804565, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6830256260058559425}
@@ -153,14 +154,14 @@ RectTransform:
   m_GameObject: {fileID: 8364353108603010696}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3.6588218, y: 2.1066241, z: 3.1038997}
+  m_LocalScale: {x: 2.6722333, y: 1.743317, z: 3.1038997}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 597482396888335112}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 763.21924, y: -87.625046}
+  m_AnchoredPosition: {x: 708.0719, y: -64.57106}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &926066643592081561
@@ -191,7 +192,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Objective Sample
+  m_text: Howmanycharacte
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b04f3173f946b754db673ac13842f4c1, type: 2}
   m_sharedMaterial: {fileID: 21728410361126204, guid: b04f3173f946b754db673ac13842f4c1, type: 2}
@@ -256,7 +257,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -89.51968, y: 0, z: -97.741554, w: 0}
+  m_margin: {x: -147.68098, y: 0, z: -36.25524, w: -16.495943}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0

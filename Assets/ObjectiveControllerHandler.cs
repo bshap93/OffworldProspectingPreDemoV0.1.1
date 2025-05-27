@@ -10,13 +10,41 @@ public class ObjectiveControllerHandler : MonoBehaviour, MMEventListener<Objecti
     [SerializeField] private string objectiveId;
     [SerializeField] private CompassProPOI compassProPOI;
 
+    private void Start()
+    {
+        compassProPOI.enabled = false;
+    }
+
+    private void OnEnable()
+    {
+        this.MMEventStartListening();
+    }
+
+    private void OnDisable()
+    {
+        this.MMEventStopListening();
+    }
+
+    public void OnMMEvent(ObjectiveEvent eventType)
+    {
+        Debug.Log($"Handler for '{objectiveId}' received event: {eventType.type} for '{eventType.objectiveId}'");
+        Debug.Log(
+            $"String comparison: '{objectiveId}' == '{eventType.objectiveId}' = {objectiveId == eventType.objectiveId}");
+
+        if (eventType.objectiveId == objectiveId)
+        {
+            if (eventType.type == ObjectiveEventType.ObjectiveActivated)
+                HandleSetObjectiveActive();
+            else if (eventType.type == ObjectiveEventType.ObjectiveCompleted) HandleSetObjectiveComplete();
+        }
+    }
+
     public void HandleSetObjectiveActive()
     {
-        
         if (compassProPOI != null)
         {
-            compassProPOI.ToggleIndicatorVisibility(true);
-            compassProPOI.ToggleCompassBarIconVisibility(true);
+            Debug.Log($"Objective {objectiveId} is now active. CompassProPOI: {compassProPOI}");
+            compassProPOI.enabled = true;
         }
     }
 
@@ -26,38 +54,13 @@ public class ObjectiveControllerHandler : MonoBehaviour, MMEventListener<Objecti
 
         if (compassProPOI != null)
         {
-            compassProPOI.ToggleIndicatorVisibility(false);
-            compassProPOI.ToggleCompassBarIconVisibility(false);
+            Debug.Log($"Objective {objectiveId} is now complete. Disabling CompassProPOI: {compassProPOI}");
+            compassProPOI.enabled = false;
         }
     }
 
-    public void OnMMEvent(ObjectiveEvent eventType)
-    {
-        if (eventType.objectiveId == objectiveId)
-        {
-            if (eventType.type == ObjectiveEventType.ObjectiveActivated)
-            {
-                HandleSetObjectiveActive();
-            }
-            else if (eventType.type == ObjectiveEventType.ObjectiveCompleted)
-            {
-                HandleSetObjectiveComplete();
-            }
-        }
-    }
-    
     public void TriggerCompleteObjective()
     {
         ObjectiveEvent.Trigger(objectiveId, ObjectiveEventType.ObjectiveCompleted);
-    }
-    
-    private void OnEnable()
-    {
-        this.MMEventStartListening();
-    }
-    
-    private void OnDisable()
-    {
-        this.MMEventStopListening();
     }
 }

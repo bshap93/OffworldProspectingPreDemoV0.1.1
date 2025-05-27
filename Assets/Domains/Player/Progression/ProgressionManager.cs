@@ -100,7 +100,7 @@ namespace Domains.Player.Progression
         {
             if (wasCollected) CollectedObjectives.Add(uniqueId);
 
-            UnityEngine.Debug.Log($"ProgressionManager: {uniqueId} was collected");
+            // UnityEngine.Debug.Log($"ProgressionManager: {uniqueId} was collected");
         }
 
         public static bool IsObjectiveCollected(string uniqueId)

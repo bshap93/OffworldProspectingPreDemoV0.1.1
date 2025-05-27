@@ -1,5 +1,4 @@
 using Domains.Input.Events;
-using Domains.Input.Scripts;
 using Domains.Player.Progression;
 using MoreMountains.Tools;
 using UnityEngine;
@@ -28,9 +27,9 @@ namespace Domains.Scripts_that_Need_Sorting
         // Update is called once per frame
         private void Update()
         {
-            if (CustomInputBindings.IsGetMoreInfoPressed())
-                ShowControls();
-            else if (ProgressionManager.TutorialFinished)
+            // if (CustomInputBindings.IsGetMoreInfoPressed())
+            //     ShowControls();
+            if (ProgressionManager.TutorialFinished)
                 HideControls();
         }
 

@@ -238,11 +238,9 @@ namespace Domains.Player.Scripts
                 HealthPoints = ES3.Load<float>("HealthPoints", saveFilePath);
                 MaxHealthPoints = ES3.Load<float>("MaxHealthPoints", saveFilePath);
                 healthBarUpdater.Initialize();
-                UnityEngine.Debug.Log($"✅ Loaded health data from {saveFilePath}");
             }
             else
             {
-                UnityEngine.Debug.Log($"No saved health data found at {saveFilePath}");
                 ResetPlayerHealth();
                 healthBarUpdater.Initialize();
             }
