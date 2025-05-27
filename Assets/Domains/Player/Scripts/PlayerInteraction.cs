@@ -6,7 +6,6 @@ using Domains.Input.Scripts;
 using Domains.Player.Events;
 using Domains.Scripts_that_Need_Sorting;
 using Domains.UI_Global.Reticle;
-using PixelCrushers.QuestMachine;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -41,7 +40,7 @@ namespace Domains.Player.Scripts
 
         private float _positionEventTimer;
 
-        private QuestJournal questJournal;
+        // private QuestJournal questJournal;
 
         private void Start()
         {
@@ -55,9 +54,9 @@ namespace Domains.Player.Scripts
                 UnityEngine.Debug.LogWarning(
                     "TextureDetector not found in the scene. Cannot track texture information.");
 
-            questJournal = GetComponent<QuestJournal>();
-            if (questJournal == null)
-                UnityEngine.Debug.LogWarning("QuestJournal not found in the scene. Cannot track quest information.");
+            // questJournal = GetComponent<QuestJournal>();
+            // if (questJournal == null)
+            //     UnityEngine.Debug.LogWarning("QuestJournal not found in the scene. Cannot track quest information.");
 
             if (reticleController == null) reticleController = FindFirstObjectByType<ReticleController>();
         }

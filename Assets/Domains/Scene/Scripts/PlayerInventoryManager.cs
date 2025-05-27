@@ -21,7 +21,6 @@ namespace Domains.Scene.Scripts
         private const string ResourcesPath = "Items";
 
         // Weight-related properties
-        [FormerlySerializedAs("_weightLimit")] [SerializeField]
         private static float _weightLimit = 5f; // Default value
 
         // Direct reference to the inventory
@@ -263,8 +262,6 @@ namespace Domains.Scene.Scripts
 
                     // Update UI
                     SafeTriggerInventoryEvent(InventoryEventType.ContentChanged, _weightLimit);
-
-                    UnityEngine.Debug.Log($"✅ Loaded inventory data from {_savePath}");
                 }
             }
             else

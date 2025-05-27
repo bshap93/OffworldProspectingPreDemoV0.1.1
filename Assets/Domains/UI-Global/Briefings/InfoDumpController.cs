@@ -25,6 +25,12 @@ namespace Domains.UI_Global.Briefings
                 return;
             }
 
+            // if (ES3.KeyExists("DataWasReset"))
+            // {
+            //     var dataWasReset = ES3.Load<bool>("DataWasReset");
+            //     if (dataWasReset) StartCoroutine(DelayedShowInfoDump());
+            // }
+
             if (!ProgressionManager.TutorialFinished)
                 StartCoroutine(DelayedShowInfoDump());
         }

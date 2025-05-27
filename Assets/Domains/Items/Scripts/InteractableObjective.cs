@@ -18,7 +18,7 @@ namespace Domains.Items.Scripts
 
         [SerializeField] protected bool hasBeenInteractedWith;
         [Header("Events")] public UnityEvent OnInteractableInteract;
-        [SerializeField] QuestControlEvent questControlEvent;
+        [SerializeField] ObjectiveEvent questControlEvent;
  
 
 

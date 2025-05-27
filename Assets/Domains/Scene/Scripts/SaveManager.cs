@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Domains.Gameplay.Objectives.Scripts;
 using Domains.Player.Progression;
 using Domains.Player.Scripts;
 using Domains.SaveLoad;
@@ -17,6 +18,7 @@ namespace Domains.Scene.Scripts
         public const string SaveFileName = "GameSave.es3";
         public const string SavePickablesFileName = "Pickables.es3";
         public const string SaveProgressionFilePath = "Progression.es3";
+        public const string SaveObjectivesFilePath = "Objectives.es3";
 
 
         // [Header("Persistence Managers")] [SerializeField]
@@ -44,6 +46,8 @@ namespace Domains.Scene.Scripts
         public DestructableManager destructableManager;
 
         public ProgressionManager progressionManager;
+        
+        public ObjectivesManager objectivesManager;
 
 
         public static SaveManager Instance { get; private set; }
@@ -59,43 +63,39 @@ namespace Domains.Scene.Scripts
             Instance = this;
 
 
-            // Initialize managers if needed
-            if (pickableManager == null)
-            {
-                pickableManager = GetComponentInChildren<PickableManager>(true);
-                if (pickableManager == null)
-                {
-                    var pickableGo = new GameObject("PickableManager");
-                    pickableManager = pickableGo.AddComponent<PickableManager>();
-                    pickableGo.transform.SetParent(transform);
-                }
-            }
+            // // Initialize managers if needed
+            // if (pickableManager == null)
+            // {
+            //     pickableManager = GetComponentInChildren<PickableManager>(true);
+            //     if (pickableManager == null)
+            //     {
+            //         var pickableGo = new GameObject("PickableManager");
+            //         pickableManager = pickableGo.AddComponent<PickableManager>();
+            //         pickableGo.transform.SetParent(transform);
+            //     }
+            // }
+            //
+            // if (playerInventoryManager == null)
+            // {
+            //     playerInventoryManager = GetComponentInChildren<PlayerInventoryManager>(true);
+            //     if (playerInventoryManager == null)
+            //     {
+            //         var inventoryGo = new GameObject("PlayerInventoryManager");
+            //         playerInventoryManager = inventoryGo.AddComponent<PlayerInventoryManager>();
+            //         inventoryGo.transform.SetParent(transform);
+            //     }
+            // }
+            //
+            //
+            // if (playerFuelManager == null)
+            // {
+            //     playerFuelManager = GetComponentInChildren<PlayerFuelManager>(true);
+            //     if (playerFuelManager == null)
+            //         UnityEngine.Debug.LogError("PlayerFuelManager not found in SaveManager");
+            // }
 
-            if (playerInventoryManager == null)
-            {
-                playerInventoryManager = GetComponentInChildren<PlayerInventoryManager>(true);
-                if (playerInventoryManager == null)
-                {
-                    var inventoryGo = new GameObject("PlayerInventoryManager");
-                    playerInventoryManager = inventoryGo.AddComponent<PlayerInventoryManager>();
-                    inventoryGo.transform.SetParent(transform);
-                }
-            }
 
 
-            if (playerFuelManager == null)
-            {
-                playerFuelManager = GetComponentInChildren<PlayerFuelManager>(true);
-                if (playerFuelManager == null)
-                    UnityEngine.Debug.LogError("PlayerFuelManager not found in SaveManager");
-            }
-
-            if (playerHealthManager == null)
-            {
-                playerHealthManager = GetComponentInChildren<PlayerHealthManager>(true);
-                if (playerHealthManager == null)
-                    UnityEngine.Debug.LogError("PlayerHealthManager not found in SaveManager");
-            }
         }
 
 
@@ -141,10 +141,10 @@ namespace Domains.Scene.Scripts
             PlayerUpgradeManager.SaveUpgrades();
             PickableManager.SaveAllPickedItems();
             DestructableManager.SaveAllDestructables();
+            ObjectivesManager.SaveAllObjectives();
 
 
             ProgressionManager.SaveAllProgression(false);
-
 
             UnityEngine.Debug.Log("All data saved");
 
@@ -161,6 +161,7 @@ namespace Domains.Scene.Scripts
             var pickablesLoaded = pickableManager != null && pickableManager.HasSavedData();
             var destructablesLoaded = destructableManager != null && destructableManager.HasSavedData();
             var progressionLoaded = progressionManager != null && progressionManager.HasProgressionData();
+            var objectivesLoaded = objectivesManager != null && objectivesManager.HasSavedData();
 
 
             // Digger has no Load method
@@ -173,6 +174,7 @@ namespace Domains.Scene.Scripts
             if (pickablesLoaded) pickableManager.LoadPickedItems();
             if (destructablesLoaded) destructableManager.LoadDestructables();
             if (progressionLoaded) progressionManager.LoadProgressionObjectivesState();
+            if (objectivesLoaded) objectivesManager.LoadObjectives();
 
 
             // 3rd Party

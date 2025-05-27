@@ -17,7 +17,6 @@ namespace Domains.Items.Scripts
     {
         public string ItemID;
 
-
         public string ItemName;
 
         public string ItemDescription;

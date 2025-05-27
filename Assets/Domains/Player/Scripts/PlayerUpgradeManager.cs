@@ -61,8 +61,6 @@ namespace Domains.Player.Scripts
 
         private void Awake()
         {
-            UnityEngine.Debug.Log("PlayerUpgradeManager.Awake() - Starting initialization");
-
             characterStatProfile =
                 Resources.Load<CharacterStatProfile>(CharacterResourcePaths.CharacterStatProfileFilePath);
 
@@ -77,15 +75,11 @@ namespace Domains.Player.Scripts
 
             // Initialize default values from profile
             InitializeDefaultValues();
-
-
-            UnityEngine.Debug.Log("PlayerUpgradeManager.Awake() - Initialization complete");
         }
 
 
         private void Start()
         {
-            UnityEngine.Debug.Log("PlayerUpgradeManager.Start() - Loading upgrades");
             LoadUpgrades();
         }
 
@@ -547,7 +541,7 @@ namespace Domains.Player.Scripts
 
         public void LoadUpgrades()
         {
-            UnityEngine.Debug.Log("Loading upgrades...");
+            // UnityEngine.Debug.Log("Loading upgrades...");
 
             // var isFreshStart = !ES3.KeyExists("ShovelMaterialLevel", "UpgradeSave.es3") &&
             //                    !ES3.KeyExists("Shovel", "UpgradeSave.es3");
@@ -589,7 +583,7 @@ namespace Domains.Player.Scripts
             // Apply material based on saved levels
             ApplyMaterialsBasedOnLevel();
 
-            UnityEngine.Debug.Log("Finished loading all upgrades");
+            // UnityEngine.Debug.Log("Finished loading all upgrades");
         }
 
         private void LoadToolProperties()
@@ -631,11 +625,8 @@ namespace Domains.Player.Scripts
                 pickaxeMiningToolWidth = ES3.Load<float>("PickaxeToolWidth", "UpgradeSave.es3");
 
             if (ES3.KeyExists("PickaxeMaterialLevel", "UpgradeSave.es3"))
-            {
                 pickaxeMaterialLevel = ES3.Load<int>("PickaxeMaterialLevel", "UpgradeSave.es3");
-                UnityEngine.Debug.Log($"Loaded pickaxe material level: {pickaxeMaterialLevel}");
-            }
-
+            // UnityEngine.Debug.Log($"Loaded pickaxe material level: {pickaxeMaterialLevel}");
             // Apply pickaxe properties
             if (pickaxeTool != null)
             {
@@ -737,17 +728,13 @@ namespace Domains.Player.Scripts
 
                     // Determine material based on level and material level
                     if (upgradedShovelLevel <= 0 && shovelMaterialLevel <= 0)
-                    {
                         // Initial state - grey material
                         shovelTool.SetCurrentMaterial(characterStatProfile.initialShovelMaterial);
-                        UnityEngine.Debug.Log("Applied initial GREY shovel material (no upgrades)");
-                    }
+                    // UnityEngine.Debug.Log("Applied initial GREY shovel material (no upgrades)");
                     else if (shovelMaterialLevel >= 0 && shovelMaterialLevel < shovelUpgrade.upgradeMaterials.Length)
-                    {
                         // Upgraded state - use material from upgrade data
                         shovelTool.SetCurrentMaterial(shovelUpgrade.upgradeMaterials[shovelMaterialLevel]);
-                        UnityEngine.Debug.Log($"Applied shovel material level {shovelMaterialLevel}");
-                    }
+                    // UnityEngine.Debug.Log($"Applied shovel material level {shovelMaterialLevel}");
                 }
             }
 
@@ -760,17 +747,13 @@ namespace Domains.Player.Scripts
 
                     // Determine material based on level and material level
                     if (upgradedJetPackLevel <= 0 && jetPackMaterialLevel <= 0)
-                    {
                         // Initial state - grey material
                         jetPackParticleSystem.startColor = characterStatProfile.initialJetPackParticleColor;
-                        UnityEngine.Debug.Log("Applied initial GREY jetpack material (no upgrades)");
-                    }
+                    // UnityEngine.Debug.Log("Applied initial GREY jetpack material (no upgrades)");
                     else if (jetPackMaterialLevel >= 0 && jetPackMaterialLevel < jetPackUpgrade.upgradeMaterials.Length)
-                    {
                         // Upgraded state - use material from upgrade data
                         jetPackParticleSystem.startColor = jetPackUpgrade.upgradeMaterials[jetPackMaterialLevel].color;
-                        UnityEngine.Debug.Log($"Applied jetpack material level {jetPackMaterialLevel}");
-                    }
+                    // UnityEngine.Debug.Log($"Applied jetpack material level {jetPackMaterialLevel}");
                 }
             }
 
@@ -783,14 +766,14 @@ namespace Domains.Player.Scripts
                 {
                     var upgradedPickaxeLevel = GetUpgradeLevel("Pickaxe");
 
-                    UnityEngine.Debug.Log(
-                        $"Pickaxe upgrade level: {upgradedPickaxeLevel}, Material level: {pickaxeMaterialLevel}");
+                    // UnityEngine.Debug.Log(
+                    //     $"Pickaxe upgrade level: {upgradedPickaxeLevel}, Material level: {pickaxeMaterialLevel}");
 
                     if (upgradedPickaxeLevel <= 0 && pickaxeMaterialLevel <= 0)
                     {
                         // Initial state
                         pickaxeTool.SetCurrentMaterial(characterStatProfile.initialPickaxeMaterial);
-                        UnityEngine.Debug.Log("Applied initial GREY pickaxe material (no upgrades)");
+                        // UnityEngine.Debug.Log("Applied initial GREY pickaxe material (no upgrades)");
                     }
                     else if (pickaxeMaterialLevel >= 0 && pickaxeMaterialLevel < pickaxeUpgrade.upgradeMaterials.Length)
                     {

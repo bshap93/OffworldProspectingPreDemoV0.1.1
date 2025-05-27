@@ -94,8 +94,6 @@ namespace Domains.Player.Progression
 
             if (CollectedObjectives.Count > 0)
                 UnityEngine.Debug.Log($"Loaded objectives: {CollectedObjectives.Count}");
-            else
-                UnityEngine.Debug.Log("No objectives loaded.");
         }
 
         public static void AddInteractableObjective(string uniqueId, bool wasCollected)
@@ -139,7 +137,6 @@ namespace Domains.Player.Progression
             if (ES3.KeyExists(TutorialFinishedKeyName, _savePath))
             {
                 TutorialFinished = ES3.Load<bool>(TutorialFinishedKeyName, _savePath);
-                UnityEngine.Debug.Log($"Loaded tutorial finished state: {TutorialFinished}");
             }
             else
             {

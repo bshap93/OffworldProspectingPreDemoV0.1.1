@@ -38,11 +38,7 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
         {
             this.MMEventStartListening();
             // Reapply current material when enabled
-            if (currentMaterial != null)
-            {
-                SetCurrentMaterial(currentMaterial);
-                UnityEngine.Debug.Log($"{GetType().Name} enabled - reapplied material: {currentMaterial.name}");
-            }
+            if (currentMaterial != null) SetCurrentMaterial(currentMaterial);
         }
 
         private void OnDisable()
@@ -169,7 +165,7 @@ namespace Domains.Gameplay.Tools.ToolSpecifics
             if (didDig)
                 CooldownCoroutine =
                     StartCoroutine(cooldownProgressBar.ShowCooldownBarCoroutine(miningCooldown));
-            
+
             // Experimental gravity integration
             // Check nearby gravity objects
             SimpleGravityIntegration.OnDigPerformed(digPosition, effectRadius * 2f);

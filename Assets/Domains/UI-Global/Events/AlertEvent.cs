@@ -20,7 +20,8 @@ namespace Domains.UI_Global.Events
         ResetManually,
         InventotryEmpty,
         HealthFull,
-        PickedUpEquipment
+        PickedUpEquipment,
+        DiggerPersisted
     }
 
     public enum AlertType

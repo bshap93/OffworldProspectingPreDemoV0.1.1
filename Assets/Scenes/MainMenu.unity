@@ -12761,6 +12761,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loadNewGameFeedbacks: {fileID: 1001247500}
+  autoSaveLoad: {fileID: 0}
 --- !u!1 &958940751
 GameObject:
   m_ObjectHideFlags: 0

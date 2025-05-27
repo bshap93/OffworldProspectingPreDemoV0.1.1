@@ -1,3 +1,4 @@
+using Domains.Gameplay.Objectives.Scripts;
 using Domains.Player.Progression;
 using Domains.Player.Scripts;
 using Domains.Scene.Scripts;
@@ -48,7 +49,13 @@ namespace Domains.Debug
             // Reset progression
             ProgressionManager.ResetProgression();
             ProgressionManager.SaveAllProgression(true);
+            
+            // Reset objectives
+            ObjectivesManager.ResetObjectives();
+            ObjectivesManager.SaveAllObjectives();
 
+
+            // ES3.Save("DataWasReset", true, "GameSave.es3");
 
             PlayerInventoryManager.ResetInventory(); // will avoid clearing scene inventory if not loaded
             InventorySaveUtility.Reset(); // safely wipes saved inventory data

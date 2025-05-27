@@ -247,8 +247,8 @@ namespace Domains.Gameplay.Tools
                 effectOpacity = Mathf.Clamp(newEffectOpacity, minEffectOpacity, maxEffectOpacity);
 
                 // Log the assigned size for debugging
-                if (debugLogging)
-                    UnityEngine.Debug.Log($"DiggerUsingTool.size set to: {effectRadius}, {effectOpacity}");
+                // if (debugLogging)
+                //     UnityEngine.Debug.Log($"DiggerUsingTool.size set to: {effectRadius}, {effectOpacity}");
             }
             catch (Exception ex)
             {
