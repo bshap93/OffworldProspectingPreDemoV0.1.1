@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using Domains.Gameplay.Objectives.Events;
 using Domains.Gameplay.Objectives.ScriptableObjects;
@@ -35,7 +36,32 @@ namespace Domains.Gameplay.Objectives.Scripts
 
             LoadObjectives();
 
+            // foreach (var objective in objectivesList.objectives)
+            //     if (objective.activateWhenCompleted.Length == 0)
+            //     {
+            //         if (!IsObjectiveActive(objective.objectiveId) && !IsObjectiveCompleted(objective.objectiveId))
+            //             ObjectiveEvent.Trigger(objective.objectiveId, ObjectiveEventType.ObjectiveActivated);
+            //     }
+            //     else
+            //     {
+            //         foreach (var prerequisite in objective.activateWhenCompleted)
+            //             if (!IsObjectiveCompleted(prerequisite))
+            //                 break;
+            //
+            //         if (!IsObjectiveActive(objective.objectiveId) && !IsObjectiveCompleted(objective.objectiveId))
+            //             ObjectiveEvent.Trigger(objective.objectiveId, ObjectiveEventType.ObjectiveActivated);
+            //     }
+            StartCoroutine(InitializeAfterFrame());
+
+            
+        }
+
+        private IEnumerator InitializeAfterFrame()
+        {
+            yield return null;
+
             foreach (var objective in objectivesList.objectives)
+            {
                 if (objective.activateWhenCompleted.Length == 0)
                 {
                     if (!IsObjectiveActive(objective.objectiveId) && !IsObjectiveCompleted(objective.objectiveId))
@@ -49,9 +75,10 @@ namespace Domains.Gameplay.Objectives.Scripts
 
                     if (!IsObjectiveActive(objective.objectiveId) && !IsObjectiveCompleted(objective.objectiveId))
                         ObjectiveEvent.Trigger(objective.objectiveId, ObjectiveEventType.ObjectiveActivated);
-                }
-
-            SaveAllObjectives();
+                } 
+                SaveAllObjectives();
+                
+            }
         }
 
 

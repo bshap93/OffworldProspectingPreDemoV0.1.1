@@ -17,6 +17,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/EndSplash.unity
     guid: 76562ac3f292ccf4f82c802843cfbc7d
+  - enabled: 1
+    path: Assets/Scenes/Facility01.unity
+    guid: f9b38ab429134cd409550b770006a216
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: e309ba3ae23ab3344aed3e0dbf88cf47, type: 2}
     com.unity.input.settings: {fileID: 11400000, guid: dc6be75000ec08d4d9b4b3f9da13883e, type: 2}
