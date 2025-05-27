@@ -58,33 +58,6 @@ namespace Domains.Input.Scripts
                 HideInfoPanel();
         }
 
-        // public void ShowInfoPanel()
-        // {
-        //     if (infoPanelPrefab == null) return;
-        //
-        //     if (_infoPanelInstance == null)
-        //     {
-        //         if (canvas == null)
-        //         {
-        //             UnityEngine.Debug.LogWarning("No Canvas found in scene!");
-        //             return;
-        //         }
-        //
-        //         _infoPanelInstance = Instantiate(infoPanelPrefab, canvas.transform);
-        //     }
-        //
-        //     _infoPanelInstance.SetActive(true);
-        //     _isPanelVisible = true;
-        //     UIEvent.Trigger(UIEventType.OpenInfoPanel);
-        //     showPanelFeedbacks?.PlayFeedbacks();
-        //     onShowPanel?.Invoke();
-        //
-        //
-        //     var rectTransform = _infoPanelInstance.GetComponent<RectTransform>();
-        //     if (rectTransform != null)
-        //         rectTransform.anchoredPosition = screenOffset;
-        // }
-
         public void ShowInfoPanel()
         {
             if (infoPanelPrefab == null) return;

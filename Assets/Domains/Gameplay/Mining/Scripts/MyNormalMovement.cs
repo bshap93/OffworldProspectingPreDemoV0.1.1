@@ -20,7 +20,7 @@ namespace Domains.Gameplay.Mining.Scripts
 {
     [MMRequiresConstantRepaint]
     [AddComponentMenu("Character Controller Pro/Demo/Character/States/Normal Movement")]
-    public class MyNormalMovement : CharacterState, MMEventListener<PointedObjectEvent>
+    public class MyNormalMovement : CharacterState, MMEventListener<PointedObjectEvent>, MMEventListener<UIEvent>
     {
         public enum JumpResult
         {
@@ -86,6 +86,8 @@ namespace Domains.Gameplay.Mining.Scripts
         // public TextureDetector textureDetector;
 
         private bool isJetpackEquipped;
+
+        private bool isUsingAUI;
         // [SerializeField] private float maxSpeed = 5f; // used for scaling
 
         private JetPackBehavior jetPackBehavior;
@@ -151,24 +153,53 @@ namespace Domains.Gameplay.Mining.Scripts
         protected virtual void OnEnable()
         {
             CharacterActor.OnTeleport += OnTeleport;
+            this.MMEventStartListening<PointedObjectEvent>();
+            this.MMEventStartListening<UIEvent>();
         }
 
         protected virtual void OnDisable()
         {
             CharacterActor.OnTeleport -= OnTeleport;
-            this.MMEventStartListening();
+            this.MMEventStopListening<PointedObjectEvent>();
+            this.MMEventStopListening<UIEvent>();
         }
 
         protected virtual void OnValidate()
         {
             verticalMovementParameters.OnValidate();
-            this.MMEventStopListening();
         }
 
         public void OnMMEvent(PointedObjectEvent eventType)
         {
             if (eventType.EventType == PointedObjectEventType.PointedObjectChanged)
             {
+            }
+        }
+
+        public void OnMMEvent(UIEvent eventType)
+        {
+            if (eventType.EventType == UIEventType.OpenVendorConsole ||
+                eventType.EventType == UIEventType.OpenFuelConsole ||
+                eventType.EventType == UIEventType.OpenInfoDump ||
+                eventType.EventType == UIEventType.OpenQuestDialogue ||
+                eventType.EventType == UIEventType.OpenBriefing ||
+                eventType.EventType == UIEventType.OpenCommsComputer
+                || eventType.EventType == UIEventType.OpenInfoPanel
+               )
+            {
+                UnityEngine.Debug.Log("Using AUI: " + eventType.EventType);
+                isUsingAUI = true;
+            }
+            else if (eventType.EventType == UIEventType.CloseVendorConsole ||
+                     eventType.EventType == UIEventType.CloseFuelConsole ||
+                     eventType.EventType == UIEventType.CloseInfoDump ||
+                     eventType.EventType == UIEventType.CloseQuestDialogue
+                     || eventType.EventType == UIEventType.CloseBriefing ||
+                     eventType.EventType == UIEventType.CloseCommsComputer
+                     || eventType.EventType == UIEventType.CloseInfoPanel
+                    )
+            {
+                isUsingAUI = false;
             }
         }
 
@@ -688,8 +719,16 @@ namespace Domains.Gameplay.Mining.Scripts
             }
         }
 
+
         public override void UpdateBehaviour(float dt)
         {
+            if (isUsingAUI)
+            {
+                CharacterActor.PlanarVelocity = Vector3.zero;
+                CharacterActor.VerticalVelocity = Vector3.zero;
+                return;
+            }
+
             HandleSize(dt);
             HandleVelocity(dt);
             HandleRotation(dt);

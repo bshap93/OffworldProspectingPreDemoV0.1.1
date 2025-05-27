@@ -12,7 +12,8 @@ public class ObjectiveControllerHandler : MonoBehaviour, MMEventListener<Objecti
 
     private void Start()
     {
-        compassProPOI.enabled = false;
+        if (compassProPOI != null)
+            compassProPOI.enabled = false;
     }
 
     private void OnEnable()
@@ -27,9 +28,9 @@ public class ObjectiveControllerHandler : MonoBehaviour, MMEventListener<Objecti
 
     public void OnMMEvent(ObjectiveEvent eventType)
     {
-        Debug.Log($"Handler for '{objectiveId}' received event: {eventType.type} for '{eventType.objectiveId}'");
-        Debug.Log(
-            $"String comparison: '{objectiveId}' == '{eventType.objectiveId}' = {objectiveId == eventType.objectiveId}");
+        // Debug.Log($"Handler for '{objectiveId}' received event: {eventType.type} for '{eventType.objectiveId}'");
+        // Debug.Log(
+        //     $"String comparison: '{objectiveId}' == '{eventType.objectiveId}' = {objectiveId == eventType.objectiveId}");
 
         if (eventType.objectiveId == objectiveId)
         {

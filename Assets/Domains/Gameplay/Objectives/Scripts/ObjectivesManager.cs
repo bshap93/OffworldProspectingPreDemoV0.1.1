@@ -4,6 +4,7 @@ using Domains.Gameplay.Objectives.Events;
 using Domains.Gameplay.Objectives.ScriptableObjects;
 using Domains.Player.Scripts;
 using Domains.Scene.Scripts;
+using MoreMountains.Feedbacks;
 using MoreMountains.Tools;
 using UnityEngine;
 
@@ -18,6 +19,8 @@ namespace Domains.Gameplay.Objectives.Scripts
         public static HashSet<string> AllObjectives = new();
 
         public ObjectivesList objectivesList;
+
+        public MMFeedbacks objectiveCompletedFeedback;
 
 
         private string _savePath;
@@ -100,24 +103,6 @@ namespace Domains.Gameplay.Objectives.Scripts
             foreach (var activeObjectiveId in ActiveObjectives)
                 ObjectiveEvent.Trigger(activeObjectiveId, ObjectiveEventType.ObjectiveActivated);
 
-            // foreach (var objective in objectivesList.objectives)
-            // {
-            //     // Check ALL prerequisites are met
-            //     var allPrerequisitesMet = true;
-            //     foreach (var prerequisite in objective.activateWhenCompleted)
-            //         if (!IsObjectiveCompleted(prerequisite))
-            //         {
-            //             allPrerequisitesMet = false;
-            //             break;
-            //         }
-            //
-            //     // Only activate if ALL prerequisites are met
-            //     if (allPrerequisitesMet && !IsObjectiveActive(objective.objectiveId) &&
-            //         !IsObjectiveCompleted(objective.objectiveId))
-            //         ObjectiveEvent.Trigger(objective.objectiveId, ObjectiveEventType.ObjectiveActivated);
-            //     SaveAllObjectives();
-            // }
-
             // Then check for new objectives to activate
             foreach (var objective in objectivesList.objectives)
             {
@@ -192,7 +177,7 @@ namespace Domains.Gameplay.Objectives.Scripts
             // UnityEngine.Debug.Log($"Objective {objectiveId} added to active objectives.");
         }
 
-        public static void CompleteObjective(string objectiveId)
+        public void CompleteObjective(string objectiveId)
         {
             // if (!ActiveObjectives.Contains(objectiveId))
             // {
@@ -209,6 +194,7 @@ namespace Domains.Gameplay.Objectives.Scripts
 
             ActiveObjectives.Remove(objectiveId);
             CompletedObjectives.Add(objectiveId);
+            objectiveCompletedFeedback?.PlayFeedbacks();
         }
 
         public static void SaveAllObjectives()
